@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2009-2010 The Open Planning Project
  *
  * @requires GeoExplorer.js
@@ -110,7 +110,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 }
             }
         ];
-        
+    
         GeoExplorer.Composer.superclass.constructor.apply(this, arguments);
     },
 
@@ -214,7 +214,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
      * Create the toolbar configuration for the main view.
      */
     createTools: function() {
-        var tools = GeoExplorer.Composer.superclass.createTools.apply(this, arguments);
+		var tools = GeoExplorer.Composer.superclass.createTools.apply(this, arguments);
 
         // unauthorized, show login button
         if (this.authorizedRoles.length === 0) {
@@ -224,17 +224,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 handler: this.showLoginDialog,
                 scope: this
             });
-            tools.push(['->', this.loginButton]);
+            tools.push(this.loginButton);
         } else {
         }
-
+		/**
         var aboutButton = new Ext.Button({
             text: this.appInfoText,
             iconCls: "icon-geoexplorer",
             handler: this.displayAppInfo,
             scope: this
         });
-
+		**/
         tools.unshift("-");
         tools.unshift(new Ext.Button({
             tooltip: this.exportMapText,
@@ -256,8 +256,90 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             scope: this,
             iconCls: "icon-save"
         }));
-        tools.unshift("-");
-        tools.unshift(aboutButton);
+        //tools.unshift("-");
+        //tools.unshift(aboutButton);
+		
+		tools.unshift('->');
+		tools.unshift({
+			text: 'Справка',
+			tooltip: 'Справка', 
+			enableToggle: true,
+			id: 'helpWindowCheckButton', 
+			checked: false
+			//toggleHandler: menuOnCheckHelpWindow
+		});
+		
+		tools.unshift({
+			text: 'Вид',
+			menu: new Ext.menu.Menu({
+				items: [
+					{
+						text: 'Каталог ресурсов',
+						//menu: dateMenu, // assign the dateMenu object by reference
+						//handler: date,
+						menu: new Ext.menu.Menu({
+							items: [
+								{
+									text: 'Добавить'
+									//handler: date
+								}
+							]
+						})
+					},
+					'-',
+					new Ext.menu.CheckItem({
+						text: 'Окно результатов',
+						checkHandler: checkHandler
+					}),
+					new Ext.menu.CheckItem({
+						text: 'Справка',
+						checkHandler: checkHandler
+					})
+				]
+			})
+		});
+		tools.unshift({
+			text: 'Профиль',
+			menu: new Ext.menu.Menu({
+				items: [
+					{
+						text: 'Новый',
+						//handler: date
+					},
+					{
+						text: 'Загрузить',
+						//handler: date
+					},
+					{
+						text: 'Соранить',
+						//handler: date
+					},
+					{
+						text: 'Сохранить как группу',
+						//handler: date
+					},
+					{
+						text: 'Удалить профиль',
+						//handler: date
+					},
+					{
+						text: 'Сохранить в HTML',
+						//handler: date
+					},
+					'-',
+					{
+						text: 'Добавить данные',
+						//handler: date
+					}
+				]
+			})
+		});
+		
+		// Remove this alert in production
+		function checkHandler(item, e) {
+			alert('Checked the item: ' + item.text);
+		}
+		
         return tools;
     },
 
@@ -284,7 +366,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
            autoScroll: true,
            root: {
                nodeType: 'async', 
-               expanded: true, 
+               expanded: true,
                children: this.viewerTools
            }, 
            rootVisible: false,

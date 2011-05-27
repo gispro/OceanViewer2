@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2009-2011 The Open Planning Project
  */
 
@@ -220,11 +220,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             border: false,
             layout: "border",
             region: "west",
-            width: 250,
+            width: 350,
+			minWidth: 20,
             split: true,
             collapsible: true,
-            collapseMode: "mini",
-            header: false,
+			collapsed: true,
+            header: true,
+			title: 'Таблица содержания',
             items: [
                 {region: 'center', autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
                 {region: 'south', xtype: "container", layout: "fit", border: false, height: 200, id: 'legend'}
