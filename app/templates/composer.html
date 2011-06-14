@@ -30,7 +30,7 @@
 
     <script>
         Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
-        OpenLayers.ImgPath = "externals/openlayers/img/";
+        OpenLayers.ImgPath = "theme/app/img/";
         // optionally set locale based on query string parameter
         if (GeoExt.Lang) {
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
@@ -71,6 +71,9 @@
                 },
                 bing: {
                     ptype: "gxp_bingsource"
+                },
+                mapbox: {
+                    ptype: "gxp_mapboxsource"
                 },
                 ol: {
                     ptype: "gxp_olsource"

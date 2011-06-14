@@ -77,7 +77,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             }, {
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
-                maxFeatures: 20
+                maxFeatures: 20,
+                paging: false
             }, {
                 ptype: "gxp_featureeditor",
                 featureManager: "featuremanager",
@@ -106,6 +107,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 actionTarget: {target: "paneltbar", index: 17},
                 apiKeys: {
                     "localhost": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
+                    "localhost:8080": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
                     "example.com": "-your-api-key-here-"
                 }
             }
