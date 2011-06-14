@@ -41,7 +41,7 @@
 
     </target>
     
-    <target name="dist" depends="init, test, buildjs, redist"/>
+    <target name="dist" depends="buildjs, redist"/>
     
     <target name="redist">
 
