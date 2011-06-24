@@ -108,7 +108,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 apiKeys: {
                     "localhost": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
                     "localhost:8080": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
-                    "example.com": "-your-api-key-here-"
+                    "maps.gispro.ru:8888": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xT47jK7DJg6JugxpSJykj2JJa4aHRRf_vXP6M9o-RWHLltQ7_L44SYbBQ"
                 }
             }
         ];
@@ -130,7 +130,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         var panel = new Ext.FormPanel({
             url: "login",
             frame: true,
-            labelWidth: 60,
+            labelWidth: 77,
             defaultType: "textfield",
             errorReader: {
                 read: function(response) {
@@ -237,7 +237,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             scope: this
         });
 		**/
-        tools.unshift("-");
+        //tools.unshift("-");
         tools.unshift(new Ext.Button({
             tooltip: this.exportMapText,
             needsAuthorization: true,
