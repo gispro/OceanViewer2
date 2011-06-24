@@ -51,14 +51,14 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
+				gispro: {
+                    url: "http://gisbox.ru:8080/geoserver/wms",
+                    title: "GISPRO"
+                },
                 local: {
                     url: "/geoserver/ows",
                     title: "Local GeoServer",
                     ptype: "gxp_wmscsource"
-                },
-                suite: {
-                    url: "http://v2.suite.opengeo.org/geoserver/ows",
-                    title: "Remote Suite GeoServer"
                 },
                 mapquest: {
                     ptype: "gxp_mapquestsource"
@@ -75,6 +75,10 @@
                 mapbox: {
                     ptype: "gxp_mapboxsource"
                 },
+				obis: {
+                    url: "http://webdev1.iobis.org/geoserver/gwc/service/wms",
+                    title: "OBIS"
+                },
                 ol: {
                     ptype: "gxp_olsource"
                 }
@@ -88,8 +92,18 @@
                     20037508.34, 20037508.34
                 ],
                 layers: [{
+                    source: "gispro",
+                    title: "Топографическая карта РФ м 1:1 000 000",
+                    name: "eko_rf1000",
+                    group: "background"
+                }, {
+                    source: "gispro",
+                    title: "Топографическая карта РФ м 1:500 000",
+                    name: "eko_rf500",
+                    group: "background"
+                }, {
                     source: "google",
-                    title: "Google Roadmap",
+                    title: "Google Карта",
                     name: "ROADMAP",
                     group: "background"
                 }, {
@@ -98,7 +112,7 @@
                     fixed: true,
                     type: "OpenLayers.Layer",
                     args: [
-                        "None", {visibility: false}
+                        "Без картоосновы", {visibility: false}
                     ]
                 }],
                 center: [0, 0],
