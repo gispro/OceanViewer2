@@ -121,8 +121,8 @@ GeoExplorer.Viewer = Ext.extend(GeoExplorer, {
             scope: this
         });
 
-        tools.push("->");
-        tools.push(aboutButton);
+        //tools.push("->");
+        //tools.push(aboutButton);
 
         return tools;
     }

@@ -108,7 +108,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 apiKeys: {
                     "localhost": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
                     "localhost:8080": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
-                    "maps.gispro.ru:8888": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xT47jK7DJg6JugxpSJykj2JJa4aHRRf_vXP6M9o-RWHLltQ7_L44SYbBQ"
+                    "maps.gispro.ru:8888": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xT47jK7DJg6JugxpSJykj2JJa4aHRRf_vXP6M9o-RWHLltQ7_L44SYbBQ",
+					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ"
                 }
             }
         ];
@@ -272,22 +273,13 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		});
 		
 		tools.unshift({
-			text: 'Вид',
+			text: 'Окно',
 			menu: new Ext.menu.Menu({
 				items: [
-					{
+					new Ext.menu.CheckItem({
 						text: 'Каталог ресурсов',
-						//menu: dateMenu, // assign the dateMenu object by reference
-						//handler: date,
-						menu: new Ext.menu.Menu({
-							items: [
-								{
-									text: 'Добавить'
-									//handler: date
-								}
-							]
-						})
-					},
+						checkHandler: checkHandler
+					}),
 					'-',
 					new Ext.menu.CheckItem({
 						text: 'Окно результатов',
@@ -301,36 +293,34 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 			})
 		});
 		tools.unshift({
-			text: 'Профиль',
+			text: 'Слой',
 			menu: new Ext.menu.Menu({
 				items: [
 					{
-						text: 'Новый',
+						text: 'Добавить'
 						//handler: date
 					},
 					{
-						text: 'Загрузить',
+						text: 'Удалить'
+						//handler: date
+					}
+				]
+			})
+		});
+		tools.unshift({
+			text: 'Карта',
+			menu: new Ext.menu.Menu({
+				items: [
+					{
+						text: 'Новая'
 						//handler: date
 					},
 					{
-						text: 'Соранить',
+						text: 'Загрузить'
 						//handler: date
 					},
 					{
-						text: 'Сохранить как группу',
-						//handler: date
-					},
-					{
-						text: 'Удалить профиль',
-						//handler: date
-					},
-					{
-						text: 'Сохранить в HTML',
-						//handler: date
-					},
-					'-',
-					{
-						text: 'Добавить данные',
+						text: 'Сохранить'
 						//handler: date
 					}
 				]

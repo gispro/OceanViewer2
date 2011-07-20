@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="geoexplorer" default="dist" basedir=".">
+<project name="OceanViewer2" default="dist" basedir=".">
 
     <description>
-        GeoExplorer Build File
+        OceanViewer2 Build File
     </description>
 
     <property name="build" location="build"/>
@@ -79,6 +79,25 @@
         <!-- copy PrintPreview resources -->
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/PrintPreview/resources">
             <fileset dir="app/static/externals/PrintPreview/resources"/>
+        </copy>
+		
+		<!-- copy Animation resources -->
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script/images">
+            <fileset dir="app/static/script/images">
+				<include name="*"/>
+			</fileset>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script/css">
+            <fileset dir="app/static/script/css">
+				<include name="*"/>
+			</fileset>
+        </copy>
+
+		<!-- copy Animation json -->
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script">
+            <fileset dir="app/static/script">
+				<include name="services.json"/>
+			</fileset>
         </copy>
         
     </target>
