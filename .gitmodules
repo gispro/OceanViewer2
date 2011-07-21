@@ -4,6 +4,12 @@
 [submodule "externals/buildkit"]
 	path = externals/buildkit
 	url = git://github.com/tschaub/buildkit.git
+[submodule "app/static/externals/gxp"]
+	path = app/static/externals/gxp
+	url = https://github.com/gispro/gxp.git
+[submodule "app/static/externals/GeoExt"]
+	path = app/static/externals/GeoExt
+	url = https://github.com/gispro/GeoExt.git
 [submodule "app/static/externals/openlayers"]
 	path = app/static/externals/openlayers
 	url = git://github.com/openlayers/openlayers.git
