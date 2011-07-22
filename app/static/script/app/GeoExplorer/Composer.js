@@ -286,17 +286,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
                 
             }, {
-                ptype: "gxp_featuremanager",
-                id: "featuremanager",
-                maxFeatures: 20,
-                paging: false
-            }, {
-                ptype: "gxp_featureeditor",
-                featureManager: "featuremanager",
-                autoLoadFeatures: true,
-                toggleGroup: this.toggleGroup,
-                actionTarget: {target: "paneltbar", index: 8}
-            }, {
+//                ptype: "gxp_featuremanager",
+//                id: "featuremanager",
+//                maxFeatures: 20,
+//                paging: false
+//            }, {
+//                ptype: "gxp_featureeditor",
+//                featureManager: "featuremanager",
+//                autoLoadFeatures: true,
+//                toggleGroup: this.toggleGroup,
+//                actionTarget: {target: "paneltbar", index: 8}
+//            }, {
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 10}
             }, {
@@ -309,18 +309,19 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_zoomtoextent",
                 actionTarget: {target: "paneltbar", index: 15}
             }, {
-                ptype: "gxp_print",
-                customParams: {outputFilename: 'GeoExplorer-print'},
-                printService: config.printService,
-                actionTarget: {target: "paneltbar", index: 5}
-            }, {
+//                ptype: "gxp_print",
+//                customParams: {outputFilename: 'GeoExplorer-print'},
+//                printService: config.printService,
+//                actionTarget: {target: "paneltbar", index: 5}
+//            }, {
                 ptype: "gxp_googleearth",
                 actionTarget: {target: "paneltbar", index: 17},
                 apiKeys: {
                     "localhost": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
                     "localhost:8080": "ABQIAAAAeDjUod8ItM9dBg5_lz0esxTnme5EwnLVtEDGnh-lFVzRJhbdQhQBX5VH8Rb3adNACjSR5kaCLQuBmw",
                     "maps.gispro.ru:8888": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xT47jK7DJg6JugxpSJykj2JJa4aHRRf_vXP6M9o-RWHLltQ7_L44SYbBQ",
-					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ"
+					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ",
+					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
             }
         ];

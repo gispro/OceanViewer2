@@ -23,8 +23,7 @@ var servicesLoader = new Ext.data.JsonStore({
 //	url       : 'http://developer:8080/GeoNodeViewer/ServiceServlet?parameter=animation',
 //	url       : 'http://developer:8080/ExplorerServlet/ServiceServlet',
 //	url       : 'http://gisbox.ru:8080/ExplorerServlet/ServiceServlet',
-	//url       : '/OceanViewer2/script/services.json',
-        url       : 'script/services.json', // fedd
+	url       : '/OceanViewer2/script/services.json',
 
 //	url       : 'http://localhost:8082/composer/ServiceServlet?parameter=animation',
 	root      : 'services',
