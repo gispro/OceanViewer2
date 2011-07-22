@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2009-2010 The Open Planning Project
  *
  * @requires GeoExplorer.js
