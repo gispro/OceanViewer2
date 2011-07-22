@@ -4,13 +4,13 @@
 
 GeoExt.Lang.add("ru", {
     "GeoExplorer.prototype": {
-        zoomSliderText: "<div>Уровень: {zoom}</div><div>Масштаб: 1:{scale}</div>",
+        zoomSliderText: "<div>Масштаб: {zoom}</div><div>Масштаб: 1:{scale}</div>",
         loadConfigErrorText: "Ошибка чтения сохраненной конфигурации: <br />",
         loadConfigErrorDefaultText: "Ошибка сервера.",
         xhrTroubleText: "Ошибка связи: Статус ",
         layersText: "Слои",
         titleText: "Заголовок",
-        zoomLevelText: "Уровень",
+        zoomLevelText: "Масштаб",
         saveErrorText: "Ошибка сохранения: ",
         bookmarkText: "URL карты",
         permakinkText: 'Постоянная ссылка',
@@ -22,9 +22,9 @@ GeoExt.Lang.add("ru", {
         aboutThisMapText: "Об этой карте"
     },
     "GeoExplorer.Composer.prototype": {
-        exportMapText: "Экспортировать карту",
+        exportMapText: "Сохранить представление",
         saveMapText: "Сохранить карту",
-        toolsTitle: "Выберете инструмент на панель:",
+        toolsTitle: "Выберите инструменты на панель представления:",
         previewText: "Предпросмотр",
         backText: "Назад",
         nextText: "Далее",
