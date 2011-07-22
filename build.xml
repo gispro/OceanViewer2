@@ -80,27 +80,8 @@
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/PrintPreview/resources">
             <fileset dir="app/static/externals/PrintPreview/resources"/>
         </copy>
-		
-		<!-- copy Animation resources -->
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script/images">
-            <fileset dir="app/static/script/images">
-				<include name="*"/>
-			</fileset>
-        </copy>
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script/css">
-            <fileset dir="app/static/script/css">
-				<include name="*"/>
-			</fileset>
-        </copy>
 
-		<!-- copy Animation json -->
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script">
-            <fileset dir="app/static/script">
-				<include name="services.json"/>
-			</fileset>
-        </copy>
-        
-    </target>
+	</target>
 
     <target name="war" depends="dist">
         <war destfile="${build}/${ant.project.name}.war">
