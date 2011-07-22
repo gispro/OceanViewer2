@@ -170,7 +170,7 @@ GeoExplorer.Viewer = Ext.extend(GeoExplorer, {
                                     if(keyVal){
                                         keyVal[1] = keyVal[1].replace(/^\s+/g, "").replace(/\s+$/g, "");
                                         keyVal[2] = keyVal[2].replace(/^\s+/g, "").replace(/\s+$/g, "");
-                                        arr[j] = [keyVal[1], keyVal[2], superGroup + " No." + group];
+                                        arr[j] = [keyVal[1], keyVal[2], superGroup + " Объект " + group];
                                         maxGroup = group;
                                         j++;
                                         ret = ret + "key: " + lines[i][0] + ", val: " + lines[i][1] + "\n";

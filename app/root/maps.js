@@ -1,38 +1,65 @@
-var SQLITE = require("../sqlite");
+var JDBC = require("../jdbc");
 var Request = require("ringo/webapp/request").Request;
-var FILE = require("fs");
 var auth = require("../auth");
 
 var System = Packages.java.lang.System;
+var dbMapsTableCreated = false;
+var dbMapsTableName = "maps";
+var jdbcDriver;
 
-var getDb = exports.getDb = function(request) {
-    var dataDir;
+var getDbConn = exports.getDbConn = function(request) {
+    
+    var jdbcParams;
     if (request) {
-        dataDir = request.env.servlet.getServletConfig().getInitParameter("GEOEXPLORER_DATA");
+        jdbcParams = request.env.servlet.getServletConfig().getInitParameter("GEOEXPLORER_JDBC_PARAMS");
     }
-    if (!dataDir) {
-        dataDir = String(
-            System.getProperty("GEOEXPLORER_DATA") || 
-            System.getenv("GEOEXPLORER_DATA") || "."
+    if (!jdbcParams) {
+        jdbcParams = String(
+            System.getProperty("GEOEXPLORER_JDBC_PARAMS") || 
+            System.getenv("GEOEXPLORER_JDBC_PARAMS") || 
+            '{ "driver" : "org.sqlite.JDBC" , "url" : "jdbc:sqlite:geoexplorer.db" }'
+        
+            //    '{ ' +
+            //        '"driver" : "org.postgresql.Driver" , '+
+            //        '"url" : "jdbc:postgresql://192.168.0.30:5432/oceanadmin" ,'+
+            //        '"table" : "savedmaps2",'+
+            //        '"user": "esimo",'+
+            //        '"password" : "gisproesimo"'+
+            //    '}'
+        
+        
         );
     }
-    var db = FILE.join(dataDir, "geoexplorer.db");
 
-    // set up maps table
+    jdbcParams = JSON.parse(jdbcParams);
+    var jdbcUrl = jdbcParams.url;
+    delete jdbcParams.url;
+    jdbcDriver = jdbcParams.driver;
+    delete jdbcParams.driver;
+    if(jdbcParams.table){
+        dbMapsTableName = jdbcParams.table;
+        delete jdbcParams.table;
+    }
+
     try {
-        var connection = SQLITE.open(db);
+        var connection = JDBC.connect(jdbcDriver, jdbcUrl, jdbcParams);
     } catch (err) {
         // TODO: nicer exception handling - this is hard for the user to find
-        throw new Error("Can't open '" + db + "' for writing.  Set GEOEXPLORER_DATA to a writable directory.");
+        throw new Error("Can't open '" + jdbcUrl + "': " + err);
     }
-    var statement = connection.createStatement();
-    statement.executeUpdate(
-        "CREATE TABLE IF NOT EXISTS maps (" + 
-            "id INTEGER PRIMARY KEY ASC, config BLOB" +
-        ");"
-    );
-    connection.close();
-    return db;
+    
+    if(!dbMapsTableCreated && "org.sqlite.JDBC" == jdbcDriver){
+        var statement = connection.createStatement();
+        statement.executeUpdate(
+            "CREATE TABLE IF NOT EXISTS "+dbMapsTableName+" (" + 
+                "id INTEGER PRIMARY KEY ASC, config BLOB" +
+            ");"
+        );
+        statement.close();
+        dbMapsTableCreated = true;
+    }
+
+    return connection;
 }
 
 
@@ -160,10 +187,10 @@ var handlers = {
 };
 
 var getMapList = exports.getMapList = function(request) {
-    var connection = SQLITE.open(getDb(request));
+    var connection = getDbConn(request);
     var statement = connection.createStatement();
     var results = statement.executeQuery(
-        "SELECT id, config FROM maps;"
+        "SELECT id, config FROM "+dbMapsTableName+";"
     );
     var items = [];
     var config;
@@ -177,6 +204,7 @@ var getMapList = exports.getMapList = function(request) {
             modified: config.modified
         });
     }
+    statement.close();
     results.close();
     connection.close();
     // return all items
@@ -192,19 +220,29 @@ var createMap = exports.createMap = function(config, request) {
     config.created = now;
     config.modified = now;
     config = JSON.stringify(config);
-    var connection = SQLITE.open(getDb(request));
+    var connection = getDbConn(request);
     // store the new map config
     var prep = connection.prepareStatement(
-        "INSERT INTO maps (config) VALUES (?);"
+        "INSERT INTO "+dbMapsTableName+" (config) VALUES (?);"
     );
     prep.setString(1, config);
     prep.executeUpdate();
+
     // get the map id
-    var statement = connection.createStatement();
-    var results = statement.executeQuery("SELECT last_insert_rowid() AS id;");
+    
+    var results;
+    if("org.postgresql.Driver" == jdbcDriver){ 
+        // in postgre there's no getGeneratedKeys()! who knew!
+        var statement = connection.createStatement();
+        results = statement.executeQuery("SELECT last_value FROM "+dbMapsTableName+"_id_seq");
+    }else{
+        results = prep.getGeneratedKeys();
+    }
+    //var results = statement.executeQuery("SELECT last_insert_rowid() AS id;");
     results.next();
-    var id = Number(results.getInt("id"));
+    var id = Number(results.getInt(1));
     results.close();
+    prep.close();
     connection.close();
     // return the map id
     return {id: id};
@@ -212,9 +250,9 @@ var createMap = exports.createMap = function(config, request) {
 
 var readMap = exports.readMap = function(id, request) {
     var config;
-    var connection = SQLITE.open(getDb(request));
+    var connection = getDbConn(request);
     var prep = connection.prepareStatement(
-        "SELECT config FROM maps WHERE id = ?;"
+        "SELECT config FROM "+dbMapsTableName+" WHERE id = ?;"
     );
     prep.setInt(1, id);
     var results = prep.executeQuery();
@@ -226,6 +264,7 @@ var readMap = exports.readMap = function(id, request) {
         throw {message: "No map with id " + id, code: 404};
     }
     results.close();
+    prep.close();
     connection.close();
     return config;
 };
@@ -238,13 +277,14 @@ var updateMap = exports.updateMap = function(id, config, request) {
     config.modified = Date.now();
     config = JSON.stringify(config);
     var result;
-    var connection = SQLITE.open(getDb(request));
+    var connection = getDbConn(request);
     var prep = connection.prepareStatement(
-        "UPDATE OR FAIL maps SET config = ? WHERE id = ?;"
+        "UPDATE "+dbMapsTableName+" SET config = ? WHERE id = ?;"
     );
     prep.setString(1, config);
     prep.setInt(2, id);
     var rows = prep.executeUpdate();
+    prep.close();
     connection.close();
     if (!rows) {
         throw {message: "No map with id " + id, code: 404};
@@ -256,12 +296,13 @@ var updateMap = exports.updateMap = function(id, config, request) {
 
 var deleteMap = exports.deleteMap = function(id, request) {
     var result;
-    var connection = SQLITE.open(getDb(request));
+    var connection = getDbConn(request);
     var prep = connection.prepareStatement(
-        "DELETE FROM maps WHERE id = ?;"
+        "DELETE FROM "+dbMapsTableName+" WHERE id = ?;"
     );
     prep.setInt(1, id);
     var rows = prep.executeUpdate();
+    prep.close();
     connection.close();
     if (!rows) {
         throw {message: "No map with id " + id, code: 404};
@@ -281,7 +322,7 @@ exports.app = function(env, pathInfo) {
         try {
             resp = handler(env);            
         } catch (x) {
-            resp = createResponse({error: x.message}, x.code || 500);
+            resp = createResponse({error: x.message + ": line " + x.lineNumber}, x.code || 500);
         }
     } else {
         resp = createResponse({error: "Not allowed: " + method}, 405);

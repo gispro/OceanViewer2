@@ -28,6 +28,18 @@
             <param-name>production</param-name>
             <param-value>true</param-value>
         </init-param>
+        <!--<init-param>
+            <param-name>GEOEXPLORER_JDBC_PARAMS</param-name>
+            <param-value>
+                { 
+                    "driver" : "org.postgresql.Driver" , 
+                    "url" : "jdbc:postgresql://192.168.0.30:5432/oceanadmin" ,
+                    "table" : "savedmaps2",
+                    "user": "esimo",
+                    "password" : "gisproesimo"
+                }
+            </param-value>
+        </init-param>-->
         <load-on-startup>1</load-on-startup>
     </servlet>
 
