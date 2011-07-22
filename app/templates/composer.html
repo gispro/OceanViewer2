@@ -37,12 +37,13 @@
 			GeoExt.Lang.set("ru");
         }
         var app = new GeoExplorer.Composer({
-            authStatus: <% status %>,
+            authStatus: 1,//<% status %>,
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
             about: {
-                title: "",
-                contact: ""
+                title: "Карта OceanViewer",
+                "abstract": "Сохраненная карта OceanViewer",
+                contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
