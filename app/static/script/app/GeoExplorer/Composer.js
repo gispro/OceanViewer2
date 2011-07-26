@@ -72,10 +72,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_navigation", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 6}
             }, {
+                id: "gxp_wmsgetfeatureinfo_ctl",
                 ptype: "gxp_wmsgetfeatureinfo", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 7}
                 
-                
+         /*       
 
     , displayPopup: function(evt, title, toShow, isGrid) {
         var popup;
@@ -284,7 +285,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         return actions;
     }
 
-                
+        */
             }, {
 //                ptype: "gxp_featuremanager",
 //                id: "featuremanager",
@@ -521,6 +522,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		});
 		tools.unshift({
 			text: 'Карта',
+                        //bububu: this,
 			menu: new Ext.menu.Menu({
 				items: [
 					{
@@ -533,7 +535,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					},
 					{
 						text: 'Сохранить'
-						//handler: date
+                                                //,
+						//handler: function() {
+                                                //    bububu.save(bububu.showUrl);
+                                                //}
 					}
 				]
 			})

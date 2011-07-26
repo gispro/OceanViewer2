@@ -187,9 +187,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     delete this.id;
                     window.location.hash = "";
                     this.applyConfig(config);
-                },
+                    //this.tools.gxp_wmsgetfeatureinfo_ctl.displayPopup = function(evt, title, toShow, isGrid) {
+                    },
                 scope: this
-            });
+                });
         } else {
             var query = Ext.urlDecode(document.location.search.substr(1));
             if (query && query.q) {
@@ -209,6 +210,262 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             icon: Ext.MessageBox.WARNING
         });
         
+    },
+    
+    initTools: function() {
+        this.tools = {};
+        if (this.initialConfig.tools && this.initialConfig.tools.length > 0) {
+            var tool;
+            for (var i=0, len=this.initialConfig.tools.length; i<len; i++) {
+                try {
+                    tool = Ext.ComponentMgr.createPlugin(
+                        this.initialConfig.tools[i], this.defaultToolType
+                    );
+                        
+                if(tool.ptype === "gxp_wmsgetfeatureinfo") {
+
+    tool.displayPopup = function(evt, title, toShow, isGrid) {
+        var popup;
+        var popupKey = evt.xy.x + "." + evt.xy.y;
+
+        if (!(popupKey in this.popupCache)) {
+            popup = this.addOutput({
+                xtype: "gx_popup",
+                title: this.popupTitle,
+                layout: "accordion",
+                location: evt.xy,
+                map: this.target.mapPanel,
+                width: 250,
+                height: 300,
+                listeners: {
+                    close: (function(key) {
+                        return function(panel){
+                            delete this.popupCache[key];
+                        };
+                    })(popupKey),
+                    scope: this
+                }
+            });
+            this.popupCache[popupKey] = popup;
+        } else {
+            popup = this.popupCache[popupKey];
+        }
+
+        // extract just the body content
+        if(isGrid){
+            popup.add({
+                title: title,
+                layout: "fit",
+                autoScroll: true,
+                autoWidth: true,
+                collapsible: true,
+                items: [toShow]
+            });
+        }else{
+            popup.add({
+                title: title,
+                layout: "fit",
+                html: toShow,
+                autoScroll: true,
+                autoWidth: true,
+                collapsible: true
+            });
+        }
+        popup.doLayout();
+    };
+
+
+    tool.addActions = function() {
+        this.popupCache = {};
+        
+        var actions = gxp.plugins.WMSGetFeatureInfo.superclass.addActions.call(this, [{
+            tooltip: this.infoActionTip,
+            iconCls: "gxp-icon-getfeatureinfo",
+            toggleGroup: this.toggleGroup,
+            enableToggle: true,
+            allowDepress: true,
+            toggleHandler: function(button, pressed) {
+                for (var i = 0, len = info.controls.length; i < len; i++){
+                    if (pressed) {
+                        info.controls[i].activate();
+                    } else {
+                        info.controls[i].deactivate();
+                    }
+                }
+             }
+        }]);
+        var infoButton = this.actions[0].items[0];
+
+        var info = {controls: []};
+        var updateInfo = function() {
+            var queryableLayers = this.target.mapPanel.layers.queryBy(function(x){
+                return x.get("queryable");
+            });
+
+            var map = this.target.mapPanel.map;
+            var control;
+            for (var i = 0, len = info.controls.length; i < len; i++){
+                control = info.controls[i];
+                control.deactivate();  // TODO: remove when http://trac.openlayers.org/ticket/2130 is closed
+                control.destroy();
+            }
+
+            info.controls = [];
+            queryableLayers.each(function(x){
+                var layer = x.getLayer();
+                var vendorParams = Ext.apply({}, this.vendorParams), param;
+                if (this.layerParams) {
+                    for (var i=this.layerParams.length-1; i>=0; --i) {
+                        param = this.layerParams[i].toUpperCase();
+                        vendorParams[param] = layer.params[param];
+                    }
+                }
+                var control = new OpenLayers.Control.WMSGetFeatureInfo({
+                    url: layer.url,
+                    queryVisible: true,
+                    layers: [layer],
+                    infoFormat: "text/plain",
+                    vendorParams: vendorParams,
+                    eventListeners: {
+                        getfeatureinfo: function(evt) {
+                            var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
+                            if (match && !match[1].match(/^\s*$/)) {
+                                this.displayPopup(
+                                    evt, (x.get("title") || x.get("name")), match[1], false
+                                );
+                            }else{
+                                var lines = evt.text.split("\n");
+                                var ret = "";
+                                var arr = [];
+                                var j = 0;
+                                var group = 0;
+                                var wasGroup = false;
+                                var superGroup = "";
+                                
+                                for(i=0;i<lines.length;i++){
+                                    var keyVal = lines[i].match(/([^=]+)=(.*)/);
+                                    if(keyVal){
+                                        keyVal[1] = keyVal[1].replace(/^\s+/g, "").replace(/\s+$/g, "");
+                                        keyVal[2] = keyVal[2].replace(/^\s+/g, "").replace(/\s+$/g, "");
+                                        arr[j] = [keyVal[1], keyVal[2], superGroup, group];
+                                        maxGroup = group;
+                                        j++;
+                                        ret = ret + "key: " + lines[i][0] + ", val: " + lines[i][1] + "\n";
+                                        wasGroup = false;
+                                    }else{
+                                        if(!wasGroup){
+                                            wasGroup = true;
+                                            group++;
+                                        }
+                                        var supGrTry = lines[i].match(/FeatureType\s+[\"\']?([^\"\']+)[\"\']?/);
+                                        if(supGrTry){
+                                            if(superGroup != supGrTry[1]){
+                                                group=1;
+                                            }
+                                            superGroup = supGrTry[1] ;
+                                        }
+                                    }
+                                }
+                                
+                                // translate arr
+                                var layerNames = [];
+                                var fieldNames = [];
+                                for(var i=0;i<arr.length;i++){
+                                    layerNames[i] = [arr[i][2]];
+                                    fieldNames[i] = [arr[i][0]];
+                                }
+                                var translatedLayerNames = translateSymbols("layer", layerNames);
+                                var translatedFieldNames = translateSymbols("field", fieldNames);
+                                // transform two last columns to one for grouping
+                                for(var i=0;i<arr.length;i++){
+                                    arr[i] = [
+                                        translatedFieldNames[arr[i][0]], 
+                                        arr[i][1], 
+                                        arr[i][0],
+                                        translatedLayerNames[arr[i][2]] + " Объект " + arr[i][3]
+                                    ];
+                                }
+                                
+                                
+                                // ext grid
+                                var myReader = new Ext.data.ArrayReader({}, [
+                                    {name: 'FieldTranslated'},
+                                    {name: 'Value'},
+                                    {name: 'Field'},
+                                    {name: 'Layer'}
+                                ]);                                
+                                
+                                var grid = new Ext.grid.GridPanel({
+                                    store: new Ext.data.GroupingStore({
+                                        data: arr,
+                                        reader: myReader,
+                                        groupField: 'Layer'
+                                    }),
+                                    view: new Ext.grid.GroupingView({
+                                        forceFit:true,
+                                        groupTextTpl: "{text}"
+                                    }),
+                                    columns: [
+                                    {
+                                        header: 'Поле', 
+                                        sortable: true, 
+                                        dataIndex: 'FieldTranslated',
+                                        groupable: false
+                                    },
+                                    {
+                                        header: 'Значение', 
+                                        sortable: true,
+                                        dataIndex: 'Value',
+                                        groupable: false
+                                    },
+                                    {
+                                        header: 'Код поля', 
+                                        sortable: true, 
+                                        dataIndex: 'Field',
+                                        groupable: false,
+                                        hidden: true
+                                    },
+                                    {
+                                        header: 'Слой', 
+                                        sortable: true,
+                                        dataIndex: 'Layer',
+                                        groupable: false,
+                                        hidden: true
+                                    }
+                                    ]
+                                });                                   
+                                
+                                this.displayPopup(
+                                    evt, x.get("title") || x.get("name"), grid, true
+                                );
+                            }
+                        },
+                        scope: this
+                    }
+                });
+                map.addControl(control);
+                info.controls.push(control);
+                if(infoButton.pressed) {
+                    control.activate();
+                }
+            }, this);
+
+        };
+        
+        this.target.mapPanel.layers.on("update", updateInfo, this);
+        this.target.mapPanel.layers.on("add", updateInfo, this);
+        this.target.mapPanel.layers.on("remove", updateInfo, this);
+        
+        return actions;
+    }
+                }
+                        
+                } catch (err) {
+                    throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
+                }
+                tool.init(this);
+            }
+        }
     },
     
     /** private: method[initPortal]
@@ -473,3 +730,51 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     }
 });
 
+    
+    
+    // translation of fields annd layer codes (fedd)
+    var translatedSymbols = {
+        field: {},
+        layer: {}
+    };
+    
+    var translateSymbols = function(symbolType, symbolCodes){
+        var cached = translatedSymbols[symbolType];
+        if(cached){
+            var toAsk = [];
+            for(var i=0;i<symbolCodes.length;i++){
+                if(!cached[symbolCodes[i]]){
+                    toAsk.push(symbolCodes[i]);
+                }
+            }
+            if(toAsk.length>0){
+                //call the servlet
+                var url = "translate";
+                var request = OpenLayers.Request.issue({
+                    method: "GET",
+                    url: url,
+                    async: false,
+                    params:{
+                        type: symbolType,
+                        code: toAsk
+                    }
+                });
+
+                if(request.status==200){
+                    var answered = Ext.util.JSON.decode(request.responseText);
+                    for(var prop in answered){
+                        cached[prop] = answered[prop];
+                    }
+                }
+            }
+        }
+        var ret = {};
+        for(i=0;i<symbolCodes.length;i++){
+            if(cached && cached[symbolCodes[i]])
+                ret[symbolCodes[i]] = cached[symbolCodes[i]];
+            else
+                ret[symbolCodes[i]] = symbolCodes[i];
+        }
+        
+        return ret;
+    }

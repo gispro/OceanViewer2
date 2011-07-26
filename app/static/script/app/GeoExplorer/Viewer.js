@@ -45,7 +45,7 @@ GeoExplorer.Viewer = Ext.extend(GeoExplorer, {
                     }
                 }
                 
-                if(tool.ptype === "gxp_wmsgetfeatureinfo") {
+                /*if(tool.ptype === "gxp_wmsgetfeatureinfo") {
 
     toolConfig.displayPopup = function(evt, title, toShow, isGrid) {
         var popup;
@@ -257,12 +257,12 @@ GeoExplorer.Viewer = Ext.extend(GeoExplorer, {
                 
                 
                 
-                
                     
                     
                     
                 }
                 
+                */
                 tools.push(toolConfig);
             }
         }
@@ -340,8 +340,8 @@ GeoExplorer.Viewer = Ext.extend(GeoExplorer, {
             scope: this
         });
 
-        //tools.push("->");
-        //tools.push(aboutButton);
+        tools.push("->");
+        tools.push(aboutButton);
 
         return tools;
     }
