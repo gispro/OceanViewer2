@@ -455,7 +455,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         tools.unshift(new Ext.Button({
             tooltip: this.exportMapText,
             needsAuthorization: true,
-            disabled: !this.isAuthorized(),
+            //disabled: !this.isAuthorized(),
             handler: function() {
                 this.save(this.showEmbedWindow);
             },
@@ -465,7 +465,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         tools.unshift(new Ext.Button({
             tooltip: this.saveMapText,
             needsAuthorization: true,
-            disabled: !this.isAuthorized(),
+            //disabled: !this.isAuthorized(),
             handler: function() {
                 this.save(this.showUrl);
             },
