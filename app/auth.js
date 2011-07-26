@@ -10,7 +10,7 @@ function getClient() {
     return defaultClient;
 }
 
-function getGeoServerUrl(request) {
+exports.getGeoServerUrl = function getGeoServerUrl(request) {
     var url = java.lang.System.getProperty("app.proxy.geoserver");
     if (url) {
         if (url.charAt(url.length-1) !== "/") {
