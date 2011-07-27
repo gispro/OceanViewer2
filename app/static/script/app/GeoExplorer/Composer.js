@@ -472,6 +472,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             scope: this,
             iconCls: "icon-save"
         }));
+        tools.unshift(new Ext.Button({
+            tooltip: "Сохранить новую",
+            needsAuthorization: true,
+            //disabled: !this.isAuthorized(),
+            handler: function() {
+                this.saveNew(this.showUrl);
+            },
+            scope: this,
+            iconCls: "icon-save"
+        }));
+        
         //tools.unshift("-");
         //tools.unshift(aboutButton);
 		

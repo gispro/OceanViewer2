@@ -630,6 +630,30 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         });
     },
         
+    saveNew: function(callback, scope) {
+        var configStr = Ext.util.JSON.encode(this.getState());
+        var method, url;
+        //if (this.id) {
+        //    method = "PUT";
+        //    url = "maps/" + this.id;
+        //} else {
+            method = "POST";
+            url = "maps";
+        //}
+        OpenLayers.Request.issue({
+            method: method,
+            url: url,
+            data: configStr,
+            callback: function(request) {
+                this.handleSave(request);
+                if (callback) {
+                    callback.call(scope || this);
+                }
+            },
+            scope: this
+        });
+    },
+        
     /** private: method[handleSave]
      *  :arg: ``XMLHttpRequest``
      */
