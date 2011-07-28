@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2009-2011 The Open Planning Project
  */
 
@@ -371,8 +371,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 var layerNames = [];
                                 var fieldNames = [];
                                 for(var i=0;i<arr.length;i++){
-                                    layerNames[i] = [arr[i][2]];
-                                    fieldNames[i] = [arr[i][0]];
+                                    arr[i][2] = arr[i][2].toUpperCase();
+                                    arr[i][0] = arr[i][0].toUpperCase();
+                                    layerNames[i] = arr[i][2];
+                                    fieldNames[i] = arr[i][0];
                                 }
                                 var translatedLayerNames = translateSymbols("layer", layerNames);
                                 var translatedFieldNames = translateSymbols("field", fieldNames);
