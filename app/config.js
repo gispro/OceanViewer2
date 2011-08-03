@@ -7,6 +7,7 @@ var urls = [
     [(/^\/(proxy)/), require("./root/proxy").app],
     [(/^\/(maps(\/\d+)?)/), require("./root/maps").app],
     [(/^\/(translate)/), require("./root/translate").app],
+    [(/^\/(metadata)/), require("./root/metadata").app],
     [(/^\/(composer)/), require("./root/composer").app],
     [(/^\/(viewer(.html)?)/), require("./root/viewer").app]
 ];

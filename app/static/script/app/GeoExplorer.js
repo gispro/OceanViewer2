@@ -235,7 +235,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 layout: "accordion",
                 location: evt.xy,
                 map: this.target.mapPanel,
-                width: 250,
+                width: 350,
                 height: 300,
                 listeners: {
                     close: (function(key) {
@@ -334,6 +334,11 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     evt, (x.get("title") || x.get("name")), match[1], false
                                 );
                             }else{
+                                
+                                if(evt.text.match(/no.*features.*found/)){
+                                    return;
+                                }
+                                
                                 var lines = evt.text.split("\n");
                                 var ret = "";
                                 var arr = [];
@@ -341,6 +346,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 var group = 0;
                                 var wasGroup = false;
                                 var superGroup = "";
+                                var needPlusick = false;
                                 
                                 for(i=0;i<lines.length;i++){
                                     var keyVal = lines[i].match(/([^=]+)=(.*)/);
@@ -352,6 +358,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         j++;
                                         ret = ret + "key: " + lines[i][0] + ", val: " + lines[i][1] + "\n";
                                         wasGroup = false;
+                                        if(group>1){
+                                            needPlusick = true;
+                                        }
                                     }else{
                                         if(!wasGroup){
                                             wasGroup = true;
@@ -361,6 +370,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         if(supGrTry){
                                             if(superGroup != supGrTry[1]){
                                                 group=1;
+                                                if(superGroup!="")
+                                                    needPlusick = true;
                                             }
                                             superGroup = supGrTry[1] ;
                                         }
@@ -377,16 +388,23 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     fieldNames[i] = arr[i][0];
                                 }
                                 var translatedLayerNames = translateSymbols("layer", layerNames);
-                                var translatedFieldNames = translateSymbols("field", fieldNames);
+                                var metadataFieldNames = getMetaData("field", fieldNames);
                                 // transform two last columns to one for grouping
-                                for(var i=0;i<arr.length;i++){
+                                
+                                for(i=0;i<arr.length;i++){
                                     arr[i] = [
-                                        translatedFieldNames[arr[i][0]], 
+                                        metadataFieldNames[arr[i][0]]["Название объекта"]?
+                                            metadataFieldNames[arr[i][0]]["Название объекта"]:
+                                            arr[i][0], 
                                         arr[i][1], 
                                         arr[i][0],
-                                        translatedLayerNames[arr[i][2]] + " Объект " + arr[i][3]
+                                        translatedLayerNames[arr[i][2]],
+                                        arr[i][3],
+                                        translatedLayerNames[arr[i][2]] + " grouping " + arr[i][3],
+                                        metadataFieldNames[arr[i][0]]
                                     ];
                                 }
+                                
                                 
                                 
                                 // ext grid
@@ -394,20 +412,52 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     {name: 'FieldTranslated'},
                                     {name: 'Value'},
                                     {name: 'Field'},
-                                    {name: 'Layer'}
-                                ]);                                
+                                    {name: 'LayerTranslated'},
+                                    {name: 'NumOfLayerEntry'},
+                                    {name: 'GroupingField'},
+                                    {name: 'MetaData'}
+                                ]);       
                                 
-                                var grid = new Ext.grid.GridPanel({
-                                    store: new Ext.data.GroupingStore({
+                                var metaDataTemplate = "";
+                                if(arr[0] && (!(typeof metadataFieldNames[arr[0][2]] == "string"))){
+                                    //alert(typeof metadataFieldNames[arr[0][2]]);
+                                    for(var metaFlds in metadataFieldNames[arr[0][2]]){
+                                        metaDataTemplate = metaDataTemplate +
+                                            "<b>"+metaFlds+"</b>" + ": {[values.MetaData['"+metaFlds+"']]}<br/>";
+                                    }
+                                }
+                                
+                                var expander;
+                                if(metaDataTemplate==""){
+                                //if(false){
+                                    expander = null;
+                                }else{
+                                    expander = new Ext.grid.RowExpander({
+                                        //tpl: new Ext.XTemplate("Layer: {[values.MetaData['Дата создания']]}")
+                                        tpl: new Ext.XTemplate(metaDataTemplate)
+                                        //,disabled: (metaDataTemplate=="")
+                                    });
+                                }
+                                
+                                
+                                var sss = needPlusick?
+                                    new Ext.data.GroupingStore({
                                         data: arr,
                                         reader: myReader,
-                                        groupField: 'Layer'
-                                    }),
-                                    view: new Ext.grid.GroupingView({
+                                        groupField: 'GroupingField'
+                                    }):
+                                    new Ext.data.GroupingStore({
+                                        data: arr,
+                                        reader: myReader
+                                    });
+                                        
+                                var vvv = new Ext.grid.GroupingView({
                                         forceFit:true,
-                                        groupTextTpl: "{text}"
-                                    }),
-                                    columns: [
+                                        groupTextTpl: "{[values.rs[values.rs.length-1].data.LayerTranslated]}"+
+                                            " {[values.rs[values.rs.length-1].data.NumOfLayerEntry]}"
+                                    });
+                                    
+                                var ccc = [
                                     {
                                         header: 'Поле', 
                                         sortable: true, 
@@ -430,12 +480,50 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     {
                                         header: 'Слой', 
                                         sortable: true,
-                                        dataIndex: 'Layer',
+                                        dataIndex: 'LayerTranslated',
                                         groupable: false,
-                                        hidden: true
+                                        hidden: true,
+                                        hideable: false
+                                    },
+                                    {
+                                        header: 'Номер в слое', 
+                                        sortable: true,
+                                        dataIndex: 'NumOfLayerEntry',
+                                        groupable: false,
+                                        hidden: true,
+                                        hideable: false
+                                    },
+                                    {
+                                        header: 'Группа', 
+                                        sortable: true,
+                                        dataIndex: 'GroupingField',
+                                        groupable: false,
+                                        hidden: true,
+                                        hideable: false
+                                    },
+                                    {
+                                        header: 'Метаданные', 
+                                        sortable: true,
+                                        dataIndex: 'MetaData',
+                                        groupable: false,
+                                        hidden: true,
+                                        hideable: false
                                     }
-                                    ]
-                                });                                   
+                                    ];
+                                var ppp;
+                                if(expander){
+                                    ccc.unshift(expander);
+                                    ppp = [expander];
+                                }else{
+                                    ppp = [];
+                                }
+                                
+                                var grid = new Ext.grid.GridPanel({
+                                    plugins: ppp,                                    
+                                    store: sss,
+                                    view: vvv,
+                                    columns: ccc
+                                });           
                                 
                                 this.displayPopup(
                                     evt, x.get("title") || x.get("name"), grid, true
@@ -756,7 +844,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     }
 });
 
-    
+    var alertMeFedd = function(shit){
+        alert(shit);
+    }
     
     // translation of fields annd layer codes (fedd)
     var translatedSymbols = {
@@ -804,3 +894,51 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         
         return ret;
     }
+
+    // metadata of fields and of layer codes (fedd)
+    var metaData = {
+        field: {},
+        layer: {}
+    };
+    
+    var getMetaData = function(symbolType, symbolCodes){
+        var cached = metaData[symbolType];
+        if(cached){
+            var toAsk = [];
+            for(var i=0;i<symbolCodes.length;i++){
+                if(!cached[symbolCodes[i]]){
+                    toAsk.push(symbolCodes[i]);
+                }
+            }
+            if(toAsk.length>0){
+                //call the servlet
+                var url = "metadata";
+                var request = OpenLayers.Request.issue({
+                    method: "GET",
+                    url: url,
+                    async: false,
+                    params:{
+                        type: symbolType,
+                        code: toAsk
+                    }
+                });
+
+                if(request.status==200){
+                    var answered = Ext.util.JSON.decode(request.responseText);
+                    for(var prop in answered){
+                        cached[prop] = answered[prop];
+                    }
+                }
+            }
+        }
+        var ret = {};
+        for(i=0;i<symbolCodes.length;i++){
+            if(cached && cached[symbolCodes[i]])
+                ret[symbolCodes[i]] = cached[symbolCodes[i]];
+            else
+                ret[symbolCodes[i]] = symbolCodes[i];
+        }
+        
+        return ret;
+    }
+
