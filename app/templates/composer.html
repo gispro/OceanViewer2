@@ -36,8 +36,70 @@
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
 			GeoExt.Lang.set("ru");
         }
+        
+        /*Ext.override(gxp.WMSLayerPanel, {
+            
+            initComponent: function() {
+
+                this.addEvents(
+                    "change"
+                );
+    
+                this.items = [
+                    this.createAboutPanel(),
+                    this.createDisplayPanel(),
+                    this.createMetaDataPanel()
+                ];
+
+                // only add the Cache panel if we know for sure the WMS is GeoServer
+                // which has been integrated with GWC.
+                if (this.layerRecord.get("layer").params.TILED != null) {
+                    this.items.push(this.createCachePanel());
+                }
+
+                // only add the Styles panel if we know for sure that we have styles
+                if (this.styling && gxp.WMSStylesDialog && this.layerRecord.get("styles")) {
+                    var url = (this.source || this.layerRecord.get("layer")).url.split(
+                        "?").shift().replace(/\/(wms|ows)\/?$/, "/rest");
+                    if (this.sameOriginStyling) {
+                        // this could be made more robust
+                        // for now, only style for sources with relative url
+                        this.editableStyles = url.charAt(0) === "/";
+                    } else {
+                        this.editableStyles = true;
+                    }
+                    this.items.push(this.createStylesPanel(url));
+                }
+
+                gxp.WMSLayerPanel.superclass.initComponent.call(this);
+            },
+
+            
+            
+            createMetaDataPanel: function() {
+                
+                //var metadataLayerNames = getMetaData("layer", werwer);
+                
+                
+                return {
+                    title: "Метаданные",
+                    style: {"padding": "10px"},
+                    defaults: {
+                        border: false
+                    },
+                    html: "Hi hi hi!!" + this.layerRecord.get("name").split(":")[1]
+                };
+            }
+        });*/
+        
+        var graticuleControl1 = new OpenLayers.Control.Graticule({
+                    numPoints: 2, 
+                    labelled: true
+                    , displayInLayerSwitcher: false
+                });
+        
         var app = new GeoExplorer.Composer({
-            authStatus: <% status %>,
+            authStatus: 1,// <% status %>,
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
             about: {
@@ -47,11 +109,11 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
-				gispro: {
+		gispro: {
                     url: "http://gisbox.ru:8080/geoserver/wms",
                     title: "GISPRO"
                 },
-				opermeteo: {
+		opermeteo: {
                     url: "http://gisbox.ru:8080/geoserver/opermeteo/wms",
                     title: "Оперативные метеоданные"
                 },
@@ -70,11 +132,11 @@
                 mapbox: {
                     ptype: "gxp_mapboxsource"
                 },
-				obis: {
+		obis: {
                     url: "http://portal2.iobis.org/geoserver/gwc/service/wms",
                     title: "OBIS"
                 },
-				gisprocache: {
+		gisprocache: {
                     url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
                     title: "GISPRO-CACHE"
                 },
@@ -83,7 +145,7 @@
                 }
             },
             map: {
-				projection: "EPSG:900913",
+		projection: "EPSG:900913",
                 units: "m",
                 maxResolution: 156543.0339,
                 maxExtent: [
@@ -126,6 +188,9 @@
                 }],
                 center: [0, 0],
                 zoom: 2
-            }
+			}
         });
+        
+        app.mapPanel.map.addControl(graticuleControl1);
+        ///graticuleControl1.gratLayer.setZIndex(-1000000);
     </script>
