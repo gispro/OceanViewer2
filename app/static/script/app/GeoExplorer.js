@@ -254,6 +254,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         // extract just the body content
         if(isGrid){
             popup.add({
+                //title: title + " (xy:" + evt.xy.x + "," + evt.xy.y + ")",
                 title: title,
                 layout: "fit",
                 autoScroll: true,
