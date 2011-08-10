@@ -394,8 +394,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 
                                 for(i=0;i<arr.length;i++){
                                     arr[i] = [
-                                        metadataFieldNames[arr[i][0]]["Название объекта"]?
-                                            metadataFieldNames[arr[i][0]]["Название объекта"]:
+                                        metadataFieldNames[arr[i][0]]["Заголовок элемента"]?
+                                            metadataFieldNames[arr[i][0]]["Заголовок элемента"]:
                                             arr[i][0], 
                                         arr[i][1], 
                                         arr[i][0],

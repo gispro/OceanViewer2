@@ -92,11 +92,6 @@
             }
         });*/
         
-        var graticuleControl1 = new OpenLayers.Control.Graticule({
-                    numPoints: 2, 
-                    labelled: true
-                    , displayInLayerSwitcher: false
-                });
         
         var app = new GeoExplorer.Composer({
             authStatus: 1,// <% status %>,
@@ -287,6 +282,4 @@
 			}
         });
         
-        app.mapPanel.map.addControl(graticuleControl1);
-        ///graticuleControl1.gratLayer.setZIndex(-1000000);
     </script>
