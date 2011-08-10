@@ -24,6 +24,7 @@
     <script type="text/javascript" src="script/GeoExplorer.js"></script>
     <script type="text/javascript" src="script/ux.js"></script>
 
+	<script type="text/javascript" src="externals/gxp/src/script/plugins/RssPopup.js"></script>
     <!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="externals/PrintPreview/resources/css/printpreview.css">
     <script type="text/javascript" src="script/PrintPreview.js"></script>
@@ -42,6 +43,11 @@
         //            , displayInLayerSwitcher: false
         //        });
         
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Ext.override(OpenLayers.Layer.GeoRSS, {
+		   parseData: RssParseData
+		});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
             authStatus: 1,// <% status %>,
             proxy: "proxy/?url=",
