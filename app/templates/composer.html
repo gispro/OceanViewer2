@@ -36,62 +36,11 @@
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
 			GeoExt.Lang.set("ru");
         }
-        
-        /*Ext.override(gxp.WMSLayerPanel, {
-            
-            initComponent: function() {
-
-                this.addEvents(
-                    "change"
-                );
-    
-                this.items = [
-                    this.createAboutPanel(),
-                    this.createDisplayPanel(),
-                    this.createMetaDataPanel()
-                ];
-
-                // only add the Cache panel if we know for sure the WMS is GeoServer
-                // which has been integrated with GWC.
-                if (this.layerRecord.get("layer").params.TILED != null) {
-                    this.items.push(this.createCachePanel());
-                }
-
-                // only add the Styles panel if we know for sure that we have styles
-                if (this.styling && gxp.WMSStylesDialog && this.layerRecord.get("styles")) {
-                    var url = (this.source || this.layerRecord.get("layer")).url.split(
-                        "?").shift().replace(/\/(wms|ows)\/?$/, "/rest");
-                    if (this.sameOriginStyling) {
-                        // this could be made more robust
-                        // for now, only style for sources with relative url
-                        this.editableStyles = url.charAt(0) === "/";
-                    } else {
-                        this.editableStyles = true;
-                    }
-                    this.items.push(this.createStylesPanel(url));
-                }
-
-                gxp.WMSLayerPanel.superclass.initComponent.call(this);
-            },
-
-            
-            
-            createMetaDataPanel: function() {
-                
-                //var metadataLayerNames = getMetaData("layer", werwer);
-                
-                
-                return {
-                    title: "Метаданные",
-                    style: {"padding": "10px"},
-                    defaults: {
-                        border: false
-                    },
-                    html: "Hi hi hi!!" + this.layerRecord.get("name").split(":")[1]
-                };
-            }
-        });*/
-        
+        //var graticuleControl1 = new OpenLayers.Control.Graticule({
+        //            numPoints: 2, 
+        //            labelled: true
+        //            , displayInLayerSwitcher: false
+        //        });
         
         var app = new GeoExplorer.Composer({
             authStatus: 1,// <% status %>,
@@ -104,14 +53,16 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
-		gispro: {
-                    url: "http://gisbox.ru:8080/geoserver/wms",
-                    title: "GISPRO"
-                },
 		opermeteo: {
                     url: "http://gisbox.ru:8080/geoserver/opermeteo/wms",
-                    title: "Оперативные метеоданные"
+                    title: "Оперативные метеоданные ГМЦ"
                 },
+                
+                gispro: {
+                    url: "http://gisbox.ru:8080/geoserver/wms",
+                    title: "Слои картоосновы"
+                },
+
                 arcgis93: {
                     ptype: "gxp_arcgis93source"
 		},                
@@ -139,7 +90,7 @@
                 },
 		gisprocache: {
                     url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
-                    title: "GISPRO-CACHE"
+                    title: "Технический"
                 },
                 ol: {
                     ptype: "gxp_olsource"
@@ -154,42 +105,7 @@
                     20037508.34, 20037508.34
                 ],
                 layers: [
-		{
-			source: "arcgis93",
-			title: "Ocean basemap",
-			name: "OceanBasemap",
-			group: "background",
-			visibility: true,
-			url: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/export"
-                        //,projection: "900913"
-                }, 
                 {
-                    
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:2 500 000",
-                    name: "eko3_rf2500",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:1 000 000",
-                    name: "eko3_rf1000",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:500 000",
-                    name: "eko3_rf500",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "ЭКО 3.1",
-                    name: "eko3_merge",
-                    group: "background"
-                }, {
-                    source: "google",
-                    title: "Google Карта",
-                    name: "ROADMAP",
-                    group: "background"
-                }, {
                     source: "ol",
                     group: "background",
                     fixed: true,
@@ -197,7 +113,66 @@
                     args: [
                         "Без картоосновы", {visibility: false}
                     ]
-                }],
+                },
+		{
+			source: "arcgis93",
+			title: "ArcGIS Ocean Basemap",
+			name: "OceanBasemap",
+			group: "background",
+			visibility: true,
+			url: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/export"
+                        //,projection: "900913"
+                },
+                {
+                    source: "mapbox",
+                    title: "Blue Marble Топография и батиметрия",
+                    name: "blue-marble-topo-bathy-jul",
+                    group: "background",
+                },
+                {
+                    source: "mapbox",
+                    title: "Natural Earth II",
+                    name: "natural-earth-2",
+                    group: "background"
+                },
+                {
+                    source: "mapquest",
+                    title: "MapQuest OpenStreetMap",
+                    name: "osm",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Карта",
+                    name: "ROADMAP",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Рельеф",
+                    name: "TERRAIN",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Спутник",
+                    name: "SATELLITE",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Гибрид",
+                    name: "HYBRID",
+                    group: "background"
+                },
+                {
+                    source: "gisprocache",
+                    title: "ЭКО 3.1",
+                    name: "eko3_merge",
+                    group: "background"
+                }
+                ],
+
                rss_layers: {
 		'layers' : [
 		{
@@ -279,7 +254,7 @@
 				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
 			}
 		]*/
-			}
+            }
         });
-        
+        //app.mapPanel.map.addControl(graticuleControl1);
     </script>
