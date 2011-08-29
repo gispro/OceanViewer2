@@ -243,161 +243,171 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     );
                         
                 if(tool.ptype === "gxp_wmsgetfeatureinfo") {
+					tool.displayPopup = function(evt, title, toShow, isGrid)
+					{
+						var popup;
+						var popupKey = evt.xy.x + "." + evt.xy.y;
 
-    tool.displayPopup = function(evt, title, toShow, isGrid) {
-        var popup;
-        var popupKey = evt.xy.x + "." + evt.xy.y;
+						if (!(popupKey in this.popupCache)) {
+							popup = this.addOutput({
+								xtype: "gx_popup",
+								title: this.popupTitle,
+								layout: "accordion",
+								location: evt.xy,
+								map: this.target.mapPanel,
+								width: 350,
+								height: 300,
+								listeners: {
+									close: (function(key) {
+										return function(panel){
+											delete this.popupCache[key];
+										};
+									})(popupKey),
+									scope: this
+								}
+							});
+							this.popupCache[popupKey] = popup;
+						} else {
+							popup = this.popupCache[popupKey];
+						}
+						// extract just the body content
+						if(isGrid){
+							popup.add({
+//								title: title + " (xy:" + evt.xy.x + "," + evt.xy.y + ")",
+								title: title,
+								layout: "fit",
+								autoScroll: true,
+								autoWidth: true,
+								collapsible: true,
+								items: [toShow]
+							});
+						} else {
+							popup.add({
+								title: title,
+								layout: "fit",
+								html: toShow,
+								autoScroll: true,
+								autoWidth: true,
+								collapsible: true
+							});
+						}
+						popup.doLayout();
+					};
 
-        if (!(popupKey in this.popupCache)) {
-            popup = this.addOutput({
-                xtype: "gx_popup",
-                title: this.popupTitle,
-                layout: "accordion",
-                location: evt.xy,
-                map: this.target.mapPanel,
-                width: 350,
-                height: 300,
-                listeners: {
-                    close: (function(key) {
-                        return function(panel){
-                            delete this.popupCache[key];
-                        };
-                    })(popupKey),
-                    scope: this
-                }
-            });
-            this.popupCache[popupKey] = popup;
-        } else {
-            popup = this.popupCache[popupKey];
-        }
-
-        // extract just the body content
-        if(isGrid){
-            popup.add({
-                //title: title + " (xy:" + evt.xy.x + "," + evt.xy.y + ")",
-                title: title,
-                layout: "fit",
-                autoScroll: true,
-                autoWidth: true,
-                collapsible: true,
-                items: [toShow]
-            });
-        }else{
-            popup.add({
-                title: title,
-                layout: "fit",
-                html: toShow,
-                autoScroll: true,
-                autoWidth: true,
-                collapsible: true
-            });
-        }
-        popup.doLayout();
-    };
-
-
-    tool.addActions = function() {
-        this.popupCache = {};
+				tool.addActions = function() {
+					this.popupCache = {};
+//					console.log ('0. tool.addActions .......');
         
-        var actions = gxp.plugins.WMSGetFeatureInfo.superclass.addActions.call(this, [{
-            tooltip: this.infoActionTip,
-            iconCls: "gxp-icon-getfeatureinfo",
-            toggleGroup: this.toggleGroup,
-            enableToggle: true,
-            allowDepress: true,
-            toggleHandler: function(button, pressed) {
-                for (var i = 0, len = info.controls.length; i < len; i++){
-                    if (pressed) {
-                        info.controls[i].activate();
-                    } else {
-                        info.controls[i].deactivate();
-                    }
-                }
-             }
-        }]);
-        var infoButton = this.actions[0].items[0];
+					var actions = gxp.plugins.WMSGetFeatureInfo.superclass.addActions.call(this, [{
+						tooltip: this.infoActionTip,
+						iconCls: "gxp-icon-getfeatureinfo",
+						toggleGroup: this.toggleGroup,
+						enableToggle: true,
+						allowDepress: true,
+						
+						toggleHandler: function(button, pressed) {
+							for (var i = 0, len = info.controls.length; i < len; i++){
+								if (pressed) {
+									info.controls[i].activate();
+								} else {
+									info.controls[i].deactivate();
+								}
+							}
+						}
+					}]);
+					var infoButton = this.actions[0].items[0];
 
-        var info = {controls: []};
-        var updateInfo = function() {
-            var queryableLayers = this.target.mapPanel.layers.queryBy(function(x){
-                return x.get("queryable");
-            });
+					var info = {controls: []};
+					var updateInfo = function() {
+						var queryableLayers = this.target.mapPanel.layers.queryBy(function(x){
+							return x.get("queryable");
+						});
+			
+						var map = this.target.mapPanel.map;
+						var control;
+						for (var i = 0, len = info.controls.length; i < len; i++){
+							control = info.controls[i];
+							control.deactivate();  // TODO: remove when http://trac.openlayers.org/ticket/2130 is closed
+							control.destroy();
+						}
 
-            var map = this.target.mapPanel.map;
-            var control;
-            for (var i = 0, len = info.controls.length; i < len; i++){
-                control = info.controls[i];
-                control.deactivate();  // TODO: remove when http://trac.openlayers.org/ticket/2130 is closed
-                control.destroy();
-            }
+						info.controls = [];
+						queryableLayers.each(function(x){
+							var layer = x.getLayer();
+				
 
-            info.controls = [];
-            queryableLayers.each(function(x){
-                var layer = x.getLayer();
-                var vendorParams = Ext.apply({}, this.vendorParams), param;
-                if (this.layerParams) {
-                    for (var i=this.layerParams.length-1; i>=0; --i) {
-                        param = this.layerParams[i].toUpperCase();
-                        vendorParams[param] = layer.params[param];
-                    }
-                }
-                var control = new OpenLayers.Control.WMSGetFeatureInfo({
-                    url: layer.url,
-                    queryVisible: true,
-                    layers: [layer],
-                    infoFormat: "text/plain",
-                    vendorParams: vendorParams,
-                    eventListeners: {
-                        getfeatureinfo: function(evt) {
-                            var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
-                            if (match && !match[1].match(/^\s*$/)) {
-                                this.displayPopup(
-                                    evt, (x.get("title") || x.get("name")), match[1], false
-                                );
-                            }else{
+							var vendorParams = Ext.apply({}, this.vendorParams), param;
+							if (this.layerParams) {
+								for (var i=this.layerParams.length-1; i>=0; --i) {
+									param = this.layerParams[i].toUpperCase();
+									vendorParams[param] = layer.params[param];
+								}
+							}
+							var control = new OpenLayers.Control.WMSGetFeatureInfo({
+								url: layer.url,
+								queryVisible: true,
+								layers: [layer],
+								infoFormat: "text/plain",
+								vendorParams: vendorParams,
+								eventListeners: {
+									getfeatureinfo: function(evt) {
+										//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+										if (evt.text && evt.text.indexOf ('RSS') === 0)
+										{
+//											console.log ('GeoExplorer.js - OpenLayers.Control.WMSGetFeatureInfo : \n' + evt.text );
+											x.data['name' ] = evt.text.substring(0, evt.text.indexOf ('\r\n'));
+											x.data['title'] = evt.text.substring(0, evt.text.indexOf ('\r\n'));
+											evt.text = evt.text.substring(evt.text.indexOf ('\r\n') + 2);
+										}	
+										//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+										var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
+										if (match && !match[1].match(/^\s*$/)) {
+											this.displayPopup(
+												evt, (x.get("title") || x.get("name")), match[1], false
+											);
+										} else {
+											if(evt.text.match(/no.*features.*found/)){
+												return;
+										}
                                 
-                                if(evt.text.match(/no.*features.*found/)){
-                                    return;
-                                }
+										var lines = evt.text.split("\n");
+										var ret = "";
+										var arr = [];
+										var j = 0;
+										var group = 0;
+										var wasGroup = false;
+										var superGroup = "";
+										var needPlusick = false;
                                 
-                                var lines = evt.text.split("\n");
-                                var ret = "";
-                                var arr = [];
-                                var j = 0;
-                                var group = 0;
-                                var wasGroup = false;
-                                var superGroup = "";
-                                var needPlusick = false;
-                                
-                                for(i=0;i<lines.length;i++){
-                                    var keyVal = lines[i].match(/([^=]+)=(.*)/);
-                                    if(keyVal){
-                                        keyVal[1] = keyVal[1].replace(/^\s+/g, "").replace(/\s+$/g, "");
-                                        keyVal[2] = keyVal[2].replace(/^\s+/g, "").replace(/\s+$/g, "");
-                                        arr[j] = [keyVal[1], keyVal[2], superGroup, group];
-                                        maxGroup = group;
-                                        j++;
-                                        ret = ret + "key: " + lines[i][0] + ", val: " + lines[i][1] + "\n";
-                                        wasGroup = false;
-                                        if(group>1){
-                                            needPlusick = true;
-                                        }
-                                    }else{
-                                        if(!wasGroup){
-                                            wasGroup = true;
-                                            group++;
-                                        }
-                                        var supGrTry = lines[i].match(/FeatureType\s+[\"\']?([^\"\']+)[\"\']?/);
-                                        if(supGrTry){
-                                            if(superGroup != supGrTry[1]){
-                                                group=1;
-                                                if(superGroup!="")
-                                                    needPlusick = true;
-                                            }
-                                            superGroup = supGrTry[1] ;
-                                        }
-                                    }
-                                }
+										for(i=0;i<lines.length;i++){
+											var keyVal = lines[i].match(/([^=]+)=(.*)/);
+											if(keyVal){
+												keyVal[1] = keyVal[1].replace(/^\s+/g, "").replace(/\s+$/g, "");
+												keyVal[2] = keyVal[2].replace(/^\s+/g, "").replace(/\s+$/g, "");
+												arr[j] = [keyVal[1], keyVal[2], superGroup, group];
+												maxGroup = group;
+												j++;
+												ret = ret + "key: " + lines[i][0] + ", val: " + lines[i][1] + "\n";
+												wasGroup = false;
+												if(group>1){
+													needPlusick = true;
+												}
+											} else {
+												if(!wasGroup){
+													wasGroup = true;
+													group++;
+												}
+												var supGrTry = lines[i].match(/FeatureType\s+[\"\']?([^\"\']+)[\"\']?/);
+												if(supGrTry){
+													if(superGroup != supGrTry[1]){
+														group=1;
+														if(superGroup!="")
+															needPlusick = true;
+													}
+													superGroup = supGrTry[1] ;
+												}
+											}
+										}
                                 
                                 // translate arr
                                 var layerNames = [];
@@ -425,8 +435,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         metadataFieldNames[arr[i][0]]
                                     ];
                                 }
-                                
-                                
                                 
                                 // ext grid
                                 var myReader = new Ext.data.ArrayReader({}, [
@@ -459,7 +467,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         //,disabled: (metaDataTemplate=="")
                                     });
                                 }
-                                
                                 
                                 var sss = needPlusick?
                                     new Ext.data.GroupingStore({
@@ -554,17 +561,20 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         scope: this
                     }
                 });
-                map.addControl(control);
-                info.controls.push(control);
-                if(infoButton.pressed) {
-                    control.activate();
-                }
-            }, this);
 
+				if (control)
+				{
+					map.addControl(control);
+					info.controls.push(control);
+					if(infoButton.pressed) {
+						control.activate();
+					}
+				}
+            }, this);
         };
-        
+       
         this.target.mapPanel.layers.on("update", updateInfo, this);
-        this.target.mapPanel.layers.on("add", updateInfo, this);
+        this.target.mapPanel.layers.on("add"   , updateInfo, this);
         this.target.mapPanel.layers.on("remove", updateInfo, this);
         
         return actions;
@@ -583,7 +593,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      * Create the various parts that compose the layout.
      */
     initPortal: function() {
-        
         var westPanel = new Ext.Panel({
             border: false,
             layout: "border",
@@ -959,6 +968,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     };
     
     var getMetaData = function(symbolType, symbolCodes){
+//	console.log ('getMetaData : symbolType = ' + symbolType + ', symbolCodes = ' + symbolCodes);
         var cached = metaData[symbolType];
         if(cached){
             var toAsk = [];

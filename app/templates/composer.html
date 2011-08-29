@@ -35,6 +35,7 @@
     <script type="text/javascript" src="script/GeoExplorer.js"></script>
     <script type="text/javascript" src="script/ux.js"></script>
 
+	<script type="text/javascript" src="externals/gxp/src/script/plugins/RssPopup.js"></script>
     <!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="externals/PrintPreview/resources/css/printpreview.css">
     <script type="text/javascript" src="script/PrintPreview.js"></script>
@@ -47,16 +48,26 @@
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
 			GeoExt.Lang.set("ru");
         }
-
-        var getMaxExtentFromDegrees = function(degreesBounds, desiredProj){
-            desiredProj = new OpenLayers.Projection(desiredProj);
-            degreesBounds = new OpenLayers.Bounds(degreesBounds[0], degreesBounds[1], degreesBounds[2], degreesBounds[3]);
-            var degreesProj = new OpenLayers.Projection("EPSG:4326");
-            degreesBounds.transform(degreesProj, desiredProj);
-            var ret = degreesBounds.toArray();
-            return ret;
-        }
-
+        //var graticuleControl1 = new OpenLayers.Control.Graticule({
+        //            numPoints: 2, 
+        //            labelled: true
+        //            , displayInLayerSwitcher: false
+        //        });
+        
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Ext.override(OpenLayers.Layer.GeoRSS, {
+		   parseData: RssParseData
+		});
+		Ext.override(OpenLayers.Layer.GeoRSS, {
+		   markerClick: RssMarkerClick
+		});
+		Ext.override(GeoExt.MapPanel, {
+		   onResize: RssOnMapResize
+		});
+		Ext.override(GeoExt.MapPanel, {
+		   onMoveend: RssOnMapMoveend
+		});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
             authStatus: 1,// <% status %>,
             proxy: "proxy/?url=",
@@ -80,10 +91,10 @@
                 },*/
                 arcgis93: {
                     ptype: "gxp_arcgis93source"
-		},                
+				},                
                 rss: {
                     ptype: "gxp_rsssource"
-		},
+				},
                 mapquest: {
                     ptype: "gxp_mapquestsource"
                 },
@@ -116,6 +127,33 @@
                 layers: [
 		{
                     source: "gispro",
+/*				
+				{
+					source: "arcgis93",
+					title: "Ocean basemap",
+					name: "OceanBasemap",
+					group: "background",
+					visibility: true,
+					url: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/export"
+                        //,projection: "900913"
+                }, 
+                {                    
+                    source: "gisprocache",
+                    title: "Топографическая карта РФ м 1:2 500 000",
+                    name: "eko3_rf2500",
+                    group: "background"
+                }, {
+                    source: "gisprocache",
+                    title: "Топографическая карта РФ м 1:1 000 000",
+                    name: "eko3_rf1000",
+                    group: "background"
+                }, {
+                    source: "gisprocache",
+                    title: "Топографическая карта РФ м 1:500 000",
+                    name: "eko3_rf500",
+                    group: "background"
+                }, {
+                    source: "gisprocache",
                     title: "ЭКО 3.1",
                     name: "eko3_merge",
                     group: "background",
@@ -136,6 +174,28 @@
                 }],
                rss_layers: {
 		'layers' : [
+		{
+			"timer" : "1",
+			"name"  : "esimo_storms",
+			"title" : "\u0428\u0442\u043E\u0440\u043C\u043E\u0432\u044B\u0435\u0020\u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F",
+			"icon"  : "script/images/marker-red.png",
+			"url"   : "esimo_storms.xml"
+		},
+		{
+			"timer" : "2",
+			"name"  : "esimo_ports",
+			"title" : "\u041E\u043F\u0435\u0440\u0430\u0442\u0438\u0432\u043D\u044B\u0435\u0020\u043C\u0435\u0442\u0435\u043E\u0443\u0441\u043B\u043E\u0432\u0438\u044F\u0020\u043F\u043E\u0020\u043F\u043E\u0440\u0442\u0430\u043C\u0020\u0420\u0424",
+			"icon"  : "script/images/marker-green.png",
+			"url"   : "esimo_ports.xml"
+		},
+		{
+			"timer" : "3",
+			"name"  : "esimo_warnings",
+			"title" : "\u041E\u043F\u0430\u0441\u043D\u044B\u0435\u0020\u044F\u0432\u043B\u0435\u043D\u0438\u044F",
+			"icon"  : "script/images/marker-gold.png",
+			"url"   : "esimo_warnings.xml"
+		}
+/*		
 		{
 			"timer" : "1",
 			"name"  : "esimo_storms",
@@ -186,6 +246,7 @@
 			"icon"  : "marker-purple.gif",
 			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_typhoons.xml"
 		}
+*/		
                     ]},
                 center: [0, 0],
                 zoom: 2,
@@ -215,7 +276,7 @@
 				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
 			}
 		]
-			}
+            }
         });
-        
+        //app.mapPanel.map.addControl(graticuleControl1);
     </script>
