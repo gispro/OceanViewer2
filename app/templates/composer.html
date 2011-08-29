@@ -15,7 +15,18 @@
     <script type="text/javascript" src="script/gxp.js"></script> 
 
     <!-- proj4js resources -->
-    <!--<script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>-->
+    <script type="text/javascript" src="externals/proj4js/lib/proj4js-combined.js"></script>
+    <script type="text/javascript">
+            Proj4js.defs["EPSG:102012"] = 
+                "+proj=eqdc +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+            Proj4js.defs["EPSG:3995"] = 
+                "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+            Proj4js.defs["EPSG:4326"] = 
+                "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+            Proj4js.defs["EPSG:9009l3"] = 
+                "+title= Google Mercator EPSG:900913 +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs";
+    </script>
+            
 
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="theme/app/geoexplorer.css" />
@@ -36,63 +47,16 @@
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
 			GeoExt.Lang.set("ru");
         }
-        
-        /*Ext.override(gxp.WMSLayerPanel, {
-            
-            initComponent: function() {
 
-                this.addEvents(
-                    "change"
-                );
-    
-                this.items = [
-                    this.createAboutPanel(),
-                    this.createDisplayPanel(),
-                    this.createMetaDataPanel()
-                ];
+        var getMaxExtentFromDegrees = function(degreesBounds, desiredProj){
+            desiredProj = new OpenLayers.Projection(desiredProj);
+            degreesBounds = new OpenLayers.Bounds(degreesBounds[0], degreesBounds[1], degreesBounds[2], degreesBounds[3]);
+            var degreesProj = new OpenLayers.Projection("EPSG:4326");
+            degreesBounds.transform(degreesProj, desiredProj);
+            var ret = degreesBounds.toArray();
+            return ret;
+        }
 
-                // only add the Cache panel if we know for sure the WMS is GeoServer
-                // which has been integrated with GWC.
-                if (this.layerRecord.get("layer").params.TILED != null) {
-                    this.items.push(this.createCachePanel());
-                }
-
-                // only add the Styles panel if we know for sure that we have styles
-                if (this.styling && gxp.WMSStylesDialog && this.layerRecord.get("styles")) {
-                    var url = (this.source || this.layerRecord.get("layer")).url.split(
-                        "?").shift().replace(/\/(wms|ows)\/?$/, "/rest");
-                    if (this.sameOriginStyling) {
-                        // this could be made more robust
-                        // for now, only style for sources with relative url
-                        this.editableStyles = url.charAt(0) === "/";
-                    } else {
-                        this.editableStyles = true;
-                    }
-                    this.items.push(this.createStylesPanel(url));
-                }
-
-                gxp.WMSLayerPanel.superclass.initComponent.call(this);
-            },
-
-            
-            
-            createMetaDataPanel: function() {
-                
-                //var metadataLayerNames = getMetaData("layer", werwer);
-                
-                
-                return {
-                    title: "Метаданные",
-                    style: {"padding": "10px"},
-                    defaults: {
-                        border: false
-                    },
-                    html: "Hi hi hi!!" + this.layerRecord.get("name").split(":")[1]
-                };
-            }
-        });*/
-        
-        
         var app = new GeoExplorer.Composer({
             authStatus: 1,// <% status %>,
             proxy: "proxy/?url=",
@@ -102,16 +66,18 @@
                 "abstract": "Сохраненная карта OceanViewer",
                 contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
             },
-            defaultSourceType: "gxp_wmscsource",
+            //defaultSourceType: "gxp_wmscsource",
+            defaultSourceType: "gxp_wmssource",
             sources: {
 		gispro: {
-                    url: "http://gisbox.ru:8080/geoserver/wms",
+                    //url: "http://gisbox.ru:8083/geoserver/gwc/service/wms",
+                    url: "http://uno:8083/geoserver/gwc/service/wms",
                     title: "GISPRO"
                 },
-		opermeteo: {
+		/*opermeteo: {
                     url: "http://gisbox.ru:8080/geoserver/opermeteo/wms",
                     title: "Оперативные метеоданные"
-                },
+                },*/
                 arcgis93: {
                     ptype: "gxp_arcgis93source"
 		},                
@@ -133,20 +99,14 @@
                 mapbox: {
                     ptype: "gxp_mapboxsource"
                 },
-		obis: {
-                    url: "http://portal2.iobis.org/geoserver/gwc/service/wms",
-                    title: "OBIS"
-                },
-		gisprocache: {
-                    url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
-                    title: "GISPRO-CACHE"
-                },
                 ol: {
                     ptype: "gxp_olsource"
                 }
-            },
+            },           
+            
+            
             map: {
-		projection: "EPSG:900913",
+                projection: "EPSG:900913",
                 units: "m",
                 maxResolution: 156543.0339,
                 maxExtent: [
@@ -155,41 +115,17 @@
                 ],
                 layers: [
 		{
-			source: "arcgis93",
-			title: "Ocean basemap",
-			name: "OceanBasemap",
-			group: "background",
-			visibility: true,
-			url: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/export"
-                        //,projection: "900913"
-                }, 
-                {
-                    
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:2 500 000",
-                    name: "eko3_rf2500",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:1 000 000",
-                    name: "eko3_rf1000",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:500 000",
-                    name: "eko3_rf500",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
+                    source: "gispro",
                     title: "ЭКО 3.1",
                     name: "eko3_merge",
-                    group: "background"
-                }, {
-                    source: "google",
-                    title: "Google Карта",
-                    name: "ROADMAP",
-                    group: "background"
-                }, {
+                    group: "background",
+                    visibility: true,
+                    isBaseLayer: true//,
+                    //args: [
+                    //    {displayOutsideMaxExtent: true}
+                    //]
+                }
+                , {
                     source: "ol",
                     group: "background",
                     fixed: true,
@@ -266,10 +202,10 @@
 			wrapDateLine            : 'true',
 			singleTile              : 'true',
 			ratio                   : 1
-                        , projection              : "EPSG:102113"
+                        //, projection              : "EPSG:102012"  //"EPSG:102113"
 		},
-		arcgis_servers : []
-                /*[
+		arcgis_servers : //[]
+                [
 			{
 				'title' : 'ArcGIS Moscow',
 				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer'
@@ -278,7 +214,7 @@
 				'title' : 'ArcGIS Tver',
 				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
 			}
-		]*/
+		]
 			}
         });
         

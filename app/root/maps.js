@@ -220,6 +220,18 @@ var createMap = exports.createMap = function(config, request) {
     var now = Date.now();
     config.created = now;
     config.modified = now;
+    
+    for(var i=0;i<config.map.layers.length;i++){
+        config.sources[config.map.layers[i].source].needRetain = true;
+    }
+    for(var src in config.sources){
+        if(config.sources[src].needRetain){
+            delete config.sources[src].needRetain;
+        }else{
+            delete config.sources[src];
+        }
+    }
+    
     config = JSON.stringify(config);
     var connection = getDbConn(request);
     // store the new map config
@@ -274,6 +286,18 @@ var updateMap = exports.updateMap = function(id, config, request) {
     if (typeof config === "string") {
         config = JSON.parse(config);
     }
+    
+    for(var i=0;i<config.map.layers.length;i++){
+        config.sources[config.map.layers[i].source].needRetain = true;
+    }
+    for(var src in config.sources){
+        if(config.sources[src].needRetain){
+            delete config.sources[src].needRetain;
+        }else{
+            delete config.sources[src];
+        }
+    }
+    
     // update modified date
     config.modified = Date.now();
     config = JSON.stringify(config);
