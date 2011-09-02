@@ -23,8 +23,11 @@
     <link rel="stylesheet" type="text/css" href="theme/ux/colorpicker/color-picker.ux.css" />
     <script type="text/javascript" src="script/GeoExplorer.js"></script>
     <script type="text/javascript" src="script/ux.js"></script>
-
+<!--
 	<script type="text/javascript" src="externals/gxp/src/script/plugins/RssPopup.js"></script>
+-->
+	<script type="text/javascript" src="script/TaskRunner.js"></script>
+	<script type="text/javascript" src="script/HintHandler.js"></script>
     <!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="externals/PrintPreview/resources/css/printpreview.css">
     <script type="text/javascript" src="script/PrintPreview.js"></script>
@@ -45,17 +48,24 @@
         
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		Ext.override(OpenLayers.Layer.GeoRSS, {
-		   parseData: RssParseData
+		   parseData: RssPopupParseData
 		});
-		Ext.override(OpenLayers.Layer.GeoRSS, {
-		   markerClick: RssMarkerClick
+
+		Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
+		   getInfoForClick: rssPopupGetInfoForClick
 		});
-		Ext.override(GeoExt.MapPanel, {
-		   onResize: RssOnMapResize
+			
+		Ext.override(GeoExt.tree.LayerNode, {
+		   render: RssPopupLayerNodeRender
+	   });
+	   
+		Ext.override(gxp.Viewer, {
+		   getState: RssPopupGetState
 		});
-		Ext.override(GeoExt.MapPanel, {
-		   onMoveend: RssOnMapMoveend
-		});
+		
+		Ext.override(GeoExt.LegendPanel, {
+		   addLegend: RssPopupAddLegend
+		});		
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
             authStatus: 1,// <% status %>,
@@ -68,11 +78,11 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
-//		gispro: {
+//				gispro: {
 //                    url: "http://gisbox.ru:8080/geoserver/wms",
 //                    title: "GISPRO"
 //                },
-//		opermeteo: {
+//				opermeteo: {
 //                    url: "http://gisbox.ru:8080/geoserver/opermeteo/wms",
 //                    title: "Оперативные метеоданные"
 //                },
@@ -97,19 +107,19 @@
                 mapbox: {
                     ptype: "gxp_mapboxsource"
                 },
-		obis: {
+				obis: {
                     url: "http://portal2.iobis.org/geoserver/gwc/service/wms",
                     title: "OBIS"
                 },
-//		gisprocache: {
-//                    url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
-//                    title: "GISPRO-CACHE"
-//                },
+				gisprocache: {
+                    url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
+                    title: "GISPRO-CACHE"
+                },
                 ol: {
                     ptype: "gxp_olsource"
                 }
             },
-            map: {
+			map: {
 				projection: "EPSG:900913",
                 units: "m",
                 maxResolution: 156543.0339,
@@ -143,13 +153,14 @@
                     title: "Топографическая карта РФ м 1:500 000",
                     name: "eko3_rf500",
                     group: "background"
-                }, {
+                }, 
+*/				
+				{
                     source: "gisprocache",
                     title: "ЭКО 3.1",
                     name: "eko3_merge",
                     group: "background"
                 },
-*/				
 				{
                     source: "google",
                     title: "Google Карта",
@@ -164,29 +175,37 @@
                         "Без картоосновы", {visibility: false}
                     ]
                 }],
-               rss_layers: {
-		'layers' : [
-		{
-			"timer" : "1",
-			"name"  : "esimo_storms",
-			"title" : "\u0428\u0442\u043E\u0440\u043C\u043E\u0432\u044B\u0435\u0020\u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F",
-			"icon"  : "script/images/marker-red.png",
-			"url"   : "esimo_storms.xml"
-		},
-		{
-			"timer" : "2",
-			"name"  : "esimo_ports",
-			"title" : "\u041E\u043F\u0435\u0440\u0430\u0442\u0438\u0432\u043D\u044B\u0435\u0020\u043C\u0435\u0442\u0435\u043E\u0443\u0441\u043B\u043E\u0432\u0438\u044F\u0020\u043F\u043E\u0020\u043F\u043E\u0440\u0442\u0430\u043C\u0020\u0420\u0424",
-			"icon"  : "script/images/marker-green.png",
-			"url"   : "esimo_ports.xml"
-		},
-		{
-			"timer" : "3",
-			"name"  : "esimo_warnings",
-			"title" : "\u041E\u043F\u0430\u0441\u043D\u044B\u0435\u0020\u044F\u0432\u043B\u0435\u043D\u0438\u044F",
-			"icon"  : "script/images/marker-gold.png",
-			"url"   : "esimo_warnings.xml"
-		}
+				rss_layers: {
+					'layers' : [
+					{
+						"timer" : "1",
+						"name"  : "esimo_storms",
+						"title" : "\u0428\u0442\u043E\u0440\u043C\u043E\u0432\u044B\u0435\u0020\u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F",
+						"icon"  : "script/images/marker-red.png",
+						"url"   : "esimo_storms.xml"
+					},
+					{
+						"timer" : "2",
+						"name"  : "esimo_ports",
+						"title" : "\u041E\u043F\u0435\u0440\u0430\u0442\u0438\u0432\u043D\u044B\u0435\u0020\u043C\u0435\u0442\u0435\u043E\u0443\u0441\u043B\u043E\u0432\u0438\u044F\u0020\u043F\u043E\u0020\u043F\u043E\u0440\u0442\u0430\u043C\u0020\u0420\u0424",
+						"icon"  : "script/images/marker-green.png",
+						"url"   : "esimo_ports.xml"
+					},
+					{
+						"timer" : "3",
+						"name"  : "esimo_warnings",
+						"title" : "\u041E\u043F\u0430\u0441\u043D\u044B\u0435\u0020\u044F\u0432\u043B\u0435\u043D\u0438\u044F",
+						"icon"  : "script/images/marker-gold.png",
+						"url"   : "esimo_warnings.xml"
+					},
+					{
+						"timer" : "8",
+						"name"  : "polygons",
+						"title" : "Polygons",
+						"icon"  : "script/images/marker-gold.png",
+						"url1"  : "http://maps.gispro.ru/admpol8000.xml",
+						"url"   : "admpol8000.xml"
+					}
 /*		
 		{
 			"timer" : "1",
@@ -240,35 +259,42 @@
 		}
 */		
                     ]},
-                center: [0, 0],
+				center: [0, 0],
                 zoom: 2,
-		params : {
-			minZoomLevel            : 4,
-			maxZoomLevel            : 17,
-			maxResolution           : 156543.03390625,
-			displayOutsideMaxExtent : 'false',
-			transitionEffect        : 'resize',
-			transparent             : 'true',
-			format                  : 'PNG'
-		},
-		options : {
-			wrapDateLine            : 'true',
-			singleTile              : 'true',
-			ratio                   : 1
-                        , projection              : "EPSG:102113"
-		},
-		arcgis_servers : []
+				params : {
+					minZoomLevel            : 4,
+					maxZoomLevel            : 17,
+					maxResolution           : 156543.03390625,
+					displayOutsideMaxExtent : 'false',
+					transitionEffect        : 'resize',
+					transparent             : 'true',
+					format                  : 'PNG'
+				},
+				options : {
+					wrapDateLine            : 'true',
+					singleTile              : 'true',
+					ratio                   : 1,
+					projection              : "EPSG:102113"
+				},
+				arcgis_servers : []
                 /*[
-			{
-				'title' : 'ArcGIS Moscow',
-				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer'
-			}, 
-			{
-				'title' : 'ArcGIS Tver',
-				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
+					{
+						'title' : 'ArcGIS Moscow',
+						'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer'
+					}, 
+					{
+						'title' : 'ArcGIS Tver',
+						'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
+					}
+				]*/
 			}
-		]*/
-            }
-        });
+		});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//		url: "http://gisbox.ru:8083/geoserver/wms",
+//		app.on ('ready', function()
+//		{
+//			app.mapPanel.map.events.register('click', app.mapPanel.map, rssPopupMapClick);
+//		});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //app.mapPanel.map.addControl(graticuleControl1);
     </script>
