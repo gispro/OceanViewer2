@@ -202,6 +202,26 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         
     },
     
+    /** api: method[destroy]
+     */
+    destroy: function() {
+        //TODO there is probably more that needs to be destroyed
+        this.mapPanel.destroy();
+        //this.portal && 
+        this.portal.destroy();
+        //this.mapPanelContainer.destroy();
+        
+        this.toolbar.destroy();
+        this.toolbar = null;
+        
+        //for(tool in this.tools){
+            //this.tools[tool].destroy();
+        //    delete this.tools[tool];
+        //}
+        
+        //this.portalItems = null;
+    },
+    
     displayXHRTrouble: function(msg, status) {
         
         Ext.Msg.show({
@@ -223,9 +243,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     );
                         
                 if(tool.ptype === "gxp_wmsgetfeatureinfo") {
+					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 					if (wmsTool == null)
 						wmsTool = tool;
-					
+					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 					tool.displayPopup = function(evt, title, toShow, isGrid)
 					{						
 						var popup;
@@ -699,8 +720,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      *
      * Saves the map config and displays the URL in a window.
      */ 
-    save: function(callback, scope) {
-        var configStr = Ext.util.JSON.encode(this.getState());
+    save: function(callback, scope, configStr) {
+        if (!configStr) 
+            configStr = Ext.util.JSON.encode(this.getState());
         var method, url;
         if (this.id) {
             method = "PUT";
@@ -747,7 +769,42 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         });
     },
         
-    /** private: method[handleSave]
+
+    changeProjection: function(configPart, map, callback) {
+
+        var configObj = this.getState();
+        
+        //var desiredProj = new OpenLayers.Projection(configPart.projection);
+        //var currentCenter = new OpenLayers.LonLat(configObj.map.center);
+        //var currentProj = new OpenLayers.Projection(configObj.map.projection);
+        //currentCenter.transform(currentProj, desiredProj);
+        //configPart.center = currentCenter.toArray();
+        
+        Ext.apply(configObj.map, configPart);
+        this.save(callback, null, Ext.util.JSON.encode(configObj));
+        
+        
+        
+
+        //recreateApp(configStr)
+        //var configStr = JSON.stringify(configObj);
+        //window.location = (window.location + '?q=' + configStr);
+        //window.location.search = "q=" + encodeURIComponent(configStr);
+            //configStr.replace("=", "%3d").replace("?", "%3f").replace("&", "%26");
+
+        //this.destroy();
+        
+        //this.constructor(configStr);
+        
+        
+        //map.destroy();
+        //map.layerSources
+        //map.loadConfig(configStr);
+        //map.constructor(configStr);
+    },
+        
+
+/** private: method[handleSave]
      *  :arg: ``XMLHttpRequest``
      */
     handleSave: function(request) {
