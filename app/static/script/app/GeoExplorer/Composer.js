@@ -43,16 +43,16 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
                 
         config.tools = [
-            {
+            /*{
                 "ptype": "gxp_graticulegxptool",
                 "controlOptions":{
-                    numPoints: 2, 
+                    //numPoints: 2, 
                     labelled: true
                     , displayInLayerSwitcher: false
                 },
                 "outputTarget":"map"
-            },
-            {
+            },*/
+             {
                 ptype: "gxp_layertree",
                 outputConfig: {
                     id: "layertree"
@@ -266,6 +266,46 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             iconCls: "icon-save"
         }));
         
+        this.projectionStoreForMenu = {
+            'Меркатора': {
+                projection: "EPSG:900913",
+                units: "m",
+                maxResolution: 156543.03392804097,
+                maxExtent: [
+                    -20037508.34, -20037508.34,
+                    20037508.34, 20037508.34
+                ]
+            }
+            ,
+            'Географическая': {
+                projection: "EPSG:4326",
+                units: "degrees",
+                maxResolution: 1.40625,
+                maxExtent: [
+                    -180, -90, 180, 90
+                ]
+            }
+            , 
+            'Коническая' : {
+                projection: "EPSG:102012",
+                units: "m",
+                maxResolution: 156543.03392804097,
+                maxExtent: [
+                    -20037508.342789244, -13717459.765275056,
+                    20037508.342789244, 18421795.00817686                
+                ]
+            }
+            , 
+            'Стереографическая': {
+                projection: "EPSG:3995",
+                units: "m",
+                maxResolution: 156543.03392804097,
+                maxExtent: [
+                    -91413530.18878764, -105555252.52414103,
+                    91413530.18878764, 105555252.52414103
+                ]
+            }
+        };
         //tools.unshift("-");
         //tools.unshift(aboutButton);
 		
@@ -280,7 +320,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		});
 		
 		tools.unshift({
-			text: 'Окно',
+			text: 'Вид',
 			menu: new Ext.menu.Menu({
 				items: [
 					new Ext.menu.CheckItem({
@@ -295,7 +335,54 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					new Ext.menu.CheckItem({
 						text: 'Справка',
 						checkHandler: checkHandler
-					})
+					}),
+                                        {
+                                            text: "Проекция",
+                                            menu: {
+                                                items: [
+                                                    new Ext.menu.CheckItem({
+                                                            text: 'Меркатора',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Меркатора'].projection,
+                                                            handler: function() {
+                                                                var callback = function(){
+                                                                    window.location.reload(true);
+                                                                }
+                                                                app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, callback);
+                                                            }
+                                                    }),
+                                                    new Ext.menu.CheckItem({
+                                                            text: 'Географическая',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Географическая'].projection,
+                                                            handler: function() {
+                                                                var callback = function(){
+                                                                    window.location.reload(true);
+                                                                }
+                                                                app.changeProjection(app.projectionStoreForMenu['Географическая'], app, callback);
+                                                            }
+                                                    }),
+                                                    new Ext.menu.CheckItem({
+                                                            text: 'Коническая',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Коническая'].projection,
+                                                            handler: function() {
+                                                                var callback = function(){
+                                                                    window.location.reload(true);
+                                                                }
+                                                                app.changeProjection(app.projectionStoreForMenu['Коническая'], app, callback);
+                                                            }
+                                                    }),
+                                                    new Ext.menu.CheckItem({
+                                                            text: 'Стереографическая',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Стереографическая'].projection,
+                                                            handler: function() {
+                                                                var callback = function(){
+                                                                    window.location.reload(true);
+                                                                }
+                                                                app.changeProjection(app.projectionStoreForMenu['Стереографическая'], app, callback);
+                                                            }
+                                                    })
+                                                ]
+                                            }
+                                        }
 				]
 			})
 		});
