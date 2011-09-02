@@ -223,11 +223,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     );
                         
                 if(tool.ptype === "gxp_wmsgetfeatureinfo") {
+					if (wmsTool == null)
+						wmsTool = tool;
+					
 					tool.displayPopup = function(evt, title, toShow, isGrid)
-					{
+					{						
 						var popup;
 						var popupKey = evt.xy.x + "." + evt.xy.y;
-
 						if (!(popupKey in this.popupCache)) {
 							popup = this.addOutput({
 								xtype: "gx_popup",
@@ -247,6 +249,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 								}
 							});
 							this.popupCache[popupKey] = popup;
+							
 						} else {
 							popup = this.popupCache[popupKey];
 						}
@@ -276,7 +279,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 
 				tool.addActions = function() {
 					this.popupCache = {};
-//					console.log ('0. tool.addActions .......');
         
 					var actions = gxp.plugins.WMSGetFeatureInfo.superclass.addActions.call(this, [{
 						tooltip: this.infoActionTip,
@@ -331,15 +333,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 								vendorParams: vendorParams,
 								eventListeners: {
 									getfeatureinfo: function(evt) {
-										//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-										if (evt.text && evt.text.indexOf ('RSS') === 0)
-										{
-//											console.log ('GeoExplorer.js - OpenLayers.Control.WMSGetFeatureInfo : \n' + evt.text );
-											x.data['name' ] = evt.text.substring(0, evt.text.indexOf ('\r\n'));
-											x.data['title'] = evt.text.substring(0, evt.text.indexOf ('\r\n'));
-											evt.text = evt.text.substring(evt.text.indexOf ('\r\n') + 2);
-										}	
-										//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 										var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
 										if (match && !match[1].match(/^\s*$/)) {
 											this.displayPopup(
