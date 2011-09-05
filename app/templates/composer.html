@@ -63,18 +63,21 @@
         //        });
         
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		Ext.override(OpenLayers.Layer.GeoRSS, {
-		   parseData: RssParseData
-		});
-		Ext.override(OpenLayers.Layer.GeoRSS, {
-		   markerClick: RssMarkerClick
-		});
-		Ext.override(GeoExt.MapPanel, {
-		   onResize: RssOnMapResize
-		});
-		Ext.override(GeoExt.MapPanel, {
-		   onMoveend: RssOnMapMoveend
-		});
+		  Ext.override(OpenLayers.Layer.GeoRSS, {
+                     parseData: RssPopupParseData
+                  });
+
+                  Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
+                     getInfoForClick: rssPopupGetInfoForClick
+                  });
+
+                  Ext.override(GeoExt.tree.LayerNode, {
+                     render: RssPopupLayerNodeRender
+                    });
+
+                  Ext.override(gxp.Viewer, {
+                     getState: RssPopupGetState
+                  });
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
             authStatus: 1,//<% status %>, //1,
