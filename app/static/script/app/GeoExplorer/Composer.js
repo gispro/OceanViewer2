@@ -41,6 +41,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         // should not be persisted or accessed again
         delete config.authStatus;
 
+                
         config.tools = [
             /*{
                 "ptype": "gxp_graticulegxptool",
@@ -51,7 +52,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 },
                 "outputTarget":"map"
             },*/
-            {
+             {
                 ptype: "gxp_layertree",
                 outputConfig: {
                     id: "layertree"
@@ -86,17 +87,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 actionTarget: {target: "paneltbar", index: 7}
                 
             }, {
-//                ptype: "gxp_featuremanager",
-//                id: "featuremanager",
-//                maxFeatures: 20,
-//                paging: false
-//            }, {
-//                ptype: "gxp_featureeditor",
-//                featureManager: "featuremanager",
-//                autoLoadFeatures: true,
-//                toggleGroup: this.toggleGroup,
-//                actionTarget: {target: "paneltbar", index: 8}
-//            }, {
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 10}
             }, {
@@ -109,11 +99,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_zoomtoextent",
                 actionTarget: {target: "paneltbar", index: 15}
             }, {
-//                ptype: "gxp_print",
-//                customParams: {outputFilename: 'GeoExplorer-print'},
-//                printService: config.printService,
-//                actionTarget: {target: "paneltbar", index: 5}
-//            }, {
                 ptype: "gxp_googleearth",
                 actionTarget: {target: "paneltbar", index: 17},
                 apiKeys: {
