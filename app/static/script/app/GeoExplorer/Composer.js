@@ -85,216 +85,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_wmsgetfeatureinfo", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 7}
                 
-         /*       
-
-    , displayPopup: function(evt, title, toShow, isGrid) {
-        var popup;
-        var popupKey = evt.xy.x + "." + evt.xy.y;
-
-        if (!(popupKey in this.popupCache)) {
-            popup = this.addOutput({
-                xtype: "gx_popup",
-                title: this.popupTitle,
-                layout: "accordion",
-                location: evt.xy,
-                map: this.target.mapPanel,
-                width: 250,
-                height: 300,
-                listeners: {
-                    close: (function(key) {
-                        return function(panel){
-                            delete this.popupCache[key];
-                        };
-                    })(popupKey),
-                    scope: this
-                }
-            });
-            this.popupCache[popupKey] = popup;
-        } else {
-            popup = this.popupCache[popupKey];
-        }
-
-        // extract just the body content
-        if(isGrid){
-            popup.add({
-                title: title,
-                layout: "fit",
-                autoScroll: true,
-                autoWidth: true,
-                collapsible: true,
-                items: [toShow]
-            });
-        }else{
-            popup.add({
-                title: title,
-                layout: "fit",
-                html: toShow,
-                autoScroll: true,
-                autoWidth: true,
-                collapsible: true
-            });
-        }
-        popup.doLayout();
-    },
-
-
-    addActions: function() {
-        this.popupCache = {};
-        
-        var actions = gxp.plugins.WMSGetFeatureInfo.superclass.addActions.call(this, [{
-            tooltip: this.infoActionTip,
-            iconCls: "gxp-icon-getfeatureinfo",
-            toggleGroup: this.toggleGroup,
-            enableToggle: true,
-            allowDepress: true,
-            toggleHandler: function(button, pressed) {
-                for (var i = 0, len = info.controls.length; i < len; i++){
-                    if (pressed) {
-                        info.controls[i].activate();
-                    } else {
-                        info.controls[i].deactivate();
-                    }
-                }
-             }
-        }]);
-        var infoButton = this.actions[0].items[0];
-
-        var info = {controls: []};
-        var updateInfo = function() {
-            var queryableLayers = this.target.mapPanel.layers.queryBy(function(x){
-                return x.get("queryable");
-            });
-
-            var map = this.target.mapPanel.map;
-            var control;
-            for (var i = 0, len = info.controls.length; i < len; i++){
-                control = info.controls[i];
-                control.deactivate();  // TODO: remove when http://trac.openlayers.org/ticket/2130 is closed
-                control.destroy();
-            }
-
-            info.controls = [];
-            queryableLayers.each(function(x){
-                var layer = x.getLayer();
-                var vendorParams = Ext.apply({}, this.vendorParams), param;
-                if (this.layerParams) {
-                    for (var i=this.layerParams.length-1; i>=0; --i) {
-                        param = this.layerParams[i].toUpperCase();
-                        vendorParams[param] = layer.params[param];
-                    }
-                }
-                var control = new OpenLayers.Control.WMSGetFeatureInfo({
-                    url: layer.url,
-                    queryVisible: true,
-                    layers: [layer],
-                    infoFormat: "text/plain",
-                    vendorParams: vendorParams,
-                    eventListeners: {
-                        getfeatureinfo: function(evt) {
-                            var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
-                            if (match && !match[1].match(/^\s*$/)) {
-                                this.displayPopup(
-                                    evt, (x.get("title") || x.get("name")), match[1], false
-                                );
-                            }else{
-                                var lines = evt.text.split("\n");
-                                var ret = "";
-                                var arr = [];
-                                var j = 0;
-                                var group = 0;
-                                var wasGroup = false;
-                                var superGroup = "";
-                                
-                                for(i=0;i<lines.length;i++){
-                                    var keyVal = lines[i].match(/([^=]+)=(.*)/);
-                                    if(keyVal){
-                                        keyVal[1] = keyVal[1].replace(/^\s+/g, "").replace(/\s+$/g, "");
-                                        keyVal[2] = keyVal[2].replace(/^\s+/g, "").replace(/\s+$/g, "");
-                                        arr[j] = [keyVal[1], keyVal[2], superGroup + " Объект " + group];
-                                        maxGroup = group;
-                                        j++;
-                                        ret = ret + "key: " + lines[i][0] + ", val: " + lines[i][1] + "\n";
-                                        wasGroup = false;
-                                    }else{
-                                        if(!wasGroup){
-                                            wasGroup = true;
-                                            group++;
-                                        }
-                                        var supGrTry = lines[i].match(/FeatureType\s+[\"\']?([^\"\']+)[\"\']?/);
-                                        if(supGrTry){
-                                            if(superGroup != supGrTry[1]){
-                                                group=1;
-                                            }
-                                            superGroup = supGrTry[1] ;
-                                        }
-                                    }
-                                }
-                                
-                                // ext grid
-                                var myReader = new Ext.data.ArrayReader({}, [
-                                    {name: 'Field'},
-                                    {name: 'Value'},
-                                    {name: 'Layer'}
-                                ]);                                
-                                
-                                var grid = new Ext.grid.GridPanel({
-                                    store: new Ext.data.GroupingStore({
-                                        data: arr,
-                                        reader: myReader,
-                                        groupField: 'Layer'
-                                    }),
-                                    view: new Ext.grid.GroupingView({
-                                        forceFit:true,
-                                        groupTextTpl: "{text}"
-                                    }),
-                                    columns: [
-                                    {
-                                        header: 'Поле', 
-                                        sortable: true, 
-                                        dataIndex: 'Field',
-                                        groupable: false
-                                    },
-                                    {
-                                        header: 'Значение', 
-                                        sortable: true,
-                                        dataIndex: 'Value',
-                                        groupable: false
-                                    },
-                                    {
-                                        header: 'Слой', 
-                                        sortable: true,
-                                        dataIndex: 'Layer',
-                                        groupable: false,
-                                        hidden: true
-                                    }
-                                    ]
-                                });                                   
-                                
-                                this.displayPopup(
-                                    evt, x.get("title") || x.get("name"), grid, true
-                                );
-                            }
-                        },
-                        scope: this
-                    }
-                });
-                map.addControl(control);
-                info.controls.push(control);
-                if(infoButton.pressed) {
-                    control.activate();
-                }
-            }, this);
-
-        };
-        
-        this.target.mapPanel.layers.on("update", updateInfo, this);
-        this.target.mapPanel.layers.on("add", updateInfo, this);
-        this.target.mapPanel.layers.on("remove", updateInfo, this);
-        
-        return actions;
-    }
-
-        */
             }, {
 //                ptype: "gxp_featuremanager",
 //                id: "featuremanager",
@@ -517,19 +307,37 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 units: "m",
                 maxResolution: 156543.03392804097,
                 maxExtent: [
-                    -20037508.342789244, -13717459.765275056,
-                    20037508.342789244, 18421795.00817686                
-                ]
+                    //-20037508.342789244, -13717459.765275056,
+                    //20037508.342789244, 18421795.00817686                
+                    //-2.0037508342789244E7,-13717459.765275056,20037508.342789244,26357556.920303434
+                    //-20037508.34, -16069620,
+                    //20037508.34, 16069620
+                    //-20037508.34, -20037508.34,
+                    //20037508.34, 20037508.34
+                    //-900691700374.099, -35565700,
+                    //900684359774.099, -28225100
+                    //54368.65331014791, -58444533.29569984, 98495607.76719199, 11248883.449091688
+                    -20037508.342789, -13717459.765275, 20037508.342789, 18421795.008177
+                ],
+                switchEko3: true
             }
             , 
             'Стереографическая': {
-                projection: "EPSG:3995",
+                projection: "EPSG:3576",
                 units: "m",
                 maxResolution: 156543.03392804097,
                 maxExtent: [
-                    -91413530.18878764, -105555252.52414103,
-                    91413530.18878764, 105555252.52414103
-                ]
+                    //-20037508.34, -16069627,
+                    //20037508.34, 16069627
+                    //-91413530.18878764, -105555252.52414103,
+                    //91413530.18878764, 105555252.52414103
+                    -5133549.56760757, 
+                    -5397733.44656832, 
+                    5397733.44656832, 
+                    1667991.36644116
+                    //-5133549.56760757,-5397733.44656832,5397733.44656832,5133549.56760757
+                ],
+                switchEko3: true
             }
         };
         //tools.unshift("-");

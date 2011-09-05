@@ -776,37 +776,41 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     },
         
 
-    changeProjection: function(configPart, map, callback) {
+    changeProjection: function(desiredConfig, map, callback) {
 
-        var configObj = this.getState();
+        var curConfigObj = this.getState();
         
-        //var desiredProj = new OpenLayers.Projection(configPart.projection);
-        //var currentCenter = new OpenLayers.LonLat(configObj.map.center);
-        //var currentProj = new OpenLayers.Projection(configObj.map.projection);
-        //currentCenter.transform(currentProj, desiredProj);
-        //configPart.center = currentCenter.toArray();
+        var desiredProj = new OpenLayers.Projection(desiredConfig.projection);
+        var currentCenter;
+        currentCenter = new OpenLayers.LonLat(curConfigObj.map.center[0], curConfigObj.map.center[1]);
+        var currentProj = new OpenLayers.Projection(curConfigObj.map.projection);
+        currentCenter.transform(currentProj, desiredProj);
+        desiredConfig.center = [currentCenter.lon, currentCenter.lat];
         
-        Ext.apply(configObj.map, configPart);
-        this.save(callback, null, Ext.util.JSON.encode(configObj));
+        if(desiredConfig.switchEko3){
+           for(var i=0;i<curConfigObj.map.layers.length;i++) {
+               if(curConfigObj.map.layers[i].name === 'eko3_merge'){
+                   curConfigObj.map.layers[i].name = 'eko3_merge_v';
+               }
+           }
+           delete desiredConfig.switchEko3;
+        }else{
+           for(i=0;i<curConfigObj.map.layers.length;i++) {
+               if(curConfigObj.map.layers[i].name === 'eko3_merge_v'){
+                   curConfigObj.map.layers[i].name = 'eko3_merge';
+               }
+           }
+        }
         
+       for(var src in curConfigObj.sources) {
+           if(curConfigObj.sources[src].projection){
+               curConfigObj.sources[src].projection = 
+                   desiredConfig.projection;
+           }
+       }
         
-        
-
-        //recreateApp(configStr)
-        //var configStr = JSON.stringify(configObj);
-        //window.location = (window.location + '?q=' + configStr);
-        //window.location.search = "q=" + encodeURIComponent(configStr);
-            //configStr.replace("=", "%3d").replace("?", "%3f").replace("&", "%26");
-
-        //this.destroy();
-        
-        //this.constructor(configStr);
-        
-        
-        //map.destroy();
-        //map.layerSources
-        //map.loadConfig(configStr);
-        //map.constructor(configStr);
+        Ext.apply(curConfigObj.map, desiredConfig);
+        this.save(callback, null, Ext.util.JSON.encode(curConfigObj));
     },
         
 

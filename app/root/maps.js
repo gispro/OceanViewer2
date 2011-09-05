@@ -221,7 +221,7 @@ var createMap = exports.createMap = function(config, request) {
     config.created = now;
     config.modified = now;
     
-    for(var i=0;i<config.map.layers.length;i++){
+    /*for(var i=0;i<config.map.layers.length;i++){
         config.sources[config.map.layers[i].source].needRetain = true;
     }
     for(var src in config.sources){
@@ -230,7 +230,7 @@ var createMap = exports.createMap = function(config, request) {
         }else{
             delete config.sources[src];
         }
-    }
+    }*/
     
     config = JSON.stringify(config);
     var connection = getDbConn(request);
@@ -287,7 +287,7 @@ var updateMap = exports.updateMap = function(id, config, request) {
         config = JSON.parse(config);
     }
     
-    for(var i=0;i<config.map.layers.length;i++){
+    /*for(var i=0;i<config.map.layers.length;i++){
         config.sources[config.map.layers[i].source].needRetain = true;
     }
     for(var src in config.sources){
@@ -296,7 +296,7 @@ var updateMap = exports.updateMap = function(id, config, request) {
         }else{
             delete config.sources[src];
         }
-    }
+    }*/
     
     // update modified date
     config.modified = Date.now();
