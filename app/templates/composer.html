@@ -15,7 +15,7 @@
     <script type="text/javascript" src="script/gxp.js"></script> 
 
     <!-- proj4js resources -->
-    <script type="text/javascript" src="externals/proj4js/lib/proj4js-combined.js"></script>
+    <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
     <script type="text/javascript">
             Proj4js.defs["EPSG:102012"] = 
                 //"+proj=eqdc +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
@@ -24,14 +24,22 @@
             Proj4js.defs["EPSG:3576"] = 
                 //"+proj=laea +lat_0=90 +lon_0=90 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
                 //"+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-                //"+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +lon_0=105 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
                 "+proj=laea +lat_0=90 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
                 
                 
-            /*Proj4js.defs["EPSG:4326"] = 
+            Proj4js.defs["EPSG:4326"] = 
                 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
-            Proj4js.defs["EPSG:9009l3"] = 
+                //"+proj=longlat +no_defs";
+            /*Proj4js.defs["EPSG:9009l3"] = 
                 "+title= Google Mercator EPSG:900913 +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs";*/
+    
+            Proj4js.defs["EPSG:91101"] =
+                "+title=long/lat:WGS84 +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees"
+            Proj4js.defs["EPSG:3413"] = 
+                "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+            Proj4js.defs["EPSG:3995"] = 
+                "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
+    
     </script>
             
 
@@ -89,8 +97,10 @@
                 contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
             },
             defaultSourceType: "gxp_wmscsource",
+            //defaultSourceType: "gxp_wmssource",
             sources: {
 		gispro: {
+                    //ptype: "gxp_wmssource",
                     url: "http://gisbox.ru:8084/geowebcache/service/wms",
                     //url: "http://gisbox.ru:8083/geoserver/gwc/service/wms",
                     //url: "http://gisbox.ru:8083/geoserver/wms",
@@ -121,11 +131,11 @@
                 },
                 mapbox: {
                     ptype: "gxp_mapboxsource"
-                },*/
+                },
 		obis: {
                     url: "http://portal2.iobis.org/geoserver/gwc/service/wms",
                     title: "OBIS"
-                },
+                },*/
 //		gisprocache: {
 //                    url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
 //                    title: "GISPRO-CACHE"
@@ -135,62 +145,22 @@
                 }
             },
             map: {
-				projection: "EPSG:900913",
+		projection: "EPSG:900913",
                 units: "m",
                 maxResolution: 156543.0339,
                 maxExtent: [
                     -20037508.34, -20037508.34,
                     20037508.34, 20037508.34
-                    //-20037508.34,-1000,1000,1000
                 ]
-            
-                /*projection: "EPSG:102012",
-                units: "m",
-                maxResolution: 156543.03392804097,
-                maxExtent: [
-                    //-20037508.342789244, -13717459.765275056,
-                    //20037508.342789244, 18421795.00817686                
-                    //-2.0037508342789244E7,-13717459.765275056,20037508.342789244,26357556.920303434
-                    //-20037508.34, -16069620,
-                    //20037508.34, 16069620
-                    //-20037508.34, -20037508.34,
-                    //20037508.34, 20037508.34
-                    //-900691700374.099, -35565700,
-                    //900684359774.099, -28225100
-                    //54368.65331014791, -58444533.29569984, 98495607.76719199, 11248883.449091688
-                    //0,0,0,0
-                    -1000,-1000,1000,1000
-                ]*/,
+                //projection: "EPSG:3576",
+                //units: "m",
+                //maxResolution: 156543.0339,
+                //maxExtent: [
+                //    -9036842.762, -9036842.762,
+                //    9036842.762, 9036842.762                    
+                //]
+                ,
                 layers: [
-		//{
-                    //source: "gispro",
-/*			
-				{
-					source: "arcgis93",
-					title: "Ocean basemap",
-					name: "OceanBasemap",
-					group: "background",
-					visibility: true,
-					url: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/export"
-                        //,projection: "900913"
-                }, 
-                {                    
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:2 500 000",
-                    name: "eko3_rf2500",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:1 000 000",
-                    name: "eko3_rf1000",
-                    group: "background"
-                }, {
-                    source: "gisprocache",
-                    title: "Топографическая карта РФ м 1:500 000",
-                    name: "eko3_rf500",
-                    group: "background"
-                }, */
-
                 {
                     source: "ol",
                     group: "background",
@@ -199,54 +169,14 @@
                     args: [
                         "Без картоосновы", {visibility: false}
                     ]
-                }
-                , {
-                    source: "mapbox",
-                    title: "Blue Marble Топография и батиметрия",
-                    name: "blue-marble-topo-bathy-jul",
-                    group: "background"
-                },
-                {
-                    source: "mapbox",
-                    title: "Natural Earth II",
-                    name: "natural-earth-2",
-                    group: "background"
-                },
-                {
-                    source: "mapquest",
-                    title: "MapQuest OpenStreetMap",
-                    name: "osm",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Карта",
-                    name: "ROADMAP",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Рельеф",
-                    name: "TERRAIN",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Спутник",
-                    name: "SATELLITE",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Гибрид",
-                    name: "HYBRID",
-                    group: "background"
                 },
                 {
                     source: "gispro",
                     title: "ЭКО 3.1",
                     name: "eko3_merge",
-                    group: "background"
+                    group: "background",
+                    args: [null, {alwaysInRange: true}]
+                    
                 }],
                rss_layers: {
 		'layers' : [
@@ -255,6 +185,7 @@
 			"name"  : "esimo_storms",
 			"title" : "\u0428\u0442\u043E\u0440\u043C\u043E\u0432\u044B\u0435\u0020\u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F",
 			"icon"  : "script/images/marker-red.png",
+			//"url"   : "esimo_storms.xml",
 			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_storms.xml"
 		},
 		{
@@ -304,21 +235,6 @@
                     ]},
                 center: [0, 0],
                 zoom: 2,
-		/*params : {
-			minZoomLevel            : 4,
-			maxZoomLevel            : 17,
-			maxResolution           : 156543.03390625,
-			displayOutsideMaxExtent : 'false',
-			transitionEffect        : 'resize',
-			transparent             : 'true',
-			format                  : 'PNG'
-		},
-		options : {
-			wrapDateLine            : 'true',
-			singleTile              : 'true',
-			ratio                   : 1
-                        //, projection              : "EPSG:102113"
-		},*/
 		arcgis_servers : []
                 /*[
 			{
@@ -333,4 +249,9 @@
             }
         });
         //app.mapPanel.map.addControl(graticuleControl1);
+        
+        app.on("ready", function(){
+           app.mapPanel.map.layers[0].mergeNewParams(); 
+        });
+        
     </script>
