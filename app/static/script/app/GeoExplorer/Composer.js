@@ -63,6 +63,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 outputTarget: 'legend',
                 outputConfig: {autoScroll: true}
             }, {
+                id: "gxp_addlayers_ctl",
                 ptype: "gxp_addlayers",
                 actionTarget: "tree.tbar",
                 upload: true
@@ -347,7 +348,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 			text: 'Вид',
 			menu: new Ext.menu.Menu({
 				items: [
-					new Ext.menu.CheckItem({
+					/*new Ext.menu.CheckItem({
 						text: 'Каталог ресурсов',
 						checkHandler: checkHandler
 					}),
@@ -359,7 +360,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					new Ext.menu.CheckItem({
 						text: 'Справка',
 						checkHandler: checkHandler
-					}),
+					}),*/
+                    
+                    
+                    
                                         {
                                             text: "Проекция",
                                             menu: {
@@ -374,7 +378,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                                 app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, callback);
                                                             }
                                                     }),
-                                                    new Ext.menu.CheckItem({
+                                                    this.geographMenuItem = new Ext.menu.CheckItem({
                                                             text: 'Географическая',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Географическая'].projection,
                                                             handler: function() {
@@ -384,7 +388,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                                 app.changeProjection(app.projectionStoreForMenu['Географическая'], app, callback);
                                                             }
                                                     }),
-                                                    new Ext.menu.CheckItem({
+                                                    this.conicalMenuItem = new Ext.menu.CheckItem({
                                                             text: 'Коническая',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Коническая'].projection,
                                                             handler: function() {
@@ -394,7 +398,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                                 app.changeProjection(app.projectionStoreForMenu['Коническая'], app, callback);
                                                             }
                                                     }),
-                                                    new Ext.menu.CheckItem({
+                                                    this.stereoMenuItem = new Ext.menu.CheckItem({
                                                             text: 'Стереографическая',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Стереографическая'].projection,
                                                             handler: function() {
@@ -410,40 +414,53 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 				]
 			})
 		});
-		tools.unshift({
+		/*tools.unshift({
 			text: 'Слой',
 			menu: new Ext.menu.Menu({
 				items: [
 					{
-						text: 'Добавить'
-						//handler: date
-					},
-					{
-						text: 'Удалить'
-						//handler: date
+						text: 'Добавить',
+                                                handler: function(){
+                                                    return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
+                                                }
 					}
 				]
 			})
-		});
+		});*/
 		tools.unshift({
 			text: 'Карта',
                         //bububu: this,
 			menu: new Ext.menu.Menu({
 				items: [
 					{
-						text: 'Новая'
-						//handler: date
-					},
+						text: 'Новая',
+                                                handler: function() {
+                                                    window.location.hash = "#";
+                                                    window.location.reload(true);
+                                                }
+					}/*,
 					{
 						text: 'Загрузить'
 						//handler: date
+					}*/,
+					{
+						text: 'Сохранить',
+                                                handler: function() {
+                                                    app.save(app.showEmbedWindow);
+                                                }
 					},
 					{
-						text: 'Сохранить'
-                                                //,
-						//handler: function() {
-                                                //    bububu.save(bububu.showUrl);
-                                                //}
+						text: 'Сохранить новую',
+                                                handler: function() {
+                                                    app.saveNew(app.showEmbedWindow);
+                                                }
+					},
+                                        "-",
+                                        {
+						text: 'Добавить слой',
+                                                handler: function(){
+                                                    return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
+                                                }
 					}
 				]
 			})
