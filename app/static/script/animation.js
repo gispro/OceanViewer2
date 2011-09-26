@@ -308,21 +308,16 @@ function createWMSLayer(url, names, scale, items, idx)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function addLayers(idx)
 {
-//	current_services = idx;
-	if (animServices[idx].layers[0] == null)
+	for (items = animServices[idx].names.length - 1; items >= 0; items--)
 	{
-		for (items = animServices[idx].names.length - 1; items >= 0; items--)
-		{
-			if (animServices[idx].layers[items] == null)
-			    animServices[idx].layers[items] = createWMSLayer(animServices[idx].url  ,
-                                                                 animServices[idx].names,
-				                                                 animServices[idx].scale, items, idx);
-			if (items > 0)
-				animServices[idx].layers[items].setOpacity (0);
-			else
-				animServices[idx].layers[items].setOpacity (1);
-			app.mapPanel.map.addLayer(animServices[idx].layers[items]);
-		}
+	    animServices[idx].layers[items] = createWMSLayer(animServices[idx].url  ,
+                                                         animServices[idx].names,
+		                                                 animServices[idx].scale, items, idx);
+		if (items > 0)
+			animServices[idx].layers[items].setOpacity (0);
+		else
+			animServices[idx].layers[items].setOpacity (1);
+		app.mapPanel.map.addLayer(animServices[idx].layers[items]);
 	}
 	for (var j = 0; j < animLayers.length; j++)
 		animLayers [j] = null;
@@ -428,5 +423,33 @@ function animationRender(bulkRender)
 		}
 		GeoExt.tree.LayerNode.superclass.render.apply(this, arguments);
 	}
+};
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// extend GeoExt.LegendPanel.recordIndexToPanelIndex
+function animationRecordIndexToPanelIndex(index)
+ {
+	var store = this.layerStore;
+	var count = store.getCount();
+	var panelIndex = -1;
+	var legendCount = this.items ? this.items.length : 0;
+	var record, layer;
+	for(var i=count-1; i>=0; --i)
+	{
+		record = store.getAt(i);
+		if (record)
+		{
+			layer = record.getLayer();
+			var types = GeoExt.LayerLegend.getTypes(record);
+			if(layer.displayInLayerSwitcher && types.length > 0 && (store.getAt(i).get("hideInLegend") !== true))
+			{
+				++panelIndex;
+				if(index === i || panelIndex > legendCount-1)
+				{
+					break;
+				}
+			}
+		}
+	}
+    return panelIndex;
 };
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
