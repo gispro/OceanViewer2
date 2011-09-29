@@ -51,6 +51,9 @@ function parseServices()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function showAnimWindow(rootNode, selectedNode)
 { 
+	if (animWindow)
+		console.log ('animation.showAnimWindow : animWindow.animWinClosed = ' + animWindow.animWinClosed + ', animWindow = ' + animWindow);
+//	if (!animWindow || animWindow.animWinClosed)
 	if (!animWindow)
 	{
 		slider = new Ext.Slider({
@@ -93,7 +96,7 @@ function showAnimWindow(rootNode, selectedNode)
 				}
 			}
 		});
-		
+
 		btnReset = new Ext.Button({
 			scale    : 'small', 
 			cls      : 'x-btn-icon',
@@ -138,11 +141,11 @@ function showAnimWindow(rootNode, selectedNode)
 			{
 				close:function()
 				{ 
-					this.animWinClosed = false;
-					resetSelectedNode (this.root, this.node);
-					closeAnimWindow();
-					animWindow = false;
-					this.animWinClosed = true;
+					animWindowHide(this.root, this.node);
+                },
+				hide:function()
+				{ 
+					animWindowHide(this.root, this.node);
                 },
 				beforeshow : function ()
 				{
@@ -177,6 +180,15 @@ function showAnimWindow(rootNode, selectedNode)
 	animWindow.show();
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function animWindowHide(rootNode, node)
+{
+	animWindow.animWinClosed = false;
+	resetSelectedNode (rootNode, node);
+	closeAnimWindow();
+	animWindow = false;
+	animWindow.animWinClosed = true;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function getScenarioIDX (rootNode, selectedNode)
 {
 	node = getRootChildNode(rootNode, animationNodeTitle);
@@ -194,7 +206,15 @@ function getScenarioIDX (rootNode, selectedNode)
 function closeAnimWindow()
 {
 	if (!animWindow)
+//	{
+//		animWindow.close();
+//		animWindow.animWinClosed = true;
+//		animWindow = null; // false;
 		animWindow = false;
+//	}
+
+//	console.log ('animation.closeAnimWindow : animWindow = ' + animWindow); // + ', animWinClosed = ' + animWindow.animWinClosed);
+
 	if (animLayers [0] != null)
 	{
 		reset();

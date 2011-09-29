@@ -6,10 +6,11 @@ var SLIDER_TITLE_LEFT = 4;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function drawSliderScale(slider, component, scale)
 {
-	var cell = document.getElementById(component);
-	var x1     = SLIDER_TITLE_LEFT;
-	var y      = slider.y + SLIDER_TITLE_TOP;
-	var count  = scale.length;
+	var cell  = document.getElementById(component);
+
+	var x1    = SLIDER_TITLE_LEFT;
+	var y     = slider.y + SLIDER_TITLE_TOP;
+	var count = scale.length;
 	var coord_div = document.createElement('div');
 	coord_div.setAttribute('id', 'coordDiv');
 	coord_div.innerHTML = "<div style='position:absolute;top:" + y + "px;left:" + x1 + 
@@ -43,6 +44,7 @@ function createImageDesc (x, y)
 function drawSliderTicks(slider, component, count)
 {
 	var cell  = document.getElementById(component);
+
 	var x1    = SLIDER_TICK_LEFT;
 	var y     = slider.y  + SLIDER_TICK_TOP;
 
