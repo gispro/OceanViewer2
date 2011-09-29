@@ -206,21 +206,13 @@ function getScenarioIDX (rootNode, selectedNode)
 function closeAnimWindow()
 {
 	if (!animWindow)
-//	{
-//		animWindow.close();
-//		animWindow.animWinClosed = true;
-//		animWindow = null; // false;
 		animWindow = false;
-//	}
-
-//	console.log ('animation.closeAnimWindow : animWindow = ' + animWindow); // + ', animWinClosed = ' + animWindow.animWinClosed);
 
 	if (animLayers [0] != null)
 	{
 		reset();
 		animLayers [0].setOpacity(0);
 	}		
-//	console.log ('0. app.mapPanel.layers.length = ' + app.mapPanel.layers.data.items.length + ', app.mapPanel.map.layers.length = ' + app.mapPanel.map.layers.length);
 
 	for (var i = (app.mapPanel.map.layers.length - 1); i >= 0; i--)
 	{
@@ -232,11 +224,6 @@ function closeAnimWindow()
 		if (app.mapPanel.layers.data.items[i].data.title.indexOf (TEMPL_LAYER_ANIMATION) > 0)
 			app.mapPanel.layers.data.items.remove (app.mapPanel.layers.data.items[i]);
 	}
-/*
-	for (var i = 0; i < app.mapPanel.map.layers.length; i++)
-		console.log (app.mapPanel.map.layers[i].name);
-*/
-//	console.log ('1. app.mapPanel.layers.length = ' + app.mapPanel.layers.data.items.length + ', app.mapPanel.map.layers.length = ' + app.mapPanel.map.layers.length);
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function getRootChildNode (rootNode, node_name)
