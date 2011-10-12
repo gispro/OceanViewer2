@@ -52,6 +52,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 },
                 "outputTarget":"map"
             },*/
+            {
+                "ptype": "gxp_mouseposgxptool",
+                "controlOptions":{
+                    displayProjection: new OpenLayers.Projection("EPSG:4326"),
+                    numDigits: 3,
+                    displayClass: "mousePos",
+                    prefix: "X: ",
+                    separator: ", Y:"
+                },
+                "outputTarget":"map"
+            },
              {
                 ptype: "gxp_layertree",
                 outputConfig: {
@@ -75,6 +86,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
             }, {
                 ptype: "gxp_styler",
+                sameOriginStyling: false,
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
             }, {
                 ptype: "gxp_zoomtolayerextent",
@@ -109,7 +121,40 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ",
 					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
-            }
+            }, {
+                // shared FeatureManager for feature editing, grid and querying
+                ptype: "gxp_featuremanager",
+                id: "featuremanager",
+                maxFeatures: 20,
+                actionTarget: {target: "paneltbar", index:19}
+            }, {
+                ptype: "gxp_featureeditor",
+                featureManager: "featuremanager",
+                autoLoadFeatures: true, // no need to "check out" features
+                outputConfig: {panIn: false},
+                toggleGroup: "layertools",
+                actionTarget: {target: "paneltbar", index:18}
+            }/*, {
+                ptype: "gxp_featuregrid",
+                featureManager: "featuremanager",
+                outputConfig: {
+                    id: "featuregrid"
+                },
+                outputTarget: "south"
+            }, {
+                ptype: "gxp_queryform",
+                featureManager: "featuremanager",
+                outputConfig: {
+                    title: "Query",
+                    width: 320
+                },
+                actionTarget: ["featuregrid.bbar", "tree.contextMenu"],
+                appendActions: false
+            }, {
+                // not a useful tool - just a demo for additional items
+                actionTarget: "mybbar", // ".bbar" would also work
+                actions: [{text: "Click me - I'm a tool on the portal's bbar"}]
+            }*/
         ];
     
         GeoExplorer.Composer.superclass.constructor.apply(this, arguments);
@@ -308,7 +353,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 switchEko3: true
             }
             , 
-            'Стереографическая': {
+            'Полярная Север': {
                 projection: "EPSG:3576",
                 //projection: "EPSG:3995",
                 units: "m",
@@ -327,6 +372,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     //5397733.44656832, 
                     //1667991.36644116
                     //-5133549.56760757,-5397733.44656832,5397733.44656832,5133549.56760757
+                ],
+                switchEko3: true
+            }
+            , 
+            'Полярная Юг': {
+                projection: "EPSG:3976",
+                units: "m",
+                maxResolution: 156543.03392804097,
+                maxExtent: [
+                    -9036842.762, -9036842.762,
+                    9036842.762, 9036842.762                    
                 ],
                 switchEko3: true
             }
@@ -399,15 +455,25 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                             }
                                                     }),
                                                     this.stereoMenuItem = new Ext.menu.CheckItem({
-                                                            text: 'Стереографическая',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Стереографическая'].projection,
+                                                            text: 'Полярная Север',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Полярная Север'].projection,
                                                             handler: function() {
                                                                 var callback = function(){
                                                                     window.location.reload(true);
                                                                 }
-                                                                app.changeProjection(app.projectionStoreForMenu['Стереографическая'], app, callback);
+                                                                app.changeProjection(app.projectionStoreForMenu['Полярная Север'], app, callback);
                                                             }
-                                                    })
+                                                    }),
+                                                    this.stereoMenuItem = new Ext.menu.CheckItem({
+                                                            text: 'Полярная Юг',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Полярная Юг'].projection,
+                                                            handler: function() {
+                                                                var callback = function(){
+                                                                    window.location.reload(true);
+                                                                }
+                                                                app.changeProjection(app.projectionStoreForMenu['Полярная Юг'], app, callback);
+                                                            }
+                                                    })//kill me
                                                 ]
                                             }
                                         }

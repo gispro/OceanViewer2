@@ -52,6 +52,9 @@ function parseServices()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function showAnimWindow(rootNode, selectedNode)
 { 
+	if (animWindow)
+		console.log ('animation.showAnimWindow : animWindow.animWinClosed = ' + animWindow.animWinClosed + ', animWindow = ' + animWindow);
+//	if (!animWindow || animWindow.animWinClosed)
 	if (!animWindow)
 	{
 		slider = new Ext.Slider({
@@ -59,7 +62,7 @@ function showAnimWindow(rootNode, selectedNode)
 			id           : 'slider',
 			width        : 200,
 			minValue     : 0,
-			maxValue     : 100.0,
+			maxValue     : 100,
 			x            : 65,
 			y            : 6,
 			scale_length : 100/10,
@@ -181,11 +184,11 @@ function showAnimWindow(rootNode, selectedNode)
 			{
 				close:function()
 				{ 
-					this.animWinClosed = false;
-					resetSelectedNode (this.root, this.node);
-					closeAnimWindow();
-					animWindow = false;
-					this.animWinClosed = true;
+					animWindowHide(this.root, this.node);
+                },
+				hide:function()
+				{ 
+					animWindowHide(this.root, this.node);
                 },
 				beforeshow : function ()
 				{
@@ -218,6 +221,15 @@ function showAnimWindow(rootNode, selectedNode)
 
 	animWindow.setPosition(5, 580, null);
 	animWindow.show();
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function animWindowHide(rootNode, node)
+{
+	animWindow.animWinClosed = false;
+	resetSelectedNode (rootNode, node);
+	closeAnimWindow();
+	animWindow = false;
+	animWindow.animWinClosed = true;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function getScenarioIDX (rootNode, selectedNode)

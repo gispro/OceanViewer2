@@ -16,35 +16,24 @@
 
 	<!-- Animation modules -->
 	<script type="text/javascript" src="script/animation.js"></script>
-    <!--<script type="text/javascript" src="script/slider.js"></script>
-	<script type="text/javascript" src="script/timer.js"></script>            -->
-    
     
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
     <script type="text/javascript">
             Proj4js.defs["EPSG:102012"] = 
-                //"+proj=eqdc +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
                 "+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-                //"+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
             Proj4js.defs["EPSG:3576"] = 
-                //"+proj=laea +lat_0=90 +lon_0=90 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
                 "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-                //"+proj=laea +lat_0=90 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-                
-                
             Proj4js.defs["EPSG:4326"] = 
                 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
-                //"+proj=longlat +no_defs";
-            /*Proj4js.defs["EPSG:9009l3"] = 
-                "+title= Google Mercator EPSG:900913 +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs";*/
-    
             Proj4js.defs["EPSG:91101"] =
                 "+title=long/lat:WGS84 +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees"
             Proj4js.defs["EPSG:3413"] = 
                 "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
             Proj4js.defs["EPSG:3995"] = 
                 "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
+            Proj4js.defs["EPSG:3976"] = 
+                "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
     
     </script>
             
@@ -82,7 +71,7 @@
                   });
 
                   Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
-                     getInfoForClick: rssPopupGetInfoForClick
+			getInfoForClick: RssPopupGetInfoForClick
                   });
 
                   Ext.override(GeoExt.tree.LayerNode, {
@@ -92,6 +81,15 @@
                   Ext.override(gxp.Viewer, {
                      getState: RssPopupGetState
                   });
+		
+		Ext.override(GeoExt.tree.LayerLoader, {
+			addLayerNode: RsspopupAddLayerNode
+		});
+		
+		Ext.override(gxp.plugins.RemoveLayer, {
+			addActions: RssPopupAddActions
+		});
+
 		Ext.override(GeoExt.LegendPanel, {
 			addLegend : animationAddLegend
 		});
@@ -99,13 +97,13 @@
 		Ext.override(GeoExt.tree.LayerNode, {
 			render : animationRender
 		});
+
 		Ext.override(GeoExt.LegendPanel, {
 			recordIndexToPanelIndex : animationRecordIndexToPanelIndex
 		});
-                
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
-            authStatus: 1,// <% status %>, //1,
+            authStatus: <% status %>, //1,
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
             about: {
@@ -114,20 +112,17 @@
                 contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
             },
             defaultSourceType: "gxp_wmscsource",
-            //defaultSourceType: "gxp_wmssource",
             sources: {
 		gispro: {
                     //ptype: "gxp_wmssource",
                     url: "http://gisbox.ru:8084/geowebcache/service/wms",
-                    //url: "http://gisbox.ru:8083/geoserver/gwc/service/wms",
-                    //url: "http://gisbox.ru:8083/geoserver/wms",
-                    //url: "http://uno:8083/geoserver/gwc/service/wms",
                     title: "GISPRO"
                 },
-		/*opermeteo: {
-                    url: "http://gisbox.ru:8080/geoserver/opermeteo/wms",
-                    title: "Оперативные метеоданные"
-                },*/
+		gispronocache: {
+                    ptype: "gxp_wmssource",
+                    url: "http://gisbox.ru:8083/geoserver/wms",
+                    title: "GISPRONOCACHE"
+                },
                 arcgis93: {
                     ptype: "gxp_arcgis93source"
 				},                
@@ -137,26 +132,6 @@
                 google: {
                     ptype: "gxp_googlesource"
                 },
-                /*mapquest: {
-                    ptype: "gxp_mapquestsource"
-                },
-                osm: {
-                    ptype: "gxp_osmsource"
-                },
-                bing: {
-                    ptype: "gxp_bingsource"
-                },
-                mapbox: {
-                    ptype: "gxp_mapboxsource"
-                },
-		obis: {
-                    url: "http://portal2.iobis.org/geoserver/gwc/service/wms",
-                    title: "OBIS"
-                },*/
-//		gisprocache: {
-//                    url: "http://gisbox.ru:8080/geoserver/gwc/service/wms",
-//                    title: "GISPRO-CACHE"
-//                },
                 ol: {
                     ptype: "gxp_olsource"
                 },
@@ -164,7 +139,9 @@
                     ptype: "gxp_olsource"
                 }
             },
-            //wfs: "/geoserver/wfs",
+            wfs: "/geoserver/wfs",
+            wms: "/geoserver/wms",
+            
             map: {
 		projection: "EPSG:900913",
                 units: "m",
@@ -172,15 +149,7 @@
                 maxExtent: [
                     -20037508.34, -20037508.34,
                     20037508.34, 20037508.34
-                ]
-                //projection: "EPSG:3576",
-                //units: "m",
-                //maxResolution: 156543.0339,
-                //maxExtent: [
-                //    -9036842.762, -9036842.762,
-                //    9036842.762, 9036842.762                    
-                //]
-                ,
+                ],
                 layers: [
                 {
                     source: "ol",
@@ -191,7 +160,56 @@
                         "Без картоосновы", {visibility: false}
                     ]
                 },
- 				{
+                /*
+                {
+                    source: "ol",
+                    type: "OpenLayers.Layer.Vector",
+                    args: [
+                        "Полигоны Франции", 
+                        {
+                            projection: "EPSG:4326",
+                            //*
+                            strategies: [new OpenLayers.Strategy.Fixed()],
+                            protocol: new OpenLayers.Protocol.HTTP({
+                                url: "http://openlayers.org/dev/examples/gml/polygon.xml",
+                                format: new OpenLayers.Format.GML()
+                            })
+                            //*/
+                            /*
+                            strategies: [{classtype: "OpenLayers.Strategy.Fixed", args:[]}],
+                            protocol: {
+                                classtype: "OpenLayers.Protocol.HTTP",
+                                args: [{
+                                    url: "http://openlayers.org/dev/examples/gml/polygon.xml",
+                                    format: {
+                                        classtype: "OpenLayers.Format.GML",
+                                        args: []
+                                    }
+                                }]
+                            }
+                            *//*
+                        }
+                    ]
+                },*/
+                /*{
+                    source: "ol",
+                    type: "OpenLayers.Layer.Vector",
+                    visibility: false,
+                    args: [
+                        "АдмПол", 
+                        {
+                            projection: "EPSG:4326",
+                            strategies: [new OpenLayers.Strategy.BBOX()],
+                            protocol:  new OpenLayers.Protocol.WFS({
+                                url:  "http://gisbox.ru:8083/geoserver/wfs",
+                                featureType: "admpol8000"
+                                //,featureNS: "http://www.openplans.org/topp"
+                                ,featureNS: "eko"
+                            })
+                        }
+                    ]
+                },*/
+ 		{
                     source: "an",
                     group: "animation",
                     type: "OpenLayers.Layer",
@@ -238,6 +256,14 @@
                     title: "Google Гибрид",
                     name: "HYBRID",
                     group: "background"
+                },                
+                {
+                    source: "gispronocache",
+                    title: "ЭКО 3.1 бланк",
+                    name: "eko_blank",
+                    group: "background",
+                    args: [null, {alwaysInRange: true}]
+                    
                 },                
                 {
                     source: "gispro",
@@ -320,11 +346,13 @@
             
         });
         //app.mapPanel.map.addControl(graticuleControl1);
+        //app.mapPanel.map.addControl(new OpenLayers.Control.MousePosition());
         
         app.on("ready", function(){
            servicesLoader.load();
            
-           app.mapPanel.map.layers[0].mergeNewParams(); 
+           if(app.mapPanel.map.layers[0].mergeNewParams)
+            app.mapPanel.map.layers[0].mergeNewParams(); 
            for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
                app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
                if(app.mapPanel.map.layers[ii].mergeNewParams){

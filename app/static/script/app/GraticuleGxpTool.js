@@ -16,16 +16,20 @@ gxp.plugins.GraticuleGxpTool = Ext.extend(gxp.plugins.Tool, {
     constructor: function(config) {
         gxp.plugins.GraticuleGxpTool.superclass.constructor.apply(this, arguments);
         this.config = config;
-        this.graticuleControl = new OpenLayers.Control.Graticule(this.config.controlOptions);
+        //this.graticuleControl = new OpenLayers.Control.Graticule(this.config.controlOptions);
         //alert(this.graticuleControl);
     },
     
     init: function(target) {
         this.map = target.mapPanel.map;
+        this.graticuleControl = new OpenLayers.Control.Graticule(this.config.controlOptions);
         this.map.addControl(this.graticuleControl);
         gxp.plugins.GraticuleGxpTool.superclass.init.apply(this, arguments);
+        
+        
         bubu = this;
         target.on("ready", function() {
+            bubu.graticuleControl.gratLayer.displayOutsideMaxExtent = false;
             bubu.bringUp();
             bubu.readyAlready = true;
         });

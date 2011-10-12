@@ -243,4 +243,14 @@ table.featureInfo caption{
     text-transform: uppercase;
     padding: .2em .2em;
 }
+div.mousePos {
+    font-size: 70%;
+    background-color: white;
+    border: 1px lightblue solid;
+    z-index: 1000;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    padding: 4px;
+}
 
