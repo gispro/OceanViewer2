@@ -14,9 +14,6 @@
     <link rel="stylesheet" type="text/css" href="externals/gxp/src/theme/all.css">
     <script type="text/javascript" src="script/gxp.js"></script> 
 
-	<!-- Animation modules -->
-	<script type="text/javascript" src="script/animation.js"></script>
-    
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
     <script type="text/javascript">
@@ -90,6 +87,10 @@
 			addActions: RssPopupAddActions
 		});
 
+		Ext.override(gxp.WMSLayerPanel, {
+			createDisplayPanel: RssSourceCreateDisplayPanel
+		});
+		
 		Ext.override(GeoExt.LegendPanel, {
 			addLegend : animationAddLegend
 		});
@@ -101,9 +102,21 @@
 		Ext.override(GeoExt.LegendPanel, {
 			recordIndexToPanelIndex : animationRecordIndexToPanelIndex
 		});
+		
+		Ext.override(GeoExt.data.LayerStore, {
+			onAdd : animationOnAdd
+		});
+
+		Ext.override(GeoExt.tree.LayerNode, {
+			onStoreAdd : animationOnStoreAdd
+		});
+		
+		Ext.override(GeoExt.tree.LayerLoader, {
+			onStoreAdd : animationLayerLoaderOnStoreAdd
+		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
-            authStatus: <% status %>, //1,
+            authStatus: 1,// <% status %>, //1,
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
             about: {
@@ -131,6 +144,9 @@
 				},
                 ol: {
                     ptype: "gxp_olsource"
+                },
+                animation: {
+                    ptype: "gxp_animationsource"
                 }
             },
             wfs: "/geoserver/wfs",
@@ -203,30 +219,6 @@
                         }
                     ]
                 },*/
- 		{
-                    source: "an",
-                    group: "animation",
-                    type: "OpenLayers.Layer",
-                    args: [
-                        "Давление 46", {visibility: false}
-					]
-                },
-		{
-                    source: "an",
-                    group: "animation",
-                    type: "OpenLayers.Layer",
-                    args: [
-                        "Температура 42", {visibility: false}
-                    ]
-                },
-		{
-                    source: "an",
-                    group: "animation",
-                    type: "OpenLayers.Layer",
-                    args: [
-                        "Скорость 62", {visibility: false}
-                    ]
-                },
                 {
                     source: "gispronocache",
                     title: "ЭКО 3.1 бланк",
@@ -243,82 +235,80 @@
                     args: [null, {alwaysInRange: true}]
                     
                 }],
-               rss_layers: {
-		'layers' : [
-		{
-			"timer" : "1",
-			"name"  : "esimo_storms",
-			"title" : "\u0428\u0442\u043E\u0440\u043C\u043E\u0432\u044B\u0435\u0020\u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F",
-			"icon"  : "script/images/marker-red.png",
-			//"url"   : "esimo_storms.xml",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_storms.xml"
-		},
-		{
-			"timer" : "2",
-			"name"  : "esimo_gms_ports",
-			"title" : "\u041E\u043F\u0435\u0440\u0430\u0442\u0438\u0432\u043D\u044B\u0435\u0020\u043C\u0435\u0442\u0435\u043E\u0443\u0441\u043B\u043E\u0432\u0438\u044F\u0020\u043F\u043E\u0020\u043F\u043E\u0440\u0442\u0430\u043C\u0020\u0420\u0424",
-			"icon"  : "script/images/marker-green.png",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_gms_ports.xml"
-		},
-		{
-			"timer" : "3",
-			"name"  : "esimo_warnings",
-			"title" : "\u041E\u043F\u0430\u0441\u043D\u044B\u0435\u0020\u044F\u0432\u043B\u0435\u043D\u0438\u044F",
-			"icon1" : "script/images/atom.gif",
-			"icon"  : "script/images/marker-gold.png",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_warnings.xml"
-		},
-		{
-			"timer" : "4",
-			"name"  : "esimo_pogoda",
-			"title" : "Оперативные метеоусловия",
-			"icon"  : "script/images/marker-blue.gif",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_gms.xml"
-		},
-		{
-			"timer" : "5",
-			"name"  : "esimo_hydro",
-			"title" : "Гидрологические явления",
-			"icon"  : "script/images/marker-brown.gif",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_hydro.xml"
-		},
-		{
-			"timer" : "6",
-			"name"  : "esimo_tsunami",
-			"title" : "Цунами",
-			"icon"  : "script/images/marker-lightgreen.gif",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_tsunami.xml"
-		},
-		{
-			"timer" : "7",
-			"name"  : "esimo_typhoons",
-			"title" : "Тайфуны",
-			"icon"  : "marker-purple.gif",
-			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_typhoons.xml"
-		}
-		
-                    ]},
                 center: [0, 0],
-                zoom: 2,
-		arcgis_servers : []
-                /*[
+                zoom: 2
+		}
+           });
+		
+        app.on("ready", function()
 			{
-				'title' : 'ArcGIS Moscow',
-				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer'
-			}, 
-			{
-				'title' : 'ArcGIS Tver',
-				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
+			downloadArcgis();
+
+           if(app.mapPanel.map.layers[0].mergeNewParams)
+			app.mapPanel.map.layers[0].mergeNewParams();
+			for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
+				app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
+				if(app.mapPanel.map.layers[ii].mergeNewParams){
+                   app.mapPanel.map.layers[ii].mergeNewParams();
+               };
 			}
-		]*/
+
+            app.mapPanel.on("afterlayeradd", function(){
+               for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
+                   app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
+                   if(app.mapPanel.map.layers[ii].mergeNewParams){
+                       app.mapPanel.map.layers[ii].mergeNewParams();
+                   };
             }
         });
-        //app.mapPanel.map.addControl(graticuleControl1);
-        //app.mapPanel.map.addControl(new OpenLayers.Control.MousePosition());
         
-        app.on("ready", function(){
-           if(app.mapPanel.map.layers[0].mergeNewParams)
-            app.mapPanel.map.layers[0].mergeNewParams(); 
+           var metMerc = false;
+           for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
+               //alert(app.mapPanel.map.layers[ii]);
+               if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
+                   if(!(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection)){
+                       metMerc = true;
+                   }
+               }
+           }
+           if(!metMerc){
+                       app.conicalMenuItem.enable();//disabled = false;
+                       app.stereoMenuItem.enable();//disabled = false;
+                       app.geographMenuItem.enable();//disabled = false;
+                           app.southernMenuItem.enable();//disabled = false;
+           }else{
+                       app.conicalMenuItem.disable();//d = true;
+                       app.stereoMenuItem.disable();//d = true;
+                       app.geographMenuItem.disable();//d = true;
+                           app.southernMenuItem.disable();
+           }
+
+
+            app.mapPanel.on("afterlayervisibilitychange", function(){
+                var metMerc = false;
+               for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
+                   //alert(app.mapPanel.map.layers[ii]);
+                   if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
+                       if(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection){
+                        app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, function(){window.location.reload(true);});
+                       }else{
+                           metMerc = true;
+                           break;
+                       }
+                   }
+               }
+               if(!metMerc){
+                           app.conicalMenuItem.enable();//disabled = false;
+                           app.stereoMenuItem.enable();//disabled = false;
+                           app.geographMenuItem.enable();//disabled = false;
+                           app.southernMenuItem.enable();//disabled = false;
+               }else{
+                           app.conicalMenuItem.disable();//d = true;
+                           app.stereoMenuItem.disable();//d = true;
+                           app.geographMenuItem.disable();//d = true;
+                           app.southernMenuItem.disable();
+               }
+        });
         });
         
     </script>

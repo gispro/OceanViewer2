@@ -428,7 +428,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         translatedLayerNames[arr[i][2]] + " grouping " + arr[i][3],
                                         metadataFieldNames[arr[i][0]]
                                     ];
-                                }
+                                };
                                 
                                 // ext grid
                                 var myReader = new Ext.data.ArrayReader({}, [
@@ -587,9 +587,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      * Create the various parts that compose the layout.
      */
     initPortal: function() {
-        var westPanel = new Ext.Panel({
+        var westPanel = new Ext.TabPanel({//Panel({
             border: false,
-            layout: "border",
+            //layout: "border",
+            activeTab: 0,
             region: "west",
             width: 350,
 			minWidth: 20,
@@ -599,8 +600,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             header: true,
 			title: 'Таблица содержания',
             items: [
-                {region: 'center', autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
-                {region: 'south', xtype: "container", layout: "fit", border: false, height: 200, id: 'legend'}
+                {/*region: 'center', */autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
+                {/*region: 'south', */xtype: "container", layout: "fit", border: false, /*height: 200, */id: 'legend', title: 'Легенда'}
             ]
         });
         

@@ -121,7 +121,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ",
 					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
-            }
             }, {
                 // shared FeatureManager for feature editing, grid and querying
                 ptype: "gxp_featuremanager",
@@ -354,7 +353,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 switchEko3: true
             }
             , 
-            'Стереографическая': {
             'Полярная Север': {
                 projection: "EPSG:3576",
                 //projection: "EPSG:3995",
@@ -462,19 +460,16 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                     }),
                                                     this.stereoMenuItem = new Ext.menu.CheckItem({
 
-                                                            text: 'Стереографическая',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Стереографическая'].projection,
                                                             text: 'Полярная Север',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Полярная Север'].projection,
                                                             handler: function() {
                                                                 var callback = function(){
                                                                     window.location.reload(true);
                                                                 }
-                                                                app.changeProjection(app.projectionStoreForMenu['Стереографическая'], app, callback);
                                                                 app.changeProjection(app.projectionStoreForMenu['Полярная Север'], app, callback);
                                                             }
                                                     }),
-                                                    this.stereoMenuItem = new Ext.menu.CheckItem({
+                                                    this.southernMenuItem = new Ext.menu.CheckItem({
                                                             text: 'Полярная Юг',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Полярная Юг'].projection,
                                                             handler: function() {

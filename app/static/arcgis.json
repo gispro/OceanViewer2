@@ -1,0 +1,39 @@
+{
+	"arcgis" :
+	{
+		"params" :
+			{
+				"minZoomLevel"            : 4,
+				"maxZoomLevel"            : 17,
+				"maxResolution"           : 156543.03390625,
+				"displayOutsideMaxExtent" : "false",
+				"transitionEffect"        : "resize",
+				"transparent"             : "true",
+				"format"                  : "PNG"
+			},
+		"options" :
+			{
+				"wrapDateLine"            : "true",
+				"singleTile"              : "true",
+				"ratio"                   : 1
+			},
+		"servers": 
+		[
+			{
+				"url"    : "http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer",
+				"title"  : "ArcGIS Moscow"
+			}
+		],
+		"servers_templates":
+		[
+			{
+				"url"    : "http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer",
+				"title"  : "ArcGIS Moscow"
+			},
+			{
+				"url"    : "http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer",
+				"title"  : "ArcGIS Tver"
+			}
+		]
+	}
+}
