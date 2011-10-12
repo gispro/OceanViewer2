@@ -129,13 +129,7 @@
                 rss: {
                     ptype: "gxp_rsssource"
 				},
-                google: {
-                    ptype: "gxp_googlesource"
-                },
                 ol: {
-                    ptype: "gxp_olsource"
-                },
-                an: {
                     ptype: "gxp_olsource"
                 }
             },
@@ -234,30 +228,6 @@
                     ]
                 },
                 {
-                    source: "google",
-                    title: "Google Карта",
-                    name: "ROADMAP",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Рельеф",
-                    name: "TERRAIN",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Спутник",
-                    name: "SATELLITE",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Гибрид",
-                    name: "HYBRID",
-                    group: "background"
-                },                
-                {
                     source: "gispronocache",
                     title: "ЭКО 3.1 бланк",
                     name: "eko_blank",
@@ -268,7 +238,6 @@
                 {
                     source: "gispro",
                     title: "ЭКО 3.1",
-                    fixed: true,
                     name: "eko3_merge",
                     group: "background",
                     args: [null, {alwaysInRange: true}]
@@ -281,7 +250,7 @@
 			"name"  : "esimo_storms",
 			"title" : "\u0428\u0442\u043E\u0440\u043C\u043E\u0432\u044B\u0435\u0020\u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F",
 			"icon"  : "script/images/marker-red.png",
-			//"url"   : "esimo_storms.xml"
+			//"url"   : "esimo_storms.xml",
 			"url"   : "http://80.245.248.214/jslibs/resources/geoext/rss/esimo_storms.xml"
 		},
 		{
@@ -342,77 +311,14 @@
 				'url'   : 'http://maps.gispro.ru/ArcGIS/rest/services/TVER/routes_kinsh_local_db/MapServer'
 			}
 		]*/
-            }            
-            
+            }
         });
         //app.mapPanel.map.addControl(graticuleControl1);
         //app.mapPanel.map.addControl(new OpenLayers.Control.MousePosition());
         
         app.on("ready", function(){
-           servicesLoader.load();
-           
            if(app.mapPanel.map.layers[0].mergeNewParams)
             app.mapPanel.map.layers[0].mergeNewParams(); 
-           for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
-               app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
-               if(app.mapPanel.map.layers[ii].mergeNewParams){
-                   app.mapPanel.map.layers[ii].mergeNewParams();
-               }; 
-           }
-
-            app.mapPanel.on("afterlayeradd", function(){
-               for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
-                   app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
-                   if(app.mapPanel.map.layers[ii].mergeNewParams){
-                       app.mapPanel.map.layers[ii].mergeNewParams();
-                   }; 
-               }
-            });
-
-           var metMerc = false;
-           for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
-               //alert(app.mapPanel.map.layers[ii]);
-               if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
-                   if(!(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection)){
-                       metMerc = true;
-                   }
-               }
-           }
-           if(!metMerc){
-                       app.conicalMenuItem.enable();//disabled = false;
-                       app.stereoMenuItem.enable();//disabled = false;
-                       app.geographMenuItem.enable();//disabled = false;
-           }else{
-                       app.conicalMenuItem.disable();//d = true;
-                       app.stereoMenuItem.disable();//d = true;
-                       app.geographMenuItem.disable();//d = true;
-           }
-
-
-            app.mapPanel.on("afterlayervisibilitychange", function(){
-                var metMerc = false;
-               for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
-                   //alert(app.mapPanel.map.layers[ii]);
-                   if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
-                       if(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection){
-                        app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, function(){window.location.reload(true);});
-                       }else{
-                           metMerc = true;
-                           break;
-                       }
-                   }
-               }
-               if(!metMerc){
-                           app.conicalMenuItem.enable();//disabled = false;
-                           app.stereoMenuItem.enable();//disabled = false;
-                           app.geographMenuItem.enable();//disabled = false;
-               }else{
-                           app.conicalMenuItem.disable();//d = true;
-                           app.stereoMenuItem.disable();//d = true;
-                           app.geographMenuItem.disable();//d = true;
-               }
-            });
         });
-        
         
     </script>

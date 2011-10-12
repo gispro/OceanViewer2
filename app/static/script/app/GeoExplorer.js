@@ -428,7 +428,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         translatedLayerNames[arr[i][2]] + " grouping " + arr[i][3],
                                         metadataFieldNames[arr[i][0]]
                                     ];
-                                };
+                                }
                                 
                                 // ext grid
                                 var myReader = new Ext.data.ArrayReader({}, [
@@ -587,21 +587,20 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      * Create the various parts that compose the layout.
      */
     initPortal: function() {
-        var westPanel = new Ext.TabPanel({//Panel({
+        var westPanel = new Ext.Panel({
             border: false,
-            //layout: "border",
-            activeTab: 0,
+            layout: "border",
             region: "west",
             width: 350,
-            minWidth: 20,
+			minWidth: 20,
             split: true,
             collapsible: true,
-            collapsed: true,
+			collapsed: true,
             header: true,
-            title: 'Таблица содержания',
+			title: 'Таблица содержания',
             items: [
-                {/*region: 'center', */autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
-                {/*region: 'south', */xtype: "container", layout: "fit", border: false, /*height: 200, */id: 'legend', title: 'Легенда'}
+                {region: 'center', autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
+                {region: 'south', xtype: "container", layout: "fit", border: false, height: 200, id: 'legend'}
             ]
         });
         
@@ -699,48 +698,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             items: [
                 this.mapPanelContainer,
                 westPanel
-                /*,
-                {
-                    xtype: "grid",
-                    ref: "featureGrid",
-                    title: "Feature Table",
-                    region: "south",
-                    height: 150,
-                    sm: new GeoExt.grid.FeatureSelectionModel(),
-                    store: new GeoExt.data.FeatureStore({
-                        fields: [
-                            {name: "owner", type: "string"},
-                            {name: "agency", type: "string"},
-                            {name: "name", type: "string"},
-                            {name: "usage", type: "string"},
-                            {name: "parktype", type: "string"},
-                            {name: "number_fac", type: "int"},
-                            {name: "area", type: "float"},
-                            {name: "len", type: "float"}
-                        ],
-                        proxy: new GeoExt.data.ProtocolProxy({
-                            protocol: new OpenLayers.Protocol.WFS({
-                                url: "http://gisbox.ru:8080/geoserver/ows",
-                                version: "1.1.0",
-                                featureType: "tries",
-                                featureNS: "http://gispro.ru/try",
-                                srsName: "EPSG:4326"
-                            })
-                        }),
-                        autoLoad: true
-                    }),
-                    columns: [
-                        {header: "owner", dataIndex: "owner"},
-                        {header: "agency", dataIndex: "agency"},
-                        {header: "name", dataIndex: "name"},
-                        {header: "usage", dataIndex: "usage"},
-                        {header: "parktype", dataIndex: "parktype"},
-                        {xtype: "numbercolumn", header: "number_fac", dataIndex: "number_fac"},
-                        {xtype: "numbercolumn", header: "area", dataIndex: "area"},
-                        {xtype: "numbercolumn", header: "len", dataIndex: "len"}
-                    ],
-                    bbar: []
-                }*/
             ]
         }];
         

@@ -121,6 +121,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ",
 					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
+            }
             }, {
                 // shared FeatureManager for feature editing, grid and querying
                 ptype: "gxp_featuremanager",
@@ -353,6 +354,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 switchEko3: true
             }
             , 
+            'Стереографическая': {
             'Полярная Север': {
                 projection: "EPSG:3576",
                 //projection: "EPSG:3995",
@@ -405,6 +407,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 			menu: new Ext.menu.Menu({
 				items: [
 					/*new Ext.menu.CheckItem({
+
 						text: 'Каталог ресурсов',
 						checkHandler: checkHandler
 					}),
@@ -420,6 +423,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     
                     
                     
+
                                         {
                                             text: "Проекция",
                                             menu: {
@@ -435,6 +439,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                             }
                                                     }),
                                                     this.geographMenuItem = new Ext.menu.CheckItem({
+
                                                             text: 'Географическая',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Географическая'].projection,
                                                             handler: function() {
@@ -445,6 +450,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                             }
                                                     }),
                                                     this.conicalMenuItem = new Ext.menu.CheckItem({
+
                                                             text: 'Коническая',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Коническая'].projection,
                                                             handler: function() {
@@ -455,12 +461,16 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                             }
                                                     }),
                                                     this.stereoMenuItem = new Ext.menu.CheckItem({
+
+                                                            text: 'Стереографическая',
+                                                            checked: app.map.projection === app.projectionStoreForMenu['Стереографическая'].projection,
                                                             text: 'Полярная Север',
                                                             checked: app.map.projection === app.projectionStoreForMenu['Полярная Север'].projection,
                                                             handler: function() {
                                                                 var callback = function(){
                                                                     window.location.reload(true);
                                                                 }
+                                                                app.changeProjection(app.projectionStoreForMenu['Стереографическая'], app, callback);
                                                                 app.changeProjection(app.projectionStoreForMenu['Полярная Север'], app, callback);
                                                             }
                                                     }),
@@ -480,7 +490,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 				]
 			})
 		});
-		/*tools.unshift({
+		tools.unshift({
 			text: 'Слой',
 			menu: new Ext.menu.Menu({
 				items: [
@@ -489,10 +499,16 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                 handler: function(){
                                                     return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
                                                 }
+
+
+
+
+
+
 					}
 				]
 			})
-		});*/
+		});
 		tools.unshift({
 			text: 'Карта',
                         //bububu: this,
@@ -505,6 +521,9 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                     window.location.reload(true);
                                                 }
 					}/*,
+
+
+
 					{
 						text: 'Загрузить'
 						//handler: date
@@ -527,6 +546,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                 handler: function(){
                                                     return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
                                                 }
+
+
+
+
+
 					}
 				]
 			})

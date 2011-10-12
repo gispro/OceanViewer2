@@ -58,11 +58,7 @@
             <fileset dir="app">
                 <exclude name="**/externals/**"/>
                 <exclude name="**/script/**"/>
-                <exclude name="**/images/**"/>
             </fileset>
-        </copy>
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/script/images">
-            <fileset dir="app/static/script/images"/>
         </copy>
         <!-- copy Ext resources -->
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/ext">

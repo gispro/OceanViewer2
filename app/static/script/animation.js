@@ -1,4 +1,5 @@
 var animationNodeTitle = 'Анимация';
+
 var animLayers         = []        ;
 var animServices       = []        ;
 var selectedNode       = null      ; 
@@ -62,6 +63,7 @@ function showAnimWindow(rootNode, selectedNode)
 			id           : 'slider',
 			width        : 200,
 			minValue     : 0,
+			maxValue     : 100.0,
 			maxValue     : 100,
 			x            : 65,
 			y            : 6,
@@ -140,6 +142,7 @@ function showAnimWindow(rootNode, selectedNode)
 			}
 		});
 		
+
 		btnReset = new Ext.Button({
 			scale    : 'small', 
 			cls      : 'x-btn-icon',
@@ -250,12 +253,12 @@ function closeAnimWindow()
 {
 	if (!animWindow)
 		animWindow = false;
+
 	if (animLayers [0] != null)
 	{
 		reset();
 		animLayers [0].setOpacity(0);
 	}		
-//	console.log ('0. app.mapPanel.layers.length = ' + app.mapPanel.layers.data.items.length + ', app.mapPanel.map.layers.length = ' + app.mapPanel.map.layers.length);
 
 	for (var i = (app.mapPanel.map.layers.length - 1); i >= 0; i--)
 	{
@@ -267,11 +270,6 @@ function closeAnimWindow()
 		if (app.mapPanel.layers.data.items[i].data.title.indexOf (TEMPL_LAYER_ANIMATION) > 0)
 			app.mapPanel.layers.data.items.remove (app.mapPanel.layers.data.items[i]);
 	}
-/*
-	for (var i = 0; i < app.mapPanel.map.layers.length; i++)
-		console.log (app.mapPanel.map.layers[i].name);
-*/
-//	console.log ('1. app.mapPanel.layers.length = ' + app.mapPanel.layers.data.items.length + ', app.mapPanel.map.layers.length = ' + app.mapPanel.map.layers.length);
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function getRootChildNode (rootNode, node_name)
@@ -317,6 +315,7 @@ function reset()
 				animLayers [j].setOpacity(0);
 			else
 				animLayers [j].setOpacity(maxAnimeOpacity);
+
 		}
 	}
 	slider.setValue(0);
@@ -461,7 +460,7 @@ function animationRender(bulkRender)
 				if(layer.isBaseLayer)
 				{
 					this.draggable = false;
-					Ext.applyIf(this.attributes, {checkedGroup: "gx_baselayer"});
+					Ext.applyIf(this.attributes, { checkedGroup: "gx_baselayer" });
 				}
 				if(!this.text) {
 					this.text = layer.name;
