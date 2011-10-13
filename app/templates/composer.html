@@ -239,10 +239,12 @@
                 zoom: 2
 		}
            });
-		
+
+        downloadArcgis();
+
+
         app.on("ready", function()
 			{
-			downloadArcgis();
 
            if(app.mapPanel.map.layers[0].mergeNewParams)
 			app.mapPanel.map.layers[0].mergeNewParams();
