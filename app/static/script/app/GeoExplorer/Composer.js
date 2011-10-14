@@ -91,27 +91,38 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             }, {
                 ptype: "gxp_zoomtolayerextent",
                 actionTarget: {target: "layertree.contextMenu", index: 0}
-            }, {
-                ptype: "gxp_navigation", toggleGroup: this.toggleGroup,
-                actionTarget: {target: "paneltbar", index: 6}
-            }, {
+            }, 
+            
+            
+            
+            {
                 id: "gxp_wmsgetfeatureinfo_ctl",
                 ptype: "gxp_wmsgetfeatureinfo", toggleGroup: this.toggleGroup,
-                actionTarget: {target: "paneltbar", index: 7}
-                
-            }, {
-                ptype: "gxp_measure", toggleGroup: this.toggleGroup,
-                actionTarget: {target: "paneltbar", index: 10}
-            }, {
-                ptype: "gxp_zoom",
                 actionTarget: {target: "paneltbar", index: 11}
-            }, {
+                
+            }, 
+            {
+                ptype: "gxp_navigation", toggleGroup: this.toggleGroup,
+                actionTarget: {target: "paneltbar", index: 12}
+            }, 
+            {
+                ptype: "gxp_zoom",
+                actionTarget: {target: "paneltbar", index: 14}
+            }, 
+            {
                 ptype: "gxp_navigationhistory",
-                actionTarget: {target: "paneltbar", index: 13}
-            }, {
-                ptype: "gxp_zoomtoextent",
                 actionTarget: {target: "paneltbar", index: 15}
-            }, {
+            }, 
+            {
+                ptype: "gxp_zoomtoextent",
+                actionTarget: {target: "paneltbar", index: 16}
+            }, 
+            {
+                ptype: "gxp_measure", toggleGroup: this.toggleGroup,
+                actionTarget: {target: "paneltbar", index: 17}
+            }
+            /*, 
+            {
                 ptype: "gxp_googleearth",
                 actionTarget: {target: "paneltbar", index: 17},
                 apiKeys: {
@@ -121,20 +132,23 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					"gisbox.ru:8080": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xRakI6Y6CU8176DTpVm6YZhntcRmBRCQGXzWiR0M4aPWBYO8EmChHR_lQ",
 					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
-            }, {
+            }*/
+            /*, 
+            {
                 // shared FeatureManager for feature editing, grid and querying
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
                 maxFeatures: 20,
                 actionTarget: {target: "paneltbar", index:19}
-            }, {
+            }, 
+            {
                 ptype: "gxp_featureeditor",
                 featureManager: "featuremanager",
                 autoLoadFeatures: true, // no need to "check out" features
                 outputConfig: {panIn: false},
                 toggleGroup: "layertools",
                 actionTarget: {target: "paneltbar", index:18}
-            }/*, {
+            }*//*, {
                 ptype: "gxp_featuregrid",
                 featureManager: "featuremanager",
                 outputConfig: {
@@ -263,7 +277,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		var tools = GeoExplorer.Composer.superclass.createTools.apply(this, arguments);
 
         // unauthorized, show login button
-        if (this.authorizedRoles.length === 0) {
+        /*if (this.authorizedRoles.length === 0) {
             this.loginButton = new Ext.Button({
                 iconCls: 'login',
                 text: this.loginText,
@@ -272,7 +286,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             });
             tools.push(this.loginButton);
         } else {
-        }
+        }*/
 		/**
         var aboutButton = new Ext.Button({
             text: this.appInfoText,
@@ -293,21 +307,21 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             iconCls: 'icon-export'
         }));
         tools.unshift(new Ext.Button({
-            tooltip: this.saveMapText,
-            needsAuthorization: true,
-            //disabled: !this.isAuthorized(),
-            handler: function() {
-                this.save(this.showUrl);
-            },
-            scope: this,
-            iconCls: "icon-save"
-        }));
-        tools.unshift(new Ext.Button({
             tooltip: "Сохранить новую",
             needsAuthorization: true,
             //disabled: !this.isAuthorized(),
             handler: function() {
                 this.saveNew(this.showUrl);
+            },
+            scope: this,
+            iconCls: "icon-save"
+        }));
+        tools.unshift(new Ext.Button({
+            tooltip: this.saveMapText,
+            needsAuthorization: true,
+            //disabled: !this.isAuthorized(),
+            handler: function() {
+                this.save(this.showUrl);
             },
             scope: this,
             iconCls: "icon-save"
@@ -391,14 +405,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         //tools.unshift(aboutButton);
 		
 		tools.unshift('->');
-		tools.unshift({
+		/*tools.unshift({
 			text: 'Справка',
 			tooltip: 'Справка', 
 			enableToggle: true,
 			id: 'helpWindowCheckButton', 
 			checked: false
 			//toggleHandler: menuOnCheckHelpWindow
-		});
+		});*/
 		
 		tools.unshift({
 			text: 'Вид',
@@ -515,24 +529,23 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                     window.location.hash = "#";
                                                     window.location.reload(true);
                                                 }
-					}/*,
-
-
-
-					{
-						text: 'Загрузить'
-						//handler: date
-					}*/,
+					},
 					{
 						text: 'Сохранить',
                                                 handler: function() {
-                                                    app.save(app.showEmbedWindow);
+                                                    app.save(app.showUrl);
                                                 }
 					},
 					{
 						text: 'Сохранить новую',
                                                 handler: function() {
-                                                    app.saveNew(app.showEmbedWindow);
+                                                    app.saveNew(app.showUrl);
+                                                }
+					},
+					{
+						text: 'Сохранить представление',
+                                                handler: function() {
+                                                    app.save(app.showEmbedWindow);
                                                 }
 					},
                                         "-",
@@ -572,7 +585,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         var iframe = body.dom.firstChild;
         var loading = new Ext.LoadMask(body);
         loading.show();
-        Ext.get(iframe).on('load', function() { loading.hide(); });
+        Ext.get(iframe).on('load', function() {loading.hide();});
     },
 
     /** private: method[showEmbedWindow]

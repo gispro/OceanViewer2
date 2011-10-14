@@ -127,14 +127,8 @@
             defaultSourceType: "gxp_wmscsource",
             sources: {
 		gispro: {
-                    //ptype: "gxp_wmssource",
                     url: "http://gisbox.ru:8084/geowebcache/service/wms",
-                    title: "GISPRO"
-                },
-		gispronocache: {
-                    ptype: "gxp_wmssource",
-                    url: "http://gisbox.ru:8083/geoserver/wms",
-                    title: "GISPRONOCACHE"
+                    title: "Слои картоосновы"
                 },
                 arcgis93: {
                     ptype: "gxp_arcgis93source"
@@ -142,8 +136,12 @@
                 rss: {
                     ptype: "gxp_rsssource"
 				},
+                google: {
+                    ptype: "gxp_googlesource"
+                },
                 ol: {
-                    ptype: "gxp_olsource"
+                    ptype: "gxp_olsource",
+                    title: "Картоосновы Google"
                 },
                 animation: {
                     ptype: "gxp_animationsource"
@@ -220,7 +218,30 @@
                     ]
                 },*/
                 {
-                    source: "gispronocache",
+                    source: "google",
+                    title: "Google Карта",
+                    name: "ROADMAP",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Рельеф",
+                    name: "TERRAIN",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Спутник",
+                    name: "SATELLITE",
+                    group: "background"
+                },
+                {
+                    source: "google",
+                    title: "Google Гибрид",
+                    name: "HYBRID",
+                    group: "background"
+                },                {
+                    source: "gispro",
                     title: "ЭКО 3.1 бланк",
                     name: "eko_blank",
                     group: "background",
