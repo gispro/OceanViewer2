@@ -46,6 +46,19 @@
     <target name="redist">
 
         <mkdir dir="${build}/${ant.project.name}"/>
+        <mkdir dir="${build}/portlet"/>
+        
+        <echo message="Compiling a Portlet with Ocean Viewer Div"/>
+          <javac srcdir="portlet"
+                 destdir="${build}/portlet">
+                     <classpath>
+                         <pathelement  location="lib/portlet-api-2.0.jar"/>
+                     </classpath>
+          </javac>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/classes">
+            <fileset dir="${build}/portlet/">
+            </fileset>
+        </copy>
         
         <copy todir="${build}/${ant.project.name}">
             <fileset dir="src/main/webapp/">
