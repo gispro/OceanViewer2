@@ -34,8 +34,8 @@ public class OceanViewerPortlet extends GenericPortlet
    public void doView(RenderRequest request, RenderResponse response) throws IOException
    {
       PrintWriter writer = response.getWriter();
-      //writer.write("<iframe src=\"/OceanViewer2/\" width=\"100%\" height=\"600\" align=\"left\" frameborder=\"0\" vspace=\"0\" hspace=\"0\" marginheight=\"0\" marginwidth=\"0\" scrolling=\"no\">Ваш браузер не поддерживает фреймы!</iframe>");
-	  writer.write("<div id=\"render-div\"></div>");
+      writer.write("<iframe src=\"/OceanViewer2/\" width=\"100%\" height=\"600\" align=\"left\" frameborder=\"0\" vspace=\"0\" hspace=\"0\" marginheight=\"0\" marginwidth=\"0\" scrolling=\"no\">Ваш браузер не поддерживает фреймы!</iframe>");
+      //writer.write("<div id=\"render-div\"></div>");
       writer.close();
    }
 }

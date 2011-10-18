@@ -25,7 +25,9 @@
         <echo message="building ringo jars"/>
         <ant dir="externals/ringojs" target="jar"/>
         <copy todir="externals/ringojs/lib" flatten="true" includeEmptyDirs="false">
-            <fileset dir="lib"/>
+            <fileset dir="lib">
+                <exclude name="portlet-api-2.0.jar"/>
+            </fileset>
         </copy>
 
     </target>
