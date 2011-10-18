@@ -1,73 +1,136 @@
 {
-	"services" : 
-	[
-		{
-			"serverName" : "Прогноз метеорологических полей с высоким пространственным разрешением для Мирового океана, включая моря России, от 00 часов (ASCII файлы)",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_42/wms"
-		},
-		{
-			"serverName" : "Прогноз параметров ветрового волнения в Мировом океане от 00 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_46/wms"
-		},
-		{
-			"serverName" : "Глобальный анализ поля атмосферного давления на уровне моря от 00 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_60/wms"
-		},
-		{
-			"serverName" : "Глобальный анализ поля атмосферного давления на уровне моря от 12 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_61/wms"
-		},
-		{
-			"serverName" : "Краткосрочный прогноз полей скорости ветра и течений Баренцева моря от 00 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_62/wms"
-		},
-		{
-			"serverName" : "Краткосрочный прогноз полей скорости ветра и течений Баренцева моря от 12 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_63/wms"
-		},
-		{
-			"serverName" : "Краткосрочный прогноз метеорологических  полей для Черного моря от 00 час (сетка 10х10 км)",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_64/wms"
-		},
-		{
-			"serverName" : "Краткосрочный прогноз метеорологических  полей для Каспийского моря от 00 час (сетка 10х10 км)",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_65/wms"
-		},
-		{
-			"serverName" : "Краткосрочный прогноз метеорологических  полей для Азовского моря от 00 час (сетка 3х3 км)",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_66/wms"
-		},
-		{
-			"serverName" : "Прогноз параметров ветрового волнения в Азовском море от 00 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_68/wms"
-		},
-		{
-			"serverName" : "Прогноз параметров ветрового волнения в Черном море от 00 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_69/wms"
-		},
-		{
-			"serverName" : "Прогноз параметров ветрового волнения в Каспийском море от 00 час",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_70/wms"
-		},
-		{
-			"serverName" : "Анализ и прогноз класса пожарной опасности по территории Росии от 04 час ВСВ",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_114/wms"
-		},
-		{
-			"serverName" : "Анализ и прогноз класса пожарной опасности по территории Росии от 06 час ВСВ",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_115/wms"
-		},
-		{
-			"serverName" : "Анализ и прогноз класса пожарной опасности по территории Росии от 12 час ВСВ",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_116/wms"
-		},
-		{
-			"serverName" : "Местоположение судов",
-			"url" : "http://gisbox.ru:8080/geoserver/ru_morsvjazsputnik_act/wms"
-		},
-		{
-			"serverName" : "Пользовательские слои",
-			"url" : "/geoserver/wms"
-		}
-	]
+    "services" : 
+    [
+    {
+        "serverName" : "Прогноз метеорологических полей с высоким пространственным разрешением для Мирового океана, включая моря России, от 00 часов (ASCII файлы)",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_42/wms"
+    },
+    {
+        "serverName" : "Прогноз параметров ветрового волнения в Мировом океане от 00 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_46/wms"
+    },
+    {
+        "serverName" : "Глобальный анализ поля атмосферного давления на уровне моря от 00 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_60/wms"
+    },
+    {
+        "serverName" : "Глобальный анализ поля атмосферного давления на уровне моря от 12 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_61/wms"
+    },
+    {
+        "serverName" : "Краткосрочный прогноз полей скорости ветра и течений Баренцева моря от 00 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_62/wms"
+    },
+    {
+        "serverName" : "Краткосрочный прогноз полей скорости ветра и течений Баренцева моря от 12 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_63/wms"
+    },
+    {
+        "serverName" : "Краткосрочный прогноз метеорологических  полей для Черного моря от 00 час (сетка 10х10 км)",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_64/wms"
+    },
+    {
+        "serverName" : "Краткосрочный прогноз метеорологических  полей для Каспийского моря от 00 час (сетка 10х10 км)",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_65/wms"
+    },
+    {
+        "serverName" : "Краткосрочный прогноз метеорологических  полей для Азовского моря от 00 час (сетка 3х3 км)",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_66/wms"
+    },
+    {
+        "serverName" : "Прогноз параметров ветрового волнения в Азовском море от 00 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_68/wms"
+    },
+    {
+        "serverName" : "Прогноз параметров ветрового волнения в Черном море от 00 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_69/wms"
+    },
+    {
+        "serverName" : "Прогноз параметров ветрового волнения в Каспийском море от 00 час",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_70/wms"
+    },
+    {
+        "serverName" : "Анализ и прогноз класса пожарной опасности по территории Росии от 04 час ВСВ",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_114/wms"
+    },
+    {
+        "serverName" : "Анализ и прогноз класса пожарной опасности по территории Росии от 06 час ВСВ",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_115/wms"
+    },
+    {
+        "serverName" : "Анализ и прогноз класса пожарной опасности по территории Росии от 12 час ВСВ",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_116/wms"
+    },
+    {
+        "serverName" : "Местоположение судов",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_morsvjazsputnik_act/wms"
+    },
+    {
+        "serverName" : "ЭМА",
+        "url" : "http://gisbox.ru/geoserver-pl/wms"
+    },
+
+    {
+        "serverName" : "Станции ГМС",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi-wdc_352/wms"
+    },
+
+    {
+        "serverName" : "Расположение станций ГЛОСС",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi-wdc_351/wms"
+    },
+
+    {
+        "serverName" : "Расположение обсерваторий на территории РФ",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi-wdc_1351/wms"
+    },
+
+    {
+        "serverName" : "Расположение станций наблюдательной сети Росгидромета на территории РФ",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi-wdc_1352/wms"
+    },
+
+    {
+        "serverName" : "Оперативные данные о метеоусловиях с метеостанций (FM-12 IX SYNOP).Прибрежная территория России (200 км) и острова.Азовское море.",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi_wdc_67/wms"
+    },
+
+    {
+        "serverName" : "Оперативная метеорологическая информация дрейфующей станции СП-38",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_aari_1440/wms"
+    },
+
+    {
+        "serverName" : "Оперативные данные о метеоусловиях моря, температуре и солености воды на различных глубинах с буев (FM-18 X BUOY).МЕТЕО.Период: последние сутки",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi_wdc_1196/wms"
+    },
+
+    {
+        "serverName" : "Сведения  о местоположении судов Росгидромета",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi_wdc_1254/wms"
+    },
+
+    {
+        "serverName" : "Оперативные данные о гидрометеоусловиях с судов (FM-21 V SHIP). Период:последние сутки",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_rihmi_wdc_1195/wms"
+    },
+
+    {
+        "serverName" : "Поля параметров краткосрочного прогноза эволюции ледяного покрова Баренцева и Карского морей с заблаговременностью до 7 суток",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_aari_3103/wms"
+    },
+
+    {
+        "serverName" : "АИСПЦ – уровень моря",
+        "url" : "http://gisbox.ru:8080/geoserver/ru_typhoon_19/wms"
+    },
+
+    {
+        "serverName" : "Пользовательские слои",
+        "url" : "/geoserver/wms"
+    }
+                
+
+
+    ]
 }
