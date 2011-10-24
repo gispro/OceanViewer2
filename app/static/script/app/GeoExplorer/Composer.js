@@ -50,7 +50,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     labelled: true
                     , displayInLayerSwitcher: false
                 },
-                "outputTarget":"map"
+                "outputTarget":"map",
+                id: "graticulegxptool"
             },*/
             {
                 "ptype": "gxp_mouseposgxptool",
@@ -63,6 +64,15 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 },
                 "outputTarget":"map"
             },
+            /*{
+                "ptype": "gxp_overviewgxptool",
+                "controlOptions":{
+                    maximized: true
+                    ,
+                    outsideViewport: true
+                },
+                "outputTarget":"map"
+            },*/
              {
                 ptype: "gxp_layertree",
                 outputConfig: {
@@ -362,7 +372,9 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     //-900691700374.099, -35565700,
                     //900684359774.099, -28225100
                     //54368.65331014791, -58444533.29569984, 98495607.76719199, 11248883.449091688
-                    -20037508.342789, -13717459.765275, 20037508.342789, 18421795.008177
+                    
+                        //-20037508.342789, -13717459.765275, 20037508.342789, 18421795.008177
+                        -20037508.342789, -13717459.765275, 20037508.342789, 20037508.342789 // 26357556.920303
                 ],
                 switchEko3: true
             }
@@ -433,6 +445,35 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						checkHandler: checkHandler
 					}),*/
                     
+                                        new Ext.menu.CheckItem({
+                                                text: 'Градусная сетка',
+                                                checked: (this.tools.graticulegxptool && this.tools.graticulegxptool.activated),
+                                                scope: this,
+                                                handler: function() {
+                                                    if(!this.tools.graticulegxptool){
+                                                        try {
+                                                            this.tools.graticulegxptool = Ext.ComponentMgr.createPlugin(
+                                                                {
+                                                                    "ptype": "gxp_graticulegxptool",
+                                                                    "controlOptions":{
+                                                                        //numPoints: 2, 
+                                                                        labelled: true
+                                                                        , displayInLayerSwitcher: false
+                                                                        , labelSymbolizer: {fontSize: 10}
+                                                                    },
+                                                                    "outputTarget":"map",
+                                                                    id: "graticulegxptool"
+                                                                }, this.defaultToolType
+                                                            );
+                                                        } catch (err) {
+                                                            throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
+                                                        }
+                                                        this.tools.graticulegxptool.init(this);
+                                                        
+                                                    }else
+                                                        this.tools.graticulegxptool.toggle();
+                                                }
+                                        }),
                     
                     
 

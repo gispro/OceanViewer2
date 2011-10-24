@@ -47,10 +47,11 @@
     <script type="text/javascript" src="script/PrintPreview.js"></script>
     
     <!--<script type="text/javascript" src="script/app/graticuleGxpTool.js"></script>-->
+    <script type="text/javascript" src="script/choosers.js"></script>
 
     <script>
         Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
-        OpenLayers.ImgPath = "theme/app/img/";
+        OpenLayers.ImgPath = "externals/openlayers/img/";
         // optionally set locale based on query string parameter
         if (GeoExt.Lang) {
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
@@ -262,10 +263,13 @@
            });
 
         downloadArcgis();
+		downloadRSS   ();
 
 
         app.on("ready", function()
 			{
+			animationStore.load();
+			aquaStore     .load();
 
            if(app.mapPanel.map.layers[0].mergeNewParams)
 			app.mapPanel.map.layers[0].mergeNewParams();
@@ -332,6 +336,22 @@
                            app.southernMenuItem.disable();
                }
         });
+        
+  var ol = new OpenLayers.Layer.WMS(
+   "OpenLayers WMS", 
+   "http://vmap0.tiles.osgeo.org/wms/vmap0",
+   {layers: 'basic'}
+  );
+  var overview = new OpenLayers.Control.OverviewMap({
+   mapOptions: {
+    projection: new OpenLayers.Projection("EPSG:900913"),
+    units: "m",
+    maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+   }, layers: [ol]
+  });
+  app.mapPanel.map.addControl(overview);        
+        
+        
         });
         
     </script>

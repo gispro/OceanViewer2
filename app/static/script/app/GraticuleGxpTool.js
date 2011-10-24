@@ -3,13 +3,13 @@ Ext.namespace("gxp.plugins");
 
 gxp.plugins.GraticuleGxpTool = Ext.extend(gxp.plugins.Tool, {
     
-    /** api: ptype = gxp_measure */
     ptype: "gxp_graticulegxptool",
 
     config: null,
     graticuleControl: null,
     map: null,
     readyAlready: false,
+    activated: true,
 
     /** private: method[constructor]
      */
@@ -21,22 +21,37 @@ gxp.plugins.GraticuleGxpTool = Ext.extend(gxp.plugins.Tool, {
     },
     
     init: function(target) {
-        this.map = target.mapPanel.map;
-        this.graticuleControl = new OpenLayers.Control.Graticule(this.config.controlOptions);
-        this.map.addControl(this.graticuleControl);
-        gxp.plugins.GraticuleGxpTool.superclass.init.apply(this, arguments);
+        var ths = this;
+        gxp.plugins.GraticuleGxpTool.superclass.init.apply(ths, arguments);
         
         
-        bubu = this;
-        target.on("ready", function() {
-            bubu.graticuleControl.gratLayer.displayOutsideMaxExtent = false;
-            bubu.bringUp();
-            bubu.readyAlready = true;
-        });
-        target.mapPanel.on("afterlayeradd", function() {
-            if(bubu.readyAlready)
-                bubu.bringUp();
-        });
+        //target.on("ready", function() {
+            if(target.mapPanel.map.layers[0].mergeNewParams)
+		target.mapPanel.map.layers[0].mergeNewParams();
+                    
+            
+            ths.map = target.mapPanel.map;
+            ths.graticuleControl = new OpenLayers.Control.Graticule(ths.config.controlOptions);
+            ths.map.addControl(ths.graticuleControl);
+
+            //ths.graticuleControl.gratLayer.displayOutsideMaxExtent = false;
+            //ths.bringUp();
+            ths.readyAlready = true;
+        //});
+        /*target.mapPanel.on("afterlayeradd", function() {
+            if(ths.readyAlready)
+                ths.bringUp();
+        });*/
+    },
+    
+    toggle: function(){
+        if(this.activated){
+            this.activated = false;
+            this.graticuleControl.deactivate();
+        }else{
+            this.activated = true;
+            this.graticuleControl.activate();
+        }
     },
     
 

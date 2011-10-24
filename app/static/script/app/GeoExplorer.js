@@ -602,6 +602,31 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             items: [
                 {/*region: 'center', */autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
                 {/*region: 'south', */xtype: "container", layout: "fit", border: false, /*height: 200, */id: 'legend', title: 'Легенда'}
+				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                ,{xtype: "container", layout: "fit", border: false, id: 'geoTools', title: 'Инструменты', 
+                     items: [{
+						xtype: "treepanel",
+						rootVisible: false,
+						lines: false,
+						root: new Ext.tree.AsyncTreeNode({
+								id: 'isroot',
+								expanded: true,
+								children: [
+								{
+									id   : '1', 
+									text : 'Океаны и моря',
+									leaf : true,
+									listeners: {
+											click: function(n) {
+												openChooserOcean();
+											}
+									}
+								}]
+						})
+					}]
+				}
+				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                
             ]
         });
         
