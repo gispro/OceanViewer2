@@ -12,7 +12,7 @@
 	url = https://github.com/gispro/GeoExt.git
 [submodule "app/static/externals/openlayers"]
 	path = app/static/externals/openlayers
-	url = git://github.com/openlayers/openlayers.git
+	url = https://github.com/gispro/openlayers.git
 [submodule "app/static/externals/PrintPreview"]
 	path = app/static/externals/PrintPreview
 	url = git://github.com/GeoNode/PrintPreview.git
