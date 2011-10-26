@@ -421,7 +421,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         metadataFieldNames[arr[i][0]]["Заголовок элемента"]?
                                             metadataFieldNames[arr[i][0]]["Заголовок элемента"]:
                                             arr[i][0], 
-                                        arr[i][1], 
+                                        (arr[i][1]!="null"?arr[i][1]:""), 
                                         arr[i][0],
                                         translatedLayerNames[arr[i][2]],
                                         arr[i][3],
@@ -472,6 +472,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                         data: arr,
                                         reader: myReader
                                     });
+                                    
+                                sss.filterBy(function(record){return record.get("Field")!="THE_GEOM";});
                                         
                                 var vvv = new Ext.grid.GroupingView({
                                         forceFit:true,
@@ -603,28 +605,43 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 {/*region: 'center', */autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
                 {/*region: 'south', */xtype: "container", layout: "fit", border: false, /*height: 200, */id: 'legend', title: 'Легенда'}
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                ,{xtype: "container", layout: "fit", border: false, id: 'geoTools', title: 'Инструменты', 
-                     items: [{
-						xtype: "treepanel",
-						rootVisible: false,
-						lines: false,
-						root: new Ext.tree.AsyncTreeNode({
-								id: 'isroot',
-								expanded: true,
-								children: [
-								{
-									id   : '1', 
-									text : 'Океаны и моря',
-									leaf : true,
-									listeners: {
-											click: function(n) {
-												openChooserOcean();
-											}
-									}
-								}]
-						})
-					}]
-				}
+            ,{
+                xtype: "container", 
+                layout: "fit", 
+                border: false, 
+                id: 'geoTools', 
+                title: 'Инструменты', 
+                items: [{
+                    xtype: "treepanel",
+                    rootVisible: false,
+                    lines: false,
+                    root: new Ext.tree.AsyncTreeNode({
+                        id: 'isroot',
+                        expanded: true,
+                        children: [
+                        {
+                            id   : '1', 
+                            text : 'Океаны и моря',
+                            leaf : true,
+                            listeners: {
+                                click: function(n) {
+                                    openChooserOcean();
+                                }
+                            }
+                        }
+                        ,{
+                            id   : '2', 
+                            text : 'Адреса',
+                            leaf : true,
+                            listeners: {
+                                click: function(n) {
+                                    openAddressSearch();
+                                }
+                            }
+                        }]
+                    })
+                }]
+            }
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 
             ]
