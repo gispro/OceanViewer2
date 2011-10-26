@@ -94,11 +94,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             }, {
                 ptype: "gxp_layerproperties",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }, {
+            }, /*{
                 ptype: "gxp_styler",
                 sameOriginStyling: false,
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }, {
+            }, */{
                 ptype: "gxp_zoomtolayerextent",
                 actionTarget: {target: "layertree.contextMenu", index: 0}
             }, 
@@ -306,6 +306,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         });
 		**/
         //tools.unshift("-");
+        
+        /*
         tools.unshift(new Ext.Button({
             tooltip: this.exportMapText,
             needsAuthorization: true,
@@ -336,6 +338,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             scope: this,
             iconCls: "icon-save"
         }));
+        */
         
         this.projectionStoreForMenu = {
             'Меркатора': {
