@@ -638,6 +638,18 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     openAddressSearch();
                                 }
                             }
+                        }
+                        ,{
+                            id   : '3', 
+                            text : 'Настройка сервисов',
+                            leaf : true,
+                            listeners: {
+                                click: function(n) {
+									if (!servicesSetting)
+										servicesSetting = new gxp.ServicesSetting();
+									servicesSetting.show();
+                                }
+                            }
                         }]
                     })
                 }]
