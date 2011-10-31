@@ -48,6 +48,7 @@
     
     <!--<script type="text/javascript" src="script/app/graticuleGxpTool.js"></script>-->
     <script type="text/javascript" src="script/choosers.js"></script>
+    <script type="text/javascript" src="script/app/ServicesSetting.js"></script>
 
     <script>
         Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
@@ -64,22 +65,22 @@
         //        });
         
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		  Ext.override(OpenLayers.Layer.GeoRSS, {
-                     parseData: RssPopupParseData
-                  });
+		Ext.override(OpenLayers.Layer.GeoRSS, {
+			parseData: RssPopupParseData
+		});
 
-                  Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
+		Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
 			getInfoForClick: RssPopupGetInfoForClick
-                  });
+		});
 
-                  Ext.override(GeoExt.tree.LayerNode, {
-                     render: RssPopupLayerNodeRender
-                    });
+		Ext.override(GeoExt.tree.LayerNode, {
+			render: RssPopupLayerNodeRender
+		});
 
-                  Ext.override(gxp.Viewer, {
-                     getState: RssPopupGetState
-                  });
-		
+		Ext.override(gxp.Viewer, {
+			getState: RssPopupGetState
+		});
+
 		Ext.override(GeoExt.tree.LayerLoader, {
 			addLayerNode: RsspopupAddLayerNode
 		});
@@ -311,7 +312,7 @@
            }
 
 
-            app.mapPanel.on("afterlayervisibilitychange", function(){
+			app.mapPanel.on("afterlayervisibilitychange", function(){
                 var metMerc = false;
                for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
                    //alert(app.mapPanel.map.layers[ii]);
@@ -335,23 +336,21 @@
                            app.geographMenuItem.disable();//d = true;
                            app.southernMenuItem.disable();
                }
-        });
+			});
         
-  var ol = new OpenLayers.Layer.WMS(
-   "OpenLayers WMS", 
-   "http://vmap0.tiles.osgeo.org/wms/vmap0",
-   {layers: 'basic'}
-  );
-  var overview = new OpenLayers.Control.OverviewMap({
-   mapOptions: {
-    projection: new OpenLayers.Projection("EPSG:900913"),
-    units: "m",
-    maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
-   }, layers: [ol]
-  });
-  app.mapPanel.map.addControl(overview);        
-        
-        
-        });
+			var ol = new OpenLayers.Layer.WMS(
+				"OpenLayers WMS", 
+				"http://vmap0.tiles.osgeo.org/wms/vmap0",
+				{layers: 'basic'}
+			);
+			var overview = new OpenLayers.Control.OverviewMap({
+				mapOptions: {
+					projection: new OpenLayers.Projection("EPSG:900913"),
+					units: "m",
+					maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+				}, layers: [ol]
+			});
+			app.mapPanel.map.addControl(overview);        
+	});
         
     </script>
