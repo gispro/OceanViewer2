@@ -48,7 +48,7 @@
     
     <!--<script type="text/javascript" src="script/app/graticuleGxpTool.js"></script>-->
     <script type="text/javascript" src="script/choosers.js"></script>
-    <script type="text/javascript" src="script/app/ServicesSetting.js"></script>
+    <!--<script type="text/javascript" src="script/app/ServicesSetting.js"></script>-->
 
     <script>
         Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
@@ -141,6 +141,9 @@
                 google: {
                     ptype: "gxp_googlesource"
                 },
+                osm: {
+                    ptype: "gxp_osmsource"
+                },                
                 ol: {
                     ptype: "gxp_olsource",
                     title: "Картоосновы Google"
@@ -242,13 +245,18 @@
                     title: "Google Гибрид",
                     name: "HYBRID",
                     group: "background"
-                },                {
+                },                
+                {
+                    source: "osm",
+                    name: "mapnik",
+                    group: "background"
+                },                
+                {
                     source: "gispro",
                     title: "ЭКО 3.1 бланк",
                     name: "eko_blank",
                     group: "background",
                     args: [null, {alwaysInRange: true}]
-                    
                 },                
                 {
                     source: "gispro",
@@ -338,7 +346,8 @@
                }
 			});
         
-			var ol = new OpenLayers.Layer.WMS(
+			/*
+                        var ol = new OpenLayers.Layer.WMS(
 				"OpenLayers WMS", 
 				"http://vmap0.tiles.osgeo.org/wms/vmap0",
 				{layers: 'basic'}
@@ -351,6 +360,7 @@
 				}, layers: [ol]
 			});
 			app.mapPanel.map.addControl(overview);        
+                        */
 	});
         
     </script>

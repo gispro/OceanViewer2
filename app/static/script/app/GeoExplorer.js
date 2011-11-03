@@ -629,7 +629,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 }
                             }
                         }
-                        ,{
+                        /*,{
                             id   : '2', 
                             text : 'Адреса',
                             leaf : true,
@@ -638,8 +638,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     openAddressSearch();
                                 }
                             }
-                        }
-                        ,{
+                        }*/
+                        /*,{
                             id   : '3', 
                             text : 'Настройка сервисов',
                             leaf : true,
@@ -650,7 +650,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 									servicesSetting.show();
                                 }
                             }
-                        }]
+                        }*/]
                     })
                 }]
             }

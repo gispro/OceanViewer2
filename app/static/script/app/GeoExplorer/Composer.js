@@ -419,6 +419,25 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         //tools.unshift("-");
         //tools.unshift(aboutButton);
 		
+                tools.unshift({
+                    xtype: "gxp_googlegeocodercombo",
+                    id: "googSearchCombo",
+                    //leaf : true,
+                    width: 200,
+                    listeners: {
+                        select: function(combo, record) {
+                            var bounds = record.get("viewport").transform(
+                            new OpenLayers.Projection("EPSG:4326"), this.mapPanel.map.getProjectionObject());
+                            this.mapPanel.map.zoomToExtent(bounds, true);
+                        },
+                        scope: this
+                    },
+                    actionTarget: {target: "paneltbar", index: 10}
+                });
+
+
+                
+                
 		tools.unshift('->');
 		/*tools.unshift({
 			text: 'Справка',
