@@ -3,10 +3,17 @@ var fs = require("fs");
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 exports.app = function(request)
 {
-	if (request.params.service === "rss")
-		addRSSRecord(request);
+	var appDir = "";
+//        system.print ("app.debug = " + java.lang.System.getProperty("app.debug"));
+	if (!(java.lang.System.getProperty("app.debug"))) // === 0)
+		appDir = "webapps/OceanViewer2/WEB-INF/";
+
+        system.print ("app.debug = " + java.lang.System.getProperty("app.debug") + ", appDir = " + appDir);
+
+        if (request.params.service === "rss")
+		addRSSRecord(request, appDir);
 	else if (request.params.service === "arcgis")
-		addArcGisRecord(request);
+		addArcGisRecord(request, appDir);
 	var resp = 
 	{
 		status: 200,
@@ -18,9 +25,9 @@ exports.app = function(request)
     return resp;    
 };
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function addRSSRecord(request)
+function addRSSRecord(request, dir)
 {
-	var file = java.io.File("app/static/rss.json");
+	var file = java.io.File(dir + "app/static/rss.json");
 	if (file.exists())
 	{
 		var content = readFileContent (file.getAbsolutePath());
@@ -38,9 +45,10 @@ function addRSSRecord(request)
 	}
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function addArcGisRecord(request)
+function addArcGisRecord(request, dir)
 {
-	var file = java.io.File("app/static/arcgis.json");
+	var file = java.io.File(dir + "app/static/arcgis.json");
+//        system.print ("debug saving : " + file.exists() + ", " + file.getPath());
 	if (file.exists())
 	{
 		var content = readFileContent (file.getAbsolutePath());

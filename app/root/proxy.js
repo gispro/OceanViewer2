@@ -4,6 +4,7 @@ var Headers = require("ringo/utils/http").Headers;
 var MemoryStream = require("io").MemoryStream;
 var objects = require("ringo/utils/objects");
 var responseForStatus = require("../util").responseForStatus;
+//var AsyncResponse = require('ringo/webapp/async').AsyncResponse;
 
 var URL = java.net.URL;
 
@@ -130,4 +131,37 @@ function proxyPass(config) {
         headers: headers,
         body: new MemoryStream(exchange.contentBytes)
     };
+}
+    
+function proxyPassNew(config) {
+    var response;
+    var outgoing = createProxyRequestProps(config);
+    var incoming = config.request;
+    if (!outgoing || outgoing.scheme !== incoming.scheme) {
+        response = responseForStatus(400, "The url parameter value must be absolute url with same scheme as request.");
+    } else {
+        // re-issue request
+        var exchange = clientRequest({
+            url: outgoing.url,
+            method: outgoing.method,
+            username: outgoing.username,
+            password: outgoing.password,
+            headers: outgoing.headers,
+            data: outgoing.data,
+            async: false
+        });
+        
+        exchange.wait();
+        var headers = new Headers(objects.clone(exchange.headers));
+        if (!config.allowAuth) {
+            // strip out authorization and cookie headers
+            headers.unset("WWW-Authenticate");
+            headers.unset("Set-Cookie");
+        }
+        return {
+            status: exchange.status,
+            headers: headers,
+            body: new MemoryStream(exchange.contentBytes)
+        };
+    }
 }
