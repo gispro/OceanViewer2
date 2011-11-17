@@ -838,15 +838,15 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         
         if(desiredConfig.switchEko3){
            for(var i=0;i<curConfigObj.map.layers.length;i++) {
-               if(curConfigObj.map.layers[i].name === 'eko3_merge'){
-                   curConfigObj.map.layers[i].name = 'eko3_merge_v';
+               if(curConfigObj.map.layers[i].name === 'eko_merge'){
+                   curConfigObj.map.layers[i].name = 'eko_merge_v';
                }
            }
            delete desiredConfig.switchEko3;
         }else{
            for(i=0;i<curConfigObj.map.layers.length;i++) {
-               if(curConfigObj.map.layers[i].name === 'eko3_merge_v'){
-                   curConfigObj.map.layers[i].name = 'eko3_merge';
+               if(curConfigObj.map.layers[i].name === 'eko_merge_v'){
+                   curConfigObj.map.layers[i].name = 'eko_merge';
                }
            }
         }
