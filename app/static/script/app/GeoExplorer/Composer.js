@@ -442,23 +442,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                             new OpenLayers.Projection("EPSG:4326"), this.mapPanel.map.getProjectionObject());
                             this.mapPanel.map.zoomToExtent(bounds, true);
                         }
-                        //,render: function(c) {
-                            //alert("we are here");
-                        //    Ext.QuickTips.register({
-                        //        target: c.getEl().id,
-                        //        text: 'sdhfjksdfh'
-                        //    });
-                        //}
+                        ,afterRender: function(c) {
+                            c.getEl().dom.setAttribute('ext:qtip', 'Поиск геоданных')
+                        }
                         ,scope: this
                     }
-                    //,'ext:qtip': "sdfsdf"
-                    //,qtip: "sdfsdf"
-                    //,tooltip: {
-                    //  text:'This is a QuickTip with autoHide set to false and a title',
-                    //  title:'Tip Title',
-                    //  autoHide:false
-                    //}
-                    //,menuText: "двыоларлыовар"
                     ,actionTarget: {target: "paneltbar", index: 10}
                 });
                 tools.unshift(
@@ -466,14 +454,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                         xtype: "label",
                         text: "Поиск:",
                         style: "padding-right: 4px;"
-                        /*,listeners: {
+                        ,listeners: {
                             afterRender: function(c) {
-                                Ext.QuickTips.register({
-                                    target: c.getEl(),
-                                    text: "Наконец-то, шеу!"
-                                });
+                                c.getEl().dom.setAttribute('ext:qtip', 'Поиск геоданных')
                             }
-                        }*/
+                        }
                         ,actionTarget: {target: "paneltbar", index: 9}
                     }
                 );
