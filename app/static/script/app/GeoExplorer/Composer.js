@@ -132,6 +132,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 actionTarget: {target: "paneltbar", index: 17}
             },*/
             {
+                leaf: true, 
+                text: gxp.plugins.Legend.prototype.tooltip, 
+                checked: true, 
+                iconCls: "gxp-icon-legend",
+                ptype: "gxp_legend",
+                actionTarget: {target: "paneltbar", index: 17}
+            },             
+            {
               ptype: "gxp_gis_measure", toggleGroup: this.toggleGroup,
               actionTarget: {target: "paneltbar", index: 37}
             }
@@ -433,17 +441,40 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                             var bounds = record.get("viewport").transform(
                             new OpenLayers.Projection("EPSG:4326"), this.mapPanel.map.getProjectionObject());
                             this.mapPanel.map.zoomToExtent(bounds, true);
-                        },
-                        scope: this
-                    },
-                    actionTarget: {target: "paneltbar", index: 10}
+                        }
+                        //,render: function(c) {
+                            //alert("we are here");
+                        //    Ext.QuickTips.register({
+                        //        target: c.getEl().id,
+                        //        text: 'sdhfjksdfh'
+                        //    });
+                        //}
+                        ,scope: this
+                    }
+                    //,'ext:qtip': "sdfsdf"
+                    //,qtip: "sdfsdf"
+                    //,tooltip: {
+                    //  text:'This is a QuickTip with autoHide set to false and a title',
+                    //  title:'Tip Title',
+                    //  autoHide:false
+                    //}
+                    //,menuText: "двыоларлыовар"
+                    ,actionTarget: {target: "paneltbar", index: 10}
                 });
                 tools.unshift(
                     {
                         xtype: "label",
                         text: "Поиск:",
-                        style: "padding-right: 4px;",
-                        actionTarget: {target: "paneltbar", index: 9}
+                        style: "padding-right: 4px;"
+                        /*,listeners: {
+                            afterRender: function(c) {
+                                Ext.QuickTips.register({
+                                    target: c.getEl(),
+                                    text: "Наконец-то, шеу!"
+                                });
+                            }
+                        }*/
+                        ,actionTarget: {target: "paneltbar", index: 9}
                     }
                 );
 

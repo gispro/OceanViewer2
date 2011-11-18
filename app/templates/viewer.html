@@ -15,7 +15,27 @@
     <script type="text/javascript" src="script/gxp.js"></script> 
 
     <!-- proj4js resources -->
-    <!--<script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>-->
+    <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
+    <script type="text/javascript">
+            Ext.QuickTips.init();
+            
+            Proj4js.defs["EPSG:102012"] = 
+                "+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+            Proj4js.defs["EPSG:3576"] = 
+                "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+            Proj4js.defs["EPSG:4326"] = 
+                "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+            Proj4js.defs["EPSG:91101"] =
+                "+title=long/lat:WGS84 +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees"
+            Proj4js.defs["EPSG:3413"] = 
+                "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+            Proj4js.defs["EPSG:3995"] = 
+                "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
+            Proj4js.defs["EPSG:3976"] = 
+                "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
+    
+    </script>
+    
 
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="theme/app/geoexplorer.css" />
@@ -23,13 +43,75 @@
     <link rel="stylesheet" type="text/css" href="theme/ux/colorpicker/color-picker.ux.css" />
     <script type="text/javascript" src="script/GeoExplorer.js"></script>
     <script type="text/javascript" src="script/ux.js"></script>
+    <script type="text/javascript" src="script/choosers.js"></script>
     
     <script>
         Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
-        OpenLayers.ImgPath = "theme/app/img/";
-		if (GeoExt.Lang) {
+        OpenLayers.ImgPath = "externals/openlayers/img/";
+        // optionally set locale based on query string parameter
+        if (GeoExt.Lang) {
+            //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
 			GeoExt.Lang.set("ru");
         }
+        //var graticuleControl1 = new OpenLayers.Control.Graticule({
+        //            numPoints: 2, 
+        //            labelled: true
+        //            , displayInLayerSwitcher: false
+        //        });
+        
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Ext.override(OpenLayers.Layer.GeoRSS, {
+			parseData: RssPopupParseData
+		});
+
+		Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
+			getInfoForClick: RssPopupGetInfoForClick
+		});
+
+		Ext.override(GeoExt.tree.LayerNode, {
+			render: RssPopupLayerNodeRender
+		});
+
+		Ext.override(gxp.Viewer, {
+			getState: RssPopupGetState
+		});
+
+		Ext.override(GeoExt.tree.LayerLoader, {
+			addLayerNode: RsspopupAddLayerNode
+		});
+		
+		Ext.override(gxp.plugins.RemoveLayer, {
+			addActions: RssPopupAddActions
+		});
+
+		Ext.override(gxp.WMSLayerPanel, {
+			createDisplayPanel: RssSourceCreateDisplayPanel
+		});
+		
+		Ext.override(GeoExt.LegendPanel, {
+			addLegend : animationAddLegend
+		});
+                
+		Ext.override(GeoExt.tree.LayerNode, {
+			render : animationRender
+		});
+
+		Ext.override(GeoExt.LegendPanel, {
+			recordIndexToPanelIndex : animationRecordIndexToPanelIndex
+		});
+		
+		Ext.override(GeoExt.data.LayerStore, {
+			onAdd : animationOnAdd
+		});
+
+		Ext.override(GeoExt.tree.LayerNode, {
+			onStoreAdd : animationOnStoreAdd
+		});
+		
+		Ext.override(GeoExt.tree.LayerLoader, {
+			onStoreAdd : animationLayerLoaderOnStoreAdd
+		});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Viewer({
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
@@ -54,5 +136,53 @@
                 zoom: 2
             }
         });
-    </script>
+
+        downloadArcgis();
+		downloadRSS   ();
+
+
+        app.on("ready", function()
+			{
+            animationStore.load();
+            aquaStore     .load();
+
+            if(app.mapPanel.map.layers[0].mergeNewParams)
+                app.mapPanel.map.layers[0].mergeNewParams();
+            for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
+                app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
+                if(app.mapPanel.map.layers[ii].mergeNewParams){
+                    app.mapPanel.map.layers[ii].mergeNewParams();
+                };
+            }
+            
+            app.mapPanel.on("afterlayeradd", function(){
+                for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
+                    app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
+                    if(app.mapPanel.map.layers[ii].mergeNewParams){
+                        app.mapPanel.map.layers[ii].mergeNewParams();
+                    };
+                }
+            });
+        
+        
+        
+        var ol = new OpenLayers.Layer.WMS(
+        "OpenLayers WMS", 
+        "http://vmap0.tiles.osgeo.org/wms/vmap0",
+        {layers: 'basic'}
+    );
+        var overview = new OpenLayers.Control.OverviewMap({
+            mapOptions: {
+                projection: new OpenLayers.Projection("EPSG:900913"),
+                units: "m",
+                maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+            }, layers: [ol]
+        });
+        app.mapPanel.map.addControl(overview);        
+        
+    });
     
+    
+    </script>
+        
+        
