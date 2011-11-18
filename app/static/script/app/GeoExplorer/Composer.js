@@ -524,36 +524,25 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                         this.tools.graticulegxptool.toggle();
                                                 }
                                         }),
-                                        new Ext.menu.CheckItem({
-                                                text: 'Обзорная карта',
-												checked: false,
-                                                scope: this,
-                                                handler: function() {
-													if(!this.tools.overviewMap)
-														this.tools.overviewMap = 1;
-													else
-														this.tools.overviewMap = this.tools.overviewMap ^ 1;
-													var control;
-													for (var i = 0; i < app.mapPanel.map.controls.length; i++)
-                                        {
-														if (app.mapPanel.map.controls[i].displayClass === "olControlOverviewMap")
-														{
-															control = app.mapPanel.map.controls[i];
-															break;
-														}
-													}
-													if (this.tools.overviewMap === 1)
-														control.maximizeControl();
-													else
-														control.minimizeControl();
+                                        this.overViewMapMenuCheck = new Ext.menu.CheckItem({
+                                            text: 'Обзорная карта',
+                                            checked: false,
+                                            scope: this
+                                            ,listeners: {
+                                                checkchange: function(item, checked){
+                                                    if(checked)
+                                                        ovmWindow.show();
+                                                    else
+                                                        ovmWindow.hide();
                                                 }
+                                            }
                                         }),
                                         new Ext.menu.CheckItem({
                                                 text: 'Информация RSS',
-												checked: false,
+						checked: false,
                                                 scope: this,
                                                 handler: function() {
-													rssVar.show = rssVar.show ^ 1;
+                                                    rssVar.show = rssVar.show ^ 1;
                                                 }
                                         }),
                                         {
