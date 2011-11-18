@@ -443,7 +443,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                             this.mapPanel.map.zoomToExtent(bounds, true);
                         }
                         ,afterRender: function(c) {
-                            c.getEl().dom.setAttribute('ext:qtip', 'Поиск геоданных')
+                            c.getEl().dom.setAttribute('ext:qtip', 'Поиск геообъекта')
                         }
                         ,scope: this
                     }
@@ -456,7 +456,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                         style: "padding-right: 4px;"
                         ,listeners: {
                             afterRender: function(c) {
-                                c.getEl().dom.setAttribute('ext:qtip', 'Поиск геоданных')
+                                c.getEl().dom.setAttribute('ext:qtip', 'Поиск геообъекта')
                             }
                         }
                         ,actionTarget: {target: "paneltbar", index: 9}
