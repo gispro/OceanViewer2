@@ -238,6 +238,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             var tool;
             for (var i=0, len=this.initialConfig.tools.length; i<len; i++) {
                 try {
+                    
+                    if(this.initialConfig.tools[i]){
+                    
                     tool = Ext.ComponentMgr.createPlugin(
                         this.initialConfig.tools[i], this.defaultToolType
                     );
@@ -577,7 +580,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     }
                 }
                         
-                } catch (err) {
+                }} catch (err) {
                     throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
                 }
                 tool.init(this);

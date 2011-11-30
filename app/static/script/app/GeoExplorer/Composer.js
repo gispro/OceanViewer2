@@ -126,11 +126,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             {
                 ptype: "gxp_zoomtoextent",
                 actionTarget: {target: "paneltbar", index: 16}
-            }, 
-            /*{
-                ptype: "gxp_measure", toggleGroup: this.toggleGroup,
-                actionTarget: {target: "paneltbar", index: 17}
-            },*/
+            },
             {
                 leaf: true, 
                 text: gxp.plugins.Legend.prototype.tooltip, 
@@ -138,11 +134,15 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 iconCls: "gxp-icon-legend",
                 ptype: "gxp_legend",
                 actionTarget: {target: "paneltbar", index: 17}
-            },             
+            }, 
             {
+                ptype: "gxp_measure", toggleGroup: this.toggleGroup,
+                actionTarget: {target: "paneltbar", index: 37}
+            },             
+            /*{
               ptype: "gxp_gis_measure", toggleGroup: this.toggleGroup,
               actionTarget: {target: "paneltbar", index: 37}
-            }
+            }*/
             /*, 
             {
                 ptype: "gxp_googleearth",

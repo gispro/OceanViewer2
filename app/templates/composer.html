@@ -134,6 +134,7 @@
 				gispro: {
                     url: "http://gisbox.ru:8084/geowebcache/service/wms",
                     title: "Слои картоосновы"
+                    //, ptype: "gxp_wmscsource"
                 },
 				arcgis93: {
                     ptype: "gxp_arcgis93source"
@@ -173,7 +174,7 @@
                     fixed: true,
                     type: "OpenLayers.Layer",
                     args: [
-                        "Без картоосновы", {visibility: false}
+                        "Без картоосновы", {visibility: false,wrapDateLine: true}
                     ]
                 },
                 /*
@@ -259,18 +260,19 @@
                     title: "ЭКО 3.1 бланк",
                     name: "eko_blank",
                     group: "background",
-                    args: [null, {alwaysInRange: true}]
+                    args: [null, {alwaysInRange: true,wrapDateLine: true}]
                 },                
                 {
                     source: "gispro",
                     title: "ЭКО 3.1",
                     name: "eko_merge",
                     group: "background",
-                    args: [null, {alwaysInRange: true}]
+                    args: [null, {alwaysInRange: true,wrapDateLine: true}]
                     
                 }],
                 center: [0, 0],
                 zoom: 2
+                ,wrapDateLine: true
 		}
            });
 
@@ -280,6 +282,9 @@
 
         app.on("ready", function()
 			{
+                            
+                        Ext.QuickTips.getQuickTip().maxWidth = 800;
+                            
     			animationStore.load();
 			aquaStore     .load();
 
