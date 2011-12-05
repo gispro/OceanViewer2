@@ -17,8 +17,11 @@
 		"servers":
 		[
 			{
-            "title":"Москва",
-            "url":"http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer"
+				"title":"Москва",
+				"url":"http://maps.gispro.ru/ArcGIS/rest/services/MAD/mad_osn/MapServer",
+				"format":"PNG",
+				"owner" : "administrator",
+				"access" : "public"
 			}
 		],
 		"servers_templates":

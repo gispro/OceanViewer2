@@ -642,7 +642,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 }
                             }
                         }*/
-                        /*,{
+                        ,{
                             id   : '3', 
                             text : 'Настройка сервисов',
                             leaf : true,
@@ -653,7 +653,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 									servicesSetting.show();
                                 }
                             }
-                        }*/]
+                        }]
                     })
                 }]
             }

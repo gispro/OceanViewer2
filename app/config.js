@@ -9,6 +9,7 @@ var urls = [
     [(/^\/(translate)/     ), require("./root/translate").app],
     [(/^\/(metadata)/      ), require("./root/metadata" ).app],
     [(/^\/(save)/          ), require("./root/save"     ).app],	
+    [(/^\/(account)/       ), require("./root/account"  ).app],	
     [(/^\/(composer)/      ), require("./root/composer" ).app],
     [(/^\/(viewer(.html)?)/), require("./root/viewer"   ).app]
 ];
