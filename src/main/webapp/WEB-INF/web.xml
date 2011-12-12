@@ -33,8 +33,8 @@
             <param-value>
                 { 
                     "driver" : "org.postgresql.Driver" , 
-                    "url" : "jdbc:postgresql://192.168.0.30:5432/oceanadmin" ,
-                    "table" : "savedmaps2",
+                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                    "table" : "admin.savedmaps",
                     "user": "esimo",
                     "password" : "gisproesimo"
                 }
