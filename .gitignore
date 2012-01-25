@@ -1,3 +1,6 @@
 build
 geoexplorer.db
 nbproject
+
+#vim
+*.swp

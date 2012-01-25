@@ -14,6 +14,12 @@
     <link rel="stylesheet" type="text/css" href="externals/gxp/src/theme/all.css">
     <script type="text/javascript" src="script/gxp.js"></script> 
 
+    <!-- gispro resources -->
+    <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerParser.js"></script>
+    <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerWindow.js"></script>
+    <script type="text/javascript" src="externals/gispro/pricker/javascripts/Pricker.js"></script>
+    <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerTool.js"></script>
+
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
     <script type="text/javascript">
@@ -131,11 +137,11 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
-				gispro: {
-                    url: "http://gisbox.ru:8084/geowebcache/service/wms",
-                    title: "Слои картоосновы"
-                    //, ptype: "gxp_wmscsource"
-                },
+		//		gispro: {
+                //    url: "http://gisbox.ru:8084/geowebcache/service/wms",
+                //    title: "Слои картоосновы"
+                //    //, ptype: "gxp_wmscsource"
+                //},
 				arcgis93: {
                     ptype: "gxp_arcgis93source"
 				},                

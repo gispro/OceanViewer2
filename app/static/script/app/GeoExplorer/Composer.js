@@ -102,6 +102,20 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_zoomtolayerextent",
                 actionTarget: {target: "layertree.contextMenu", index: 0}
             }, 
+            {
+                ptype: "gxp_prickertool"
+                ,actionTarget: "paneltbar"
+                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2" ]
+                ,aliaseUrl: '/translate'
+                ,getInfoUrl: '/resources/wms'
+                ,nameTitleAlias: 'назв.слоя'
+                ,saveChartUrl: '/save'
+                //,buffer: 0
+                ,chartOptions: {
+                        title: 'Графики'
+                        ,fieldComboName1: 'В-те знач. по X'
+                    }
+            },
             
             
             
@@ -155,7 +169,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
             }*/
-            /*, 
             {
                 // shared FeatureManager for feature editing, grid and querying
                 ptype: "gxp_featuremanager",
@@ -170,27 +183,28 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 outputConfig: {panIn: false},
                 toggleGroup: "layertools",
                 actionTarget: {target: "paneltbar", index:18}
-            }*//*, {
-                ptype: "gxp_featuregrid",
-                featureManager: "featuremanager",
-                outputConfig: {
-                    id: "featuregrid"
-                },
-                outputTarget: "south"
-            }, {
-                ptype: "gxp_queryform",
-                featureManager: "featuremanager",
-                outputConfig: {
-                    title: "Query",
-                    width: 320
-                },
-                actionTarget: ["featuregrid.bbar", "tree.contextMenu"],
-                appendActions: false
-            }, {
-                // not a useful tool - just a demo for additional items
-                actionTarget: "mybbar", // ".bbar" would also work
-                actions: [{text: "Click me - I'm a tool on the portal's bbar"}]
-            }*/
+            },
+            //{
+                //ptype: "gxp_featuregrid",
+                //featureManager: "featuremanager",
+                //outputConfig: {
+                    //id: "featuregrid"
+                //},
+                //outputTarget: "south"
+            //}, {
+                //ptype: "gxp_queryform",
+                //featureManager: "featuremanager",
+                //outputConfig: {
+                    //title: "Query",
+                    //width: 320
+                //},
+                //actionTarget: ["featuregrid.bbar", "tree.contextMenu"],
+                //appendActions: false
+            //}, {
+                //// not a useful tool - just a demo for additional items
+                //actionTarget: "mybbar", // ".bbar" would also work
+                //actions: [{text: "Click me - I'm a tool on the portal's bbar"}]
+            //}
         ];
     
         GeoExplorer.Composer.superclass.constructor.apply(this, arguments);

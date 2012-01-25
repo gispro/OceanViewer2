@@ -16,3 +16,6 @@
 [submodule "app/static/externals/PrintPreview"]
 	path = app/static/externals/PrintPreview
 	url = git://github.com/GeoNode/PrintPreview.git
+[submodule "app/static/externals/gispro/pricker"]
+	path = app/static/externals/gispro/pricker
+	url = git@github.com:Talleyran/Ext.Pricker.git
