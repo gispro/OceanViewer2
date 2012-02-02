@@ -237,7 +237,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         if (this.initialConfig.tools && this.initialConfig.tools.length > 0) {
             var tool;
             for (var i=0, len=this.initialConfig.tools.length; i<len; i++) {
-                try {
+                //try {
                     
                     if(this.initialConfig.tools[i]){
                     
@@ -580,9 +580,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     }
                 }
                         
-                }} catch (err) {
-                    throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
                 }
+                //} catch (err) {
+                    //throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
+                //}
                 tool.init(this);
             }
         }
