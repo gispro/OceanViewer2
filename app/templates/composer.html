@@ -19,6 +19,10 @@
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerWindow.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/Pricker.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerTool.js"></script>
+    <script type="text/javascript" src="externals/gispro/editor/javascripts/editor.js"></script>
+    <script type="text/javascript" src="externals/gispro/editor/javascripts/feature_menu_editor.js"></script>
+    <script type="text/javascript" src="externals/gispro/editor/javascripts/feature_editor_panel.js"></script>
+    <link rel="stylesheet" type="text/css" href="externals/gispro/editor/stylesheets/editor.css">
 
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
@@ -127,7 +131,10 @@
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
-            authStatus:  <% status %>, //1,
+            username: 'admin',
+            password: 'geoserver',
+            //username: 'kyakovlev',
+            //password: 'Rbor7HOBISF4SbMkfphZ',
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
             about: {
@@ -161,6 +168,12 @@
                 animation: {
                     ptype: "gxp_animationsource"
                 }
+                ,editable: {
+                    url: "http://localhost:8080/geoserver/userlayers/wms"
+                }
+                //,editable: {
+                //    url: "http://uno:8082/resources/userlayers/wms"
+                //}
             },
             wfs: "/geoserver/wfs",
             wms: "/geoserver/wms",
@@ -232,6 +245,7 @@
                         }
                     ]
                 },*/
+
                 {
                     source: "google",
                     title: "Google Карта",
@@ -260,22 +274,23 @@
                     source: "osm",
                     name: "mapnik",
                     group: "background"
-                },                
-                {
-                    source: "gispro",
-                    title: "ЭКО 3.1 бланк",
-                    name: "eko_blank",
-                    group: "background",
-                    args: [null, {alwaysInRange: true,wrapDateLine: true}]
-                },                
-                {
-                    source: "gispro",
-                    title: "ЭКО 3.1",
-                    name: "eko_merge",
-                    group: "background",
-                    args: [null, {alwaysInRange: true,wrapDateLine: true}]
-                    
-                }],
+                }                
+                //{
+                //    source: "gispro",
+                //    title: "ЭКО 3.1 бланк",
+                //    name: "eko_blank",
+                //    group: "background",
+                //    args: [null, {alwaysInRange: true,wrapDateLine: true}]
+                //},                
+                //{
+                //    source: "gispro",
+                //    title: "ЭКО 3.1",
+                //    name: "eko_merge",
+                //    group: "background",
+                //    args: [null, {alwaysInRange: true,wrapDateLine: true}]
+                //    
+                //}
+                ],
                 center: [0, 0],
                 zoom: 2
                 ,wrapDateLine: true
@@ -373,11 +388,19 @@
                         app.overViewMapMenuCheck.setChecked(false, true);
                     }
                     ,scope: this
-                }                
+                }
             });
             ovmWindow.show();
             ovmWindow.hide();
             ovmWindow.alignTo(app.mapPanel.body, "tr-tr", [-10, 10]);
+
+            //TODO move to GeoExplorer.Composer initialize hash
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable'}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable'}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable'}) ])
+
 	});
+
+
         
     </script>
