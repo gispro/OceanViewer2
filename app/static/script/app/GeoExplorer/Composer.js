@@ -31,17 +31,32 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
     // End i18n.
 
     constructor: function(config) {
-        if (config.authStatus === 401) {
-            // user has not authenticated or is not authorized
-            this.authorizedRoles = [];
-        } else {
-            // user has authenticated or auth back-end is not available
-            this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
-        }
-        // should not be persisted or accessed again
-        delete config.authStatus;
 
-                
+        //TODO ext_3_ request and ext_3_ iterator
+        Ext4.Ajax.request({
+                 method: 'post'
+                ,url: '/login'
+                ,params: {username: config.username, password: config.password}
+                ,scope: this
+                ,success: function(respond){
+                      this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
+                      Ext4.Array.each(this.tools, function(tool) {
+                          if (tool.needsAuthorization === true) {
+                              tool.enable();
+                          }
+                      })
+                    }
+
+                ,failure: function(er){
+                      this.authorizedRoles = [];
+                      Ext4.Array.each(this.tools, function(tool) {
+                          if (tool.needsAuthorization === true) {
+                              tool.disable();
+                          }
+                      })
+                    }
+            })
+
         config.tools = [
             /*{
                 "ptype": "gxp_graticulegxptool",
@@ -75,34 +90,41 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             },*/
              {
                 ptype: "gxp_layertree",
+                groups: {editable: 'Редактируемые'},
                 outputConfig: {
-                    id: "layertree"
+                    id: "layertree",
                 },
                 outputTarget: "tree"
-            }, {
+            }
+            ,{
                 ptype: "gxp_legend",
                 outputTarget: 'legend',
                 outputConfig: {autoScroll: true}
-            }, {
+            }
+            ,{
                 id: "gxp_addlayers_ctl",
                 ptype: "gxp_addlayers",
                 actionTarget: "tree.tbar",
                 upload: true
-            }, {
+            }
+            ,{
                 ptype: "gxp_removelayer",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }, {
+            }
+            ,{
                 ptype: "gxp_layerproperties",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }, /*{
+            }
+             /*,{
                 ptype: "gxp_styler",
                 sameOriginStyling: false,
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }, */{
+            }*/
+            ,{
                 ptype: "gxp_zoomtolayerextent",
                 actionTarget: {target: "layertree.contextMenu", index: 0}
-            }, 
-            {
+            }
+            ,{
                 ptype: "gxp_prickertool"
                 ,actionTarget: "paneltbar"
                 ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2" ]
@@ -115,50 +137,47 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                         title: 'Графики'
                         ,fieldComboName1: 'В-те знач. по X'
                     }
-            },
-            
-            
-            
-            {
+            }
+            ,{
                 id: "gxp_wmsgetfeatureinfo_ctl",
                 ptype: "gxp_wmsgetfeatureinfo", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 11}
                 
-            }, 
-            {
+            } 
+            ,{
                 ptype: "gxp_navigation", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 12}
-            }, 
-            {
+            }
+            ,{
                 ptype: "gxp_zoom",
                 actionTarget: {target: "paneltbar", index: 14}
-            }, 
-            {
+            }
+            ,{
                 ptype: "gxp_navigationhistory",
                 actionTarget: {target: "paneltbar", index: 15}
-            }, 
-            {
+            }
+            ,{
                 ptype: "gxp_zoomtoextent",
                 actionTarget: {target: "paneltbar", index: 16}
-            },
-            {
+            }
+            ,{
                 leaf: true, 
                 text: gxp.plugins.Legend.prototype.tooltip, 
                 checked: true, 
                 iconCls: "gxp-icon-legend",
                 ptype: "gxp_legend",
                 actionTarget: {target: "paneltbar", index: 17}
-            }, 
-            {
+            }
+            ,{
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 37}
-            },             
-            /*{
+            }
+            /*,{
               ptype: "gxp_gis_measure", toggleGroup: this.toggleGroup,
               actionTarget: {target: "paneltbar", index: 37}
             }*/
-            /*, 
-            {
+            /*
+            ,{
                 ptype: "gxp_googleearth",
                 actionTarget: {target: "paneltbar", index: 17},
                 apiKeys: {
@@ -169,29 +188,45 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					"80.245.248.214": "ABQIAAAAtUy1UuiFvVDSfU0TG3Fh6xTaPfcsKMaIBhJYnvndU7vWyzU75RQSjFz1_DhTzMS5J2xtBNpq8mdgRA"
                 }
             }*/
-            {
+            ,{
                 // shared FeatureManager for feature editing, grid and querying
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
                 maxFeatures: 20,
                 actionTarget: {target: "paneltbar", index:19}
-            }, 
-            {
-                ptype: "gxp_featureeditor",
+            }
+            //,{
+                //ptype: "gxp_featureeditor",
+                //featureManager: "featuremanager",
+                //createFeatureActionText: 'create',
+                //editFeatureActionText: 'edit',
+                //outputConfig: {panIn: false},
+                //toggleGroup: "layertools",
+                ////supportAbstractGeometry: true,
+                //actionTarget: {target: "paneltbar", index:18}
+            //}
+            ,{
+                ptype: "gxp_featureeditorpanel",
                 featureManager: "featuremanager",
-                autoLoadFeatures: true, // no need to "check out" features
                 outputConfig: {panIn: false},
                 toggleGroup: "layertools",
-                actionTarget: {target: "paneltbar", index:18}
-            },
-            //{
+                actionTarget: {target: "paneltbar", index:18},
+                createFeatureActionTip: "Создать новый объект слоя",
+                editFeatureActionTip: "Редактировать объект слоя",
+                editFeatureActionText: '',
+                createFeatureActionText: '',
+                featureManagerToolText: 'Управление объектами слоя'
+
+            }
+            //,{
                 //ptype: "gxp_featuregrid",
                 //featureManager: "featuremanager",
                 //outputConfig: {
                     //id: "featuregrid"
                 //},
                 //outputTarget: "south"
-            //}, {
+            //}
+            //,{
                 //ptype: "gxp_queryform",
                 //featureManager: "featuremanager",
                 //outputConfig: {
@@ -200,14 +235,19 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 //},
                 //actionTarget: ["featuregrid.bbar", "tree.contextMenu"],
                 //appendActions: false
-            //}, {
+            //}
+            //,{
                 //// not a useful tool - just a demo for additional items
                 //actionTarget: "mybbar", // ".bbar" would also work
                 //actions: [{text: "Click me - I'm a tool on the portal's bbar"}]
             //}
         ];
     
+
+
+
         GeoExplorer.Composer.superclass.constructor.apply(this, arguments);
+
     },
 
     /** api: method[destroy]
@@ -217,100 +257,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         GeoExplorer.Composer.superclass.destroy.apply(this, arguments);
     },
 
-    /** private: method[showLoginDialog]
-     * Show the login dialog for the user to login.
-     */
-    showLoginDialog: function() {
-        var panel = new Ext.FormPanel({
-            url: "login",
-            frame: true,
-            labelWidth: 77,
-            defaultType: "textfield",
-            errorReader: {
-                read: function(response) {
-                    var success = false;
-                    var records = [];
-                    if (response.status === 200) {
-                        success = true;
-                    } else {
-                        records = [
-                            {data: {id: "username", msg: this.loginErrorText}},
-                            {data: {id: "password", msg: this.loginErrorText}}
-                        ];
-                    }
-                    return {
-                        success: success,
-                        records: records
-                    };
-                }
-            },
-            items: [{
-                fieldLabel: this.userFieldText,
-                name: "username",
-                allowBlank: false
-            }, {
-                fieldLabel: this.passwordFieldText,
-                name: "password",
-                inputType: "password",
-                allowBlank: false
-            }],
-            buttons: [{
-                text: this.loginText,
-                formBind: true,
-                handler: submitLogin,
-                scope: this
-            }],
-            keys: [{ 
-                key: [Ext.EventObject.ENTER], 
-                handler: submitLogin,
-                scope: this
-            }]
-        });
-
-        function submitLogin() {
-            panel.buttons[0].disable();
-            panel.getForm().submit({
-                success: function(form, action) {
-                    this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
-                    Ext.getCmp('paneltbar').items.each(function(tool) {
-                        if (tool.needsAuthorization === true) {
-                            tool.enable();
-                        }
-                    });
-                    this.loginButton.hide();
-                    win.close();
-                },
-                failure: function(form, action) {
-                    this.authorizedRoles = [];
-                    panel.buttons[0].enable();
-                    form.markInvalid({
-                        "username": this.loginErrorText,
-                        "password": this.loginErrorText
-                    });
-                },
-                scope: this
-            });
-        }
-                
-        var win = new Ext.Window({
-            title: this.loginText,
-            layout: "fit",
-            width: 235,
-            height: 130,
-            plain: true,
-            border: false,
-            modal: true,
-            items: [panel]
-        });
-        win.show();
-    },
-
     /**
      * api: method[createTools]
      * Create the toolbar configuration for the main view.
      */
     createTools: function() {
-		var tools = GeoExplorer.Composer.superclass.createTools.apply(this, arguments);
+        var tools = GeoExplorer.Composer.superclass.createTools.apply(this, arguments);
 
         // unauthorized, show login button
         /*if (this.authorizedRoles.length === 0) {
@@ -641,6 +593,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 				]
 			})
 		});
+
 		tools.unshift({
 			text: 'Карта',
                         //bububu: this,
