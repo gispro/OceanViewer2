@@ -115,28 +115,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_layerproperties",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
             }
-             /*,{
+            ,{
                 ptype: "gxp_styler",
                 sameOriginStyling: false,
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }*/
+            }
             ,{
                 ptype: "gxp_zoomtolayerextent",
                 actionTarget: {target: "layertree.contextMenu", index: 0}
-            }
-            ,{
-                ptype: "gxp_prickertool"
-                ,actionTarget: "paneltbar"
-                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2" ]
-                ,aliaseUrl: '/translate'
-                ,getInfoUrl: '/resources/wms'
-                ,nameTitleAlias: 'назв.слоя'
-                ,saveChartUrl: '/save'
-                //,buffer: 0
-                ,chartOptions: {
-                        title: 'Графики'
-                        ,fieldComboName1: 'В-те знач. по X'
-                    }
             }
             ,{
                 id: "gxp_wmsgetfeatureinfo_ctl",
@@ -171,6 +157,16 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             ,{
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 37}
+            }
+            ,{
+                ptype: "gxp_prickertool"
+                ,actionTarget: "paneltbar"
+                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2","ru_hydrometcentre_42:ru_hydrometcentre_42_3" ]
+                ,aliaseUrl: '/translate'
+                ,getInfoUrl: '/resources/wms'
+                ,saveChartUrl: '/save'
+                ,actionTarget: {target: "paneltbar", index: 38}
+                //,buffer: 0
             }
             /*,{
               ptype: "gxp_gis_measure", toggleGroup: this.toggleGroup,
@@ -209,13 +205,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_featureeditorpanel",
                 featureManager: "featuremanager",
                 outputConfig: {panIn: false},
-                toggleGroup: "layertools",
+                toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index:18},
                 createFeatureActionTip: "Создать новый объект слоя",
                 editFeatureActionTip: "Редактировать объект слоя",
                 editFeatureActionText: '',
                 createFeatureActionText: '',
-                featureManagerToolText: 'Управление объектами слоя'
+                bodyAttribute: 'message',
+                usernameAttribute: 'author',
+                featureManagerToolText: '',
+                featureManagerToolTip: 'Панель редактирования',
+                toolWinText: 'Редактирование'
 
             }
             //,{

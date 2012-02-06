@@ -19,9 +19,11 @@
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerWindow.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/Pricker.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerTool.js"></script>
+    <script type="text/javascript" src="externals/gispro/pricker/javascripts/locale/ru.js"></script>
+    <link rel="stylesheet" type="text/css" href="externals/gispro/pricker/stylesheets/pricker.css">
     <script type="text/javascript" src="externals/gispro/editor/javascripts/editor.js"></script>
-    <script type="text/javascript" src="externals/gispro/editor/javascripts/feature_menu_editor.js"></script>
     <script type="text/javascript" src="externals/gispro/editor/javascripts/feature_editor_panel.js"></script>
+    <script type="text/javascript" src="externals/gispro/editor/javascripts/feature_editor_simple_messagebox.js"></script>
     <link rel="stylesheet" type="text/css" href="externals/gispro/editor/stylesheets/editor.css">
 
     <!-- proj4js resources -->
@@ -131,10 +133,8 @@
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
-            username: 'admin',
-            password: 'geoserver',
-            //username: 'kyakovlev',
-            //password: 'Rbor7HOBISF4SbMkfphZ',
+            username: 'kyakovlev',
+            password: 'Rbor7HOBISF4SbMkfphZ',
             proxy: "proxy/?url=",
             printService: "/geoserver/pdf/",
             about: {
@@ -144,12 +144,7 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
-		//		gispro: {
-                //    url: "http://gisbox.ru:8084/geowebcache/service/wms",
-                //    title: "Слои картоосновы"
-                //    //, ptype: "gxp_wmscsource"
-                //},
-				arcgis93: {
+		arcgis93: {
                     ptype: "gxp_arcgis93source"
 				},                
                 rss: {
@@ -169,10 +164,11 @@
                     ptype: "gxp_animationsource"
                 }
                 ,editable: {
-                    url: "http://localhost:8080/geoserver/userlayers/wms"
+                   url: "http://localhost:8080/geoserver/wms"
                 }
                 //,editable: {
-                //    url: "http://uno:8082/resources/userlayers/wms"
+                //    url: "http://uno:8082/resources/userlayers/wms",
+                //    restUrl: "http://uno:8082/resources/rest"
                 //}
             },
             wfs: "/geoserver/wfs",
@@ -196,56 +192,6 @@
                         "Без картоосновы", {visibility: false,wrapDateLine: true}
                     ]
                 },
-                /*
-                {
-                    source: "ol",
-                    type: "OpenLayers.Layer.Vector",
-                    args: [
-                        "Полигоны Франции", 
-                        {
-                            projection: "EPSG:4326",
-                            //*
-                            strategies: [new OpenLayers.Strategy.Fixed()],
-                            protocol: new OpenLayers.Protocol.HTTP({
-                                url: "http://openlayers.org/dev/examples/gml/polygon.xml",
-                                format: new OpenLayers.Format.GML()
-                            })
-                            //*/
-                            /*
-                            strategies: [{classtype: "OpenLayers.Strategy.Fixed", args:[]}],
-                            protocol: {
-                                classtype: "OpenLayers.Protocol.HTTP",
-                                args: [{
-                                    url: "http://openlayers.org/dev/examples/gml/polygon.xml",
-                                    format: {
-                                        classtype: "OpenLayers.Format.GML",
-                                        args: []
-                                    }
-                                }]
-                            }
-                            *//*
-                        }
-                    ]
-                },*/
-                /*{
-                    source: "ol",
-                    type: "OpenLayers.Layer.Vector",
-                    visibility: false,
-                    args: [
-                        "АдмПол", 
-                        {
-                            projection: "EPSG:4326",
-                            strategies: [new OpenLayers.Strategy.BBOX()],
-                            protocol:  new OpenLayers.Protocol.WFS({
-                                url:  "http://gisbox.ru:8083/geoserver/wfs",
-                                featureType: "admpol8000"
-                                //,featureNS: "http://www.openplans.org/topp"
-                                ,featureNS: "eko"
-                            })
-                        }
-                    ]
-                },*/
-
                 {
                     source: "google",
                     title: "Google Карта",
@@ -275,21 +221,6 @@
                     name: "mapnik",
                     group: "background"
                 }                
-                //{
-                //    source: "gispro",
-                //    title: "ЭКО 3.1 бланк",
-                //    name: "eko_blank",
-                //    group: "background",
-                //    args: [null, {alwaysInRange: true,wrapDateLine: true}]
-                //},                
-                //{
-                //    source: "gispro",
-                //    title: "ЭКО 3.1",
-                //    name: "eko_merge",
-                //    group: "background",
-                //    args: [null, {alwaysInRange: true,wrapDateLine: true}]
-                //    
-                //}
                 ],
                 center: [0, 0],
                 zoom: 2
@@ -375,7 +306,7 @@
                            app.southernMenuItem.disable();
                }
 			});
-        
+
             ovmWindow = new GeoExt.OverviewMap({
                 title: 'Обзорная карта',
                 closable:true,
@@ -395,9 +326,9 @@
             ovmWindow.alignTo(app.mapPanel.body, "tr-tr", [-10, 10]);
 
             //TODO move to GeoExplorer.Composer initialize hash
-            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable'}) ])
-            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable'}) ])
-            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable'}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable', cached: false}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable', cached: false}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable', cached: false}) ])
 
 	});
 
