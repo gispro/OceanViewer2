@@ -166,6 +166,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ,getInfoUrl: '/resources/wms'
                 ,saveChartUrl: '/save'
                 ,actionTarget: {target: "paneltbar", index: 38}
+                ,toggleGroup: this.toggleGroup
                 //,buffer: 0
             }
             /*,{
