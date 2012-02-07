@@ -104,14 +104,20 @@
             <fileset dir="app/static/externals/proj4js/lib/"/>
         </copy>
         <!-- copy gispro resources -->
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/pricker/javascripts">
+            <fileset dir="app/static/externals/gispro/pricker/javascripts"/>
+        </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/pricker/stylesheets">
-            <fileset dir="app/static/externals/externals/gispro/pricker/stylesheets"/>
+            <fileset dir="app/static/externals/gispro/pricker/stylesheets"/>
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/pricker/images">
-            <fileset dir="app/static/externals/externals/gispro/pricker/images"/>
+            <fileset dir="app/static/externals/gispro/pricker/images"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/editor/javascripts">
+            <fileset dir="app/static/externals/gispro/editor/stylesheets"/>
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/editor/stylesheets">
-            <fileset dir="app/static/externals/externals/gispro/editor/stylesheets"/>
+            <fileset dir="app/static/externals/gispro/editor/stylesheets"/>
         </copy>
 
 	</target>
