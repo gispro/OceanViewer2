@@ -1,9 +1,9 @@
 [submodule "externals/ringojs"]
 	path = externals/ringojs
-	url = git://github.com/tschaub/ringojs.git
+	url = https://github.com/tschaub/ringojs.git
 [submodule "externals/buildkit"]
 	path = externals/buildkit
-	url = git://github.com/tschaub/buildkit.git
+	url = https://github.com/tschaub/buildkit.git
 [submodule "app/static/externals/gxp"]
 	path = app/static/externals/gxp
 	url = https://github.com/gispro/gxp.git
@@ -15,7 +15,7 @@
 	url = https://github.com/gispro/openlayers.git
 [submodule "app/static/externals/PrintPreview"]
 	path = app/static/externals/PrintPreview
-	url = git://github.com/GeoNode/PrintPreview.git
+	url = https://github.com/GeoNode/PrintPreview.git
 [submodule "app/static/externals/gispro/pricker"]
 	path = app/static/externals/gispro/pricker
 	url = git@github.com:Talleyran/Ext.Pricker.git
