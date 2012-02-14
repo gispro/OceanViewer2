@@ -143,7 +143,12 @@
             },
             defaultSourceType: "gxp_wmscsource",
             sources: {
-		arcgis93: {
+				gispro: {
+                    url: "http://oceanviewer.ru/cache/service/wms",
+                    title: "Слои картоосновы"
+                    //, ptype: "gxp_wmscsource"
+                },
+				arcgis93: {
                     ptype: "gxp_arcgis93source"
 				},                
                 rss: {

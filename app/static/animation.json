@@ -3,7 +3,7 @@
 	[
 		{
 		"owner"  : "Администратор",
-		"url"    : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_62/wms?service=WMS&request=GetMap",
+		"url"    : "http://oceanviewer.ru/resources/ru_hydrometcentre_62/wms?service=WMS&request=GetMap",
 		"title"  : "Скорость 62",
 		"x_axis" : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
 		"layers" : ["ru_hydrometcentre_62:ru_hydrometcentre_62_1_p0075_00_sf",
@@ -21,7 +21,7 @@
 		},
 		{
 		"owner"  : "Администратор",
-		"url"    : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_42/wms?service=WMS&request=GetMap",
+		"url"    : "http://oceanviewer.ru/resources/ru_hydrometcentre_42/wms?service=WMS&request=GetMap",
 		"title"  : "Температура 42",
 		"x_axis" : ["0", "12", "24", "36", "48", "60", "72", "84", "96", "108", "120"],
 		"layers" : ["ru_hydrometcentre_42:ru_hydrometcentre_42_1_p0001_00_sf", 
@@ -38,8 +38,8 @@
 		},
 		{
 		"owner"  : "Администратор",
-		"url"    : "http://gisbox.ru:8080/geoserver/ru_hydrometcentre_46/wms?service=WMS&request=GetMap",
-		"title"  : "Давление 46",
+		"url"    : "http://oceanviewer.ru/resources/ru_hydrometcentre_46/wms?service=WMS&request=GetMap",
+		"title"  : "Ветровое волнение 46",
 		"x_axis" : ["0", "12", "24", "36", "48", "60", "72"],
 		"layers" : ["ru_hydrometcentre_46:ru_hydrometcentre_46_1_p0056_03_sf",
 					"ru_hydrometcentre_46:ru_hydrometcentre_46_2_p0056_03_sf",
@@ -51,7 +51,7 @@
 		},
 		{
 		"owner"  : "Администратор",
-		"url"    : "http://gisbox.ru:8080/geoserver/ru_aari_1109/wms?service=WMS&request=GetMap",
+		"url"    : "http://oceanviewer.ru/resources/ru_aari_1109/wms?service=WMS&request=GetMap",
 		"title"  : "Лед",
 		"x_axis" : ["26.07", "02.08", "13.09", "20.09", "27.09", "18.10"],
 		"layers" : ["ru_aari_1109:ru_aari_1109_2", 
