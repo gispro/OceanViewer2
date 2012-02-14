@@ -18,7 +18,7 @@
 	url = git://github.com/GeoNode/PrintPreview.git
 [submodule "app/static/externals/gispro/pricker"]
 	path = app/static/externals/gispro/pricker
-	url = git@github.com:Talleyran/Ext.Pricker.git
+	url = https://github.com/Talleyran/Ext.Pricker.git
 [submodule "app/static/externals/gispro/editor"]
 	path = app/static/externals/gispro/editor
-	url = git@github.com:Talleyran/editor.git
+	url = https://github.com/Talleyran/editor.git
