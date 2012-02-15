@@ -35,7 +35,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         //TODO ext_3_ request and ext_3_ iterator
         Ext4.Ajax.request({
                  method: 'post'
-                ,url: '/login'
+                ,url: 'login'
                 ,params: {username: config.username, password: config.password}
                 ,scope: this
                 ,success: function(respond){
@@ -90,6 +90,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             },*/
              {
                 ptype: "gxp_layertree",
+                id: "composer_layertree",
                 groups: {editable: 'Редактируемые'},
                 outputConfig: {
                     id: "layertree",
@@ -128,7 +129,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 id: "gxp_wmsgetfeatureinfo_ctl",
                 ptype: "gxp_wmsgetfeatureinfo", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 11}
-                
             } 
             ,{
                 ptype: "gxp_navigation", toggleGroup: this.toggleGroup,
@@ -161,8 +161,18 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             ,{
                 ptype: "gxp_prickertool"
                 ,actionTarget: "paneltbar"
-                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2","ru_hydrometcentre_42:ru_hydrometcentre_42_3" ]
-                ,aliaseUrl: '/translate'
+                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_2",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_3",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_4",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_5",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_6",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_7",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_8",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_9",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_10",
+                           "ru_hydrometcentre_42:ru_hydrometcentre_42_11" ]
+                ,aliaseUrl: 'translate'
                 ,getInfoUrl: '/resources/wms'
                 ,saveChartUrl: '/save'
                 ,actionTarget: {target: "paneltbar", index: 38}
@@ -218,6 +228,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 featureManagerToolTip: 'Панель редактирования',
                 toolWinText: 'Редактирование'
 
+            }
+            ,{
+              ptype: 'gispro_viewmenu'
+              ,actionTarget: {target: "paneltbar", index:2}
+              ,ovLayer: ["/cache/service/wms", "eko_merge"]
             }
             //,{
                 //ptype: "gxp_featuregrid",
@@ -319,82 +334,82 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         }));
         */
         
-        this.projectionStoreForMenu = {
-            'Меркатора': {
-                projection: "EPSG:900913",
-                units: "m",
-                maxResolution: 156543.03392804097,
-                maxExtent: [
-                    -20037508.34, -20037508.34,
-                    20037508.34, 20037508.34
-                ]
-            }
-            ,
-            'Географическая': {
-                projection: "EPSG:4326",
-                units: "degrees",
-                maxResolution: 1.40625,
-                maxExtent: [
-                    -180, -90, 180, 90
-                ]
-            }
-            , 
-            'Коническая' : {
-                projection: "EPSG:102012",
-                units: "m",
-                maxResolution: 156543.03392804097,
-                maxExtent: [
-                    //-20037508.342789244, -13717459.765275056,
-                    //20037508.342789244, 18421795.00817686                
-                    //-2.0037508342789244E7,-13717459.765275056,20037508.342789244,26357556.920303434
-                    //-20037508.34, -16069620,
-                    //20037508.34, 16069620
+        //this.projectionStoreForMenu = {
+            //'Меркатора': {
+                //projection: "EPSG:900913",
+                //units: "m",
+                //maxResolution: 156543.03392804097,
+                //maxExtent: [
                     //-20037508.34, -20037508.34,
                     //20037508.34, 20037508.34
-                    //-900691700374.099, -35565700,
-                    //900684359774.099, -28225100
-                    //54368.65331014791, -58444533.29569984, 98495607.76719199, 11248883.449091688
+                //]
+            //}
+            //,
+            //'Географическая': {
+                //projection: "EPSG:4326",
+                //units: "degrees",
+                //maxResolution: 1.40625,
+                //maxExtent: [
+                    //-180, -90, 180, 90
+                //]
+            //}
+            //, 
+            //'Коническая' : {
+                //projection: "EPSG:102012",
+                //units: "m",
+                //maxResolution: 156543.03392804097,
+                //maxExtent: [
+                    ////-20037508.342789244, -13717459.765275056,
+                    ////20037508.342789244, 18421795.00817686                
+                    ////-2.0037508342789244E7,-13717459.765275056,20037508.342789244,26357556.920303434
+                    ////-20037508.34, -16069620,
+                    ////20037508.34, 16069620
+                    ////-20037508.34, -20037508.34,
+                    ////20037508.34, 20037508.34
+                    ////-900691700374.099, -35565700,
+                    ////900684359774.099, -28225100
+                    ////54368.65331014791, -58444533.29569984, 98495607.76719199, 11248883.449091688
                     
-                        //-20037508.342789, -13717459.765275, 20037508.342789, 18421795.008177
-                        -20037508.342789, -13717459.765275, 20037508.342789, 20037508.342789 // 26357556.920303
-                ],
-                switchEko3: true
-            }
-            , 
-            'Полярная Север': {
-                projection: "EPSG:3576",
-                //projection: "EPSG:3995",
-                units: "m",
-                maxResolution: 156543.03392804097,
-                maxExtent: [
-                    //-20037508.34, -16069627,
-                    //20037508.34, 16069627
-                    //3995:
-                    //-91413530.18878764, -105555252.52414103,
-                    //91413530.18878764, 105555252.52414103
-                    //3567:
-                    -9036842.762, -9036842.762,
-                    9036842.762, 9036842.762                    
-                    //-5133549.56760757, 
-                    //-5397733.44656832, 
-                    //5397733.44656832, 
-                    //1667991.36644116
-                    //-5133549.56760757,-5397733.44656832,5397733.44656832,5133549.56760757
-                ],
-                switchEko3: true
-            }
-            , 
-            'Полярная Юг': {
-                projection: "EPSG:3976",
-                units: "m",
-                maxResolution: 156543.03392804097,
-                maxExtent: [
-                    -9036842.762, -9036842.762,
-                    9036842.762, 9036842.762                    
-                ],
-                switchEko3: true
-            }
-        };
+                        ////-20037508.342789, -13717459.765275, 20037508.342789, 18421795.008177
+                        //-20037508.342789, -13717459.765275, 20037508.342789, 20037508.342789 // 26357556.920303
+                //],
+                //switchEko3: true
+            //}
+            //, 
+            //'Полярная Север': {
+                //projection: "EPSG:3576",
+                ////projection: "EPSG:3995",
+                //units: "m",
+                //maxResolution: 156543.03392804097,
+                //maxExtent: [
+                    ////-20037508.34, -16069627,
+                    ////20037508.34, 16069627
+                    ////3995:
+                    ////-91413530.18878764, -105555252.52414103,
+                    ////91413530.18878764, 105555252.52414103
+                    ////3567:
+                    //-9036842.762, -9036842.762,
+                    //9036842.762, 9036842.762                    
+                    ////-5133549.56760757, 
+                    ////-5397733.44656832, 
+                    ////5397733.44656832, 
+                    ////1667991.36644116
+                    ////-5133549.56760757,-5397733.44656832,5397733.44656832,5133549.56760757
+                //],
+                //switchEko3: true
+            //}
+            //, 
+            //'Полярная Юг': {
+                //projection: "EPSG:3976",
+                //units: "m",
+                //maxResolution: 156543.03392804097,
+                //maxExtent: [
+                    //-9036842.762, -9036842.762,
+                    //9036842.762, 9036842.762                    
+                //],
+                //switchEko3: true
+            //}
+        //};
         //tools.unshift("-");
         //tools.unshift(aboutButton);
 		
@@ -443,138 +458,138 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 			//toggleHandler: menuOnCheckHelpWindow
 		});*/
 		
-		tools.unshift({
-			text: 'Вид',
-			menu: new Ext.menu.Menu({
-				items: [
-					/*new Ext.menu.CheckItem({
+		//tools.unshift({
+			//text: 'Вид',
+			//menu: new Ext.menu.Menu({
+				//items: [
+					//[>new Ext.menu.CheckItem({
 
-						text: 'Каталог ресурсов',
-						checkHandler: checkHandler
-					}),
-					'-',
-					new Ext.menu.CheckItem({
-						text: 'Окно результатов',
-						checkHandler: checkHandler
-					}),
-					new Ext.menu.CheckItem({
-						text: 'Справка',
-						checkHandler: checkHandler
-					}),*/
+						//text: 'Каталог ресурсов',
+						//checkHandler: checkHandler
+					//}),
+					//'-',
+					//new Ext.menu.CheckItem({
+						//text: 'Окно результатов',
+						//checkHandler: checkHandler
+					//}),
+					//new Ext.menu.CheckItem({
+						//text: 'Справка',
+						//checkHandler: checkHandler
+					//}),*/
                     
-                                        new Ext.menu.CheckItem({
-                                                text: 'Градусная сетка',
-                                                checked: (this.tools.graticulegxptool && this.tools.graticulegxptool.activated),
-                                                scope: this,
-                                                handler: function() {
-                                                    if(!this.tools.graticulegxptool){
-                                                        try {
-                                                            this.tools.graticulegxptool = Ext.ComponentMgr.createPlugin(
-                                                                {
-                                                                    "ptype": "gxp_graticulegxptool",
-                                                                    "controlOptions":{
-                                                                        //numPoints: 2, 
-                                                                        labelled: true
-                                                                        , displayInLayerSwitcher: false
-                                                                        , labelSymbolizer: {fontSize: 10}
-                                                                    },
-                                                                    "outputTarget":"map",
-                                                                    id: "graticulegxptool"
-                                                                }, this.defaultToolType
-                                                            );
-                                                        } catch (err) {
-                                                            throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
-                                                        }
-                                                        this.tools.graticulegxptool.init(this);
+                                        ////new Ext.menu.CheckItem({
+                                                ////text: 'Градусная сетка',
+                                                ////checked: (this.tools.graticulegxptool && this.tools.graticulegxptool.activated),
+                                                ////scope: this,
+                                                ////handler: function() {
+                                                    ////if(!this.tools.graticulegxptool){
+                                                        ////try {
+                                                            ////this.tools.graticulegxptool = Ext.ComponentMgr.createPlugin(
+                                                                ////{
+                                                                    ////"ptype": "gxp_graticulegxptool",
+                                                                    ////"controlOptions":{
+                                                                        //////numPoints: 2, 
+                                                                        ////labelled: true
+                                                                        ////, displayInLayerSwitcher: false
+                                                                        ////, labelSymbolizer: {fontSize: 10}
+                                                                    ////},
+                                                                    ////"outputTarget":"map",
+                                                                    ////id: "graticulegxptool"
+                                                                ////}, this.defaultToolType
+                                                            ////);
+                                                        ////} catch (err) {
+                                                            ////throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
+                                                        ////}
+                                                        ////this.tools.graticulegxptool.init(this);
                                                         
-                                                    }else
-                                                        this.tools.graticulegxptool.toggle();
-                                                }
-                                        }),
-                                        this.overViewMapMenuCheck = new Ext.menu.CheckItem({
-                                            text: 'Обзорная карта',
-                                            checked: false,
-                                            scope: this
-                                            ,listeners: {
-                                                checkchange: function(item, checked){
-                                                    if(checked)
-                                                        ovmWindow.show();
-                                                    else
-                                                        ovmWindow.hide();
-                                                }
-                                            }
-                                        }),
-                                        new Ext.menu.CheckItem({
-                                                text: 'Информация RSS',
-						checked: false,
-                                                scope: this,
-                                                handler: function() {
-                                                    rssVar.show = rssVar.show ^ 1;
-                                                }
-                                        }),
-                                        {
-                                            text: "Проекция",
-                                            menu: {
-                                                items: [
-                                                    new Ext.menu.CheckItem({
-                                                            text: 'Меркатора',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Меркатора'].projection,
-                                                            handler: function() {
-                                                                var callback = function(){
-                                                                    window.location.reload(true);
-                                                                }
-                                                                app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, callback);
-                                                            }
-                                                    }),
-                                                    this.geographMenuItem = new Ext.menu.CheckItem({
+                                                    ////}else
+                                                        ////this.tools.graticulegxptool.toggle();
+                                                ////}
+                                        ////}),
+                                        ////this.overViewMapMenuCheck = new Ext.menu.CheckItem({
+                                            ////text: 'Обзорная карта',
+                                            ////checked: false,
+                                            ////scope: this
+                                            ////,listeners: {
+                                                ////checkchange: function(item, checked){
+                                                    ////if(checked)
+                                                        ////ovmWindow.show();
+                                                    ////else
+                                                        ////ovmWindow.hide();
+                                                ////}
+                                            ////}
+                                        ////}),
+                                        //new Ext.menu.CheckItem({
+                                                //text: 'Информация RSS',
+						//checked: false,
+                                                //scope: this,
+                                                //handler: function() {
+                                                    //rssVar.show = rssVar.show ^ 1;
+                                                //}
+                                        //}),
+                                        //{
+                                            //text: "Проекция",
+                                            //menu: {
+                                                //items: [
+                                                    //new Ext.menu.CheckItem({
+                                                            //text: 'Меркатора',
+                                                            //checked: app.map.projection === app.projectionStoreForMenu['Меркатора'].projection,
+                                                            //handler: function() {
+                                                                //var callback = function(){
+                                                                    //window.location.reload(true);
+                                                                //}
+                                                                //app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, callback);
+                                                            //}
+                                                    //}),
+                                                    //this.geographMenuItem = new Ext.menu.CheckItem({
 
-                                                            text: 'Географическая',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Географическая'].projection,
-                                                            handler: function() {
-                                                                var callback = function(){
-                                                                    window.location.reload(true);
-                                                                }
-                                                                app.changeProjection(app.projectionStoreForMenu['Географическая'], app, callback);
-                                                            }
-                                                    }),
-                                                    this.conicalMenuItem = new Ext.menu.CheckItem({
+                                                            //text: 'Географическая',
+                                                            //checked: app.map.projection === app.projectionStoreForMenu['Географическая'].projection,
+                                                            //handler: function() {
+                                                                //var callback = function(){
+                                                                    //window.location.reload(true);
+                                                                //}
+                                                                //app.changeProjection(app.projectionStoreForMenu['Географическая'], app, callback);
+                                                            //}
+                                                    //}),
+                                                    //this.conicalMenuItem = new Ext.menu.CheckItem({
 
-                                                            text: 'Коническая',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Коническая'].projection,
-                                                            handler: function() {
-                                                                var callback = function(){
-                                                                    window.location.reload(true);
-                                                                }
-                                                                app.changeProjection(app.projectionStoreForMenu['Коническая'], app, callback);
-                                                            }
-                                                    }),
-                                                    this.stereoMenuItem = new Ext.menu.CheckItem({
+                                                            //text: 'Коническая',
+                                                            //checked: app.map.projection === app.projectionStoreForMenu['Коническая'].projection,
+                                                            //handler: function() {
+                                                                //var callback = function(){
+                                                                    //window.location.reload(true);
+                                                                //}
+                                                                //app.changeProjection(app.projectionStoreForMenu['Коническая'], app, callback);
+                                                            //}
+                                                    //}),
+                                                    //this.stereoMenuItem = new Ext.menu.CheckItem({
 
-                                                            text: 'Полярная Север',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Полярная Север'].projection,
-                                                            handler: function() {
-                                                                var callback = function(){
-                                                                    window.location.reload(true);
-                                                                }
-                                                                app.changeProjection(app.projectionStoreForMenu['Полярная Север'], app, callback);
-                                                            }
-                                                    }),
-                                                    this.southernMenuItem = new Ext.menu.CheckItem({
-                                                            text: 'Полярная Юг',
-                                                            checked: app.map.projection === app.projectionStoreForMenu['Полярная Юг'].projection,
-                                                            handler: function() {
-                                                                var callback = function(){
-                                                                    window.location.reload(true);
-                                                                }
-                                                                app.changeProjection(app.projectionStoreForMenu['Полярная Юг'], app, callback);
-                                                            }
-                                                    })//kill me
-                                                ]
-                                            }
-                                        }
-				]
-			})
-		});
+                                                            //text: 'Полярная Север',
+                                                            //checked: app.map.projection === app.projectionStoreForMenu['Полярная Север'].projection,
+                                                            //handler: function() {
+                                                                //var callback = function(){
+                                                                    //window.location.reload(true);
+                                                                //}
+                                                                //app.changeProjection(app.projectionStoreForMenu['Полярная Север'], app, callback);
+                                                            //}
+                                                    //}),
+                                                    //this.southernMenuItem = new Ext.menu.CheckItem({
+                                                            //text: 'Полярная Юг',
+                                                            //checked: app.map.projection === app.projectionStoreForMenu['Полярная Юг'].projection,
+                                                            //handler: function() {
+                                                                //var callback = function(){
+                                                                    //window.location.reload(true);
+                                                                //}
+                                                                //app.changeProjection(app.projectionStoreForMenu['Полярная Юг'], app, callback);
+                                                            //}
+                                                    //})//kill me
+                                                //]
+                                            //}
+                                        //}
+				//]
+			//})
+		//});
 		tools.unshift({
 			text: 'Слой',
 			menu: new Ext.menu.Menu({
@@ -677,7 +692,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
            }, 
            rootVisible: false,
            id: 'geobuilder-0'
-       });
+       })
 
        var previousNext = function(incr){
            var l = Ext.getCmp('geobuilder-wizard-panel').getLayout();
@@ -689,12 +704,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
            if (incr == 1) {
                this.save();
            }
-       };
+       }
 
        var embedMap = new gxp.EmbedMapDialog({
            id: 'geobuilder-1',
            url: "viewer" + "#maps/" + this.id
-       });
+       })
 
        var wizard = {
            id: 'geobuilder-wizard-panel',
@@ -722,7 +737,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                scope: this
            }],
            items: [toolsArea, embedMap]
-       };
+       }
 
        new Ext.Window({
             layout: 'fit',

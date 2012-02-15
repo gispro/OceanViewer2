@@ -33,6 +33,8 @@ Ext.extend(Ext.ux.ColorPicker, Ext.util.Observable, {
     // help for convert hexa
     HCHARS: '0123456789ABCDEF',
 
+    colorText: 'Color',
+
     // initialization
     initialize: function( config ) {
         this.events = {};
@@ -146,7 +148,7 @@ Ext.extend(Ext.ux.ColorPicker, Ext.util.Observable, {
         this.form = new Ext.FormPanel({
             frame:true,
             width: 'auto',
-            height: 227,
+            height: 245,
             cls: 'x-cp-form',
             labelWidth: 12,
             items: [{
@@ -185,12 +187,12 @@ Ext.extend(Ext.ux.ColorPicker, Ext.util.Observable, {
                 ]
             },{
                 xtype:'fieldset',
-                title: 'Color',
+                title: this.colorText,
                 autoHeight:true,
                 style: 'padding: 2px',
                 defaultType: 'textfield',
                 items :[{
-                        fieldLabel: 'Color',
+                        fieldLabel: this.colorText,
                         id: 'colorValue' + this.domElement.id
                     }
                 ]

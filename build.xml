@@ -114,10 +114,15 @@
             <fileset dir="app/static/externals/gispro/pricker/images"/>
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/editor/javascripts">
-            <fileset dir="app/static/externals/gispro/editor/stylesheets"/>
+            <fileset dir="app/static/externals/gispro/editor/javascripts"/>
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/editor/stylesheets">
             <fileset dir="app/static/externals/gispro/editor/stylesheets"/>
+        </copy>
+
+        <!-- copy ext4 resources -->
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/ext4">
+            <fileset dir="app/static/externals/ext4"/>
         </copy>
 
 	</target>
