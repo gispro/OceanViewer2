@@ -252,6 +252,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 					tool.displayPopup = function(evt, title, toShow, isGrid)
 					{						
+                                                this.addMarker(evt.xy)
 						var popup;
 						var popupKey = evt.xy.x + "." + evt.xy.y;
 						if (!(popupKey in this.popupCache)) {
@@ -310,8 +311,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 						toggleGroup: this.toggleGroup,
 						enableToggle: true,
 						allowDepress: true,
-						
+					        scope: this,
 						toggleHandler: function(button, pressed) {
+                                                        if (pressed) { this.vectorLayerOn() } else { this.vectorLayerOff() }
 							for (var i = 0, len = info.controls.length; i < len; i++){
 								if (pressed) {
 									info.controls[i].activate();
