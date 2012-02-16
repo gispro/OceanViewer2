@@ -246,6 +246,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     );
                         
                 if(tool.ptype === "gxp_wmsgetfeatureinfo") {
+                //
+                //TODO Localize to pluin!!!!!!!!!!!!
+                //
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 					if (wmsTool == null)
 						wmsTool = tool;
