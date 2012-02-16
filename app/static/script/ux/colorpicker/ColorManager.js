@@ -22,6 +22,8 @@ Ext.apply(Styler.ColorManager.prototype, {
      * {<Styer.form.ColorField>} The currently focussed field.
      */
     field: null,
+
+    colorPickerText: 'Color Picker',
     
     /**
      * Method: init
@@ -97,11 +99,11 @@ Ext.apply(Styler.ColorManager.prototype, {
                 autoHeight: false
             });
             Styler.ColorManager.pickerWin = new Ext.Window({
-                title: "Color Picker",
+                title: this.colorPickerText,
                 layout: "fit",
                 closeAction: "hide",
                 width: 405,
-                height: 300,
+                height: 320,
                 plain: true,
                 items: Styler.ColorManager.picker
             });
