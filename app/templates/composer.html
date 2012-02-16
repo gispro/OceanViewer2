@@ -169,6 +169,10 @@
                     url: "http://oceanviewer.ru/user/userlayers/wms",
                     restUrl: "http://oceanviewer.ru/user/rest"
                 }
+                ,gispro: {
+                    url: "http://oceanviewer.ru/cache/service/wms",
+                    title: "Слои картоосновы"
+                }
             },
             wfs: "/geoserver/wfs",
             wms: "/geoserver/wms",
@@ -191,35 +195,49 @@
                         "Без картоосновы", {visibility: false,wrapDateLine: true}
                     ]
                 },
-                {
-                    source: "google",
-                    title: "Google Карта",
-                    name: "ROADMAP",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Рельеф",
-                    name: "TERRAIN",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Спутник",
-                    name: "SATELLITE",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Гибрид",
-                    name: "HYBRID",
-                    group: "background"
-                },                
+                //{
+                //    source: "google",
+                //    title: "Google Карта",
+                //    name: "ROADMAP",
+                //    group: "background"
+                //},
+                //{
+                //    source: "google",
+                //    title: "Google Рельеф",
+                //    name: "TERRAIN",
+                //    group: "background"
+                //},
+                //{
+                //    source: "google",
+                //    title: "Google Спутник",
+                //    name: "SATELLITE",
+                //    group: "background"
+                //},
+                //{
+                //    source: "google",
+                //    title: "Google Гибрид",
+                //    name: "HYBRID",
+                //    group: "background"
+                //},                
                 {
                     source: "osm",
                     name: "mapnik",
                     group: "background"
-                }                
+                },                
+                {
+                   source: "gispro",
+                   title: "ЭКО 3.1 бланк",
+                   name: "eko_blank",
+                   group: "background",
+                   args: [null, {alwaysInRange: true}]
+                },
+                {
+                   source: "gispro",
+                   title: "ЭКО 3.1",
+                   name: "eko_merge",
+                   group: "background",
+                   args: [null, {alwaysInRange: true}]
+                }
                 ],
                 center: [0, 0],
                 zoom: 2
