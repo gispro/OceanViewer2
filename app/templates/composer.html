@@ -132,10 +132,10 @@
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         var app = new GeoExplorer.Composer({
-            username: 'admin',
-            password: 'uno!geoserver',
+            username: 'edit',
+            password: 'pedit',
             proxy: "proxy/?url=",
-            printService: "/geoserver/pdf/",
+            printService: "http://oceanviewer.ru/print/pdf/",
             about: {
                 title: "Карта OceanViewer",
                 "abstract": "Сохраненная карта OceanViewer",
@@ -343,9 +343,9 @@
             ovmWindow.alignTo(app.mapPanel.body, "tr-tr", [-10, 10]);
 
             //TODO move to GeoExplorer.Composer initialize hash
-            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable', cached: false}) ])
-            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable', cached: false}) ])
-            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable', cached: false}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
+            app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
 
 	});
 

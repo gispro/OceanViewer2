@@ -35,7 +35,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
         //TODO ext_3_ request and ext_3_ iterator
         Ext4.Ajax.request({
                  method: 'post'
-                ,url: '/login'
+                ,url: 'login'
                 ,params: {username: config.username, password: config.password}
                 ,scope: this
                 ,success: function(respond){
@@ -157,11 +157,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             ,{
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 37}
+            },
+            {
+                ptype: "gxp_print",
+                customParams: {outputFilename: 'map-print'},
+                printService: config.printService,
+                actionTarget: {target: "paneltbar", index: 40}
             }
             ,{
                 ptype: "gxp_prickertool"
                 ,actionTarget: "paneltbar"
-                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2","ru_hydrometcentre_42:ru_hydrometcentre_42_3" ]
+                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1","ru_hydrometcentre_42:ru_hydrometcentre_42_2","ru_hydrometcentre_42:ru_hydrometcentre_42_3","ru_hydrometcentre_42:ru_hydrometcentre_42_4","ru_hydrometcentre_42:ru_hydrometcentre_42_5","ru_hydrometcentre_42:ru_hydrometcentre_42_6","ru_hydrometcentre_42:ru_hydrometcentre_42_7","ru_hydrometcentre_42:ru_hydrometcentre_42_8","ru_hydrometcentre_42:ru_hydrometcentre_42_9","ru_hydrometcentre_42:ru_hydrometcentre_42_10","ru_hydrometcentre_42:ru_hydrometcentre_42_11" ]
                 ,aliaseUrl: '/translate'
                 ,getInfoUrl: '/resources/wms'
                 ,saveChartUrl: '/save'
@@ -622,7 +628,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					{
 						text: 'Сохранить представление',
                                                 handler: function() {
-                                                    app.save(app.showEmbedWindow);
+                                                }
+					},
+					{
+						text: 'Печать',
+                                                handler: function() {
                                                 }
 					},
                                         "-",
