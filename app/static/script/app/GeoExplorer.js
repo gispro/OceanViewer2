@@ -611,58 +611,308 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             ,{
                 xtype: "container", 
-                layout: "fit", 
+
+                //layout:'ux.accordionvbox',
+                    //defaults: {
+                        //// applied to each contained panel
+                        //bodyStyle: 'padding:15px',
+                                //collapsible: true,
+                                //flex			: 1			// The sizes of panels are divided according to the flex index
+                    //},
+                    //layoutConfig: {
+                                //align 			: 'stretch',
+                                //pack  			: 'start',
+                                //animate			: true,
+                                //titleCollapse	: true							    
+                        //},
+                //layout: {
+                    //type: 'vbox',
+                    //pack  : 'start'
+                //},
+                //
+
                 border: false, 
                 id: 'geoTools', 
                 title: 'Инструменты', 
-                items: [{
-                    xtype: "treepanel",
-                    rootVisible: false,
-                    lines: false,
-                    root: new Ext.tree.AsyncTreeNode({
-                        id: 'isroot',
-                        expanded: true,
-                        children: [
+                items: [
+                  {
+                      xtype: 'panel',
+                      title: 'My Panel',
+                      collapsible: true,
+                      items: [
                         {
-                            id   : '1', 
+                            xtype: 'button',
                             text : 'Океаны и моря',
-                            leaf : true,
                             listeners: {
                                 click: function(n) {
                                     openChooserOcean();
                                 }
                             }
-                        }
-                        /*,{
-                            id   : '2', 
-                            text : 'Адреса',
-                            leaf : true,
-                            listeners: {
-                                click: function(n) {
-                                    openAddressSearch();
-                                }
-                            }
-                        }*/
-                        ,{
-                            id   : '3', 
+                        },
+                        {
+                            xtype: 'button',
                             text : 'Настройка сервисов',
                             leaf : true,
                             listeners: {
                                 click: function(n) {
-									if (!servicesSetting)
-										servicesSetting = new gxp.ServicesSetting();
-									servicesSetting.show();
+                                  if (!servicesSetting)
+                                    servicesSetting = new gxp.ServicesSetting();
+                                  servicesSetting.show();
                                 }
                             }
-                        }]
-                    })
-                }]
+                        }
+                      ]
+                  },
+                  {
+                      xtype: 'panel',
+                      title: 'Запросы',
+                      collapsible: true,
+                      id: 'geoToolsQueryPanel'
+                  }
+                /*{*/
+                    //xtype: "treepanel",
+                    //id: "geoToolsTreepanel",
+                    //rootVisible: false,
+                    //lines: false,
+                    //root: new Ext.tree.AsyncTreeNode({
+                        //id: 'isroot',
+                        //expanded: true,
+                        //children: [
+                        //{
+                            //id   : '1', 
+                            //text : 'Океаны и моря',
+                            //leaf : true,
+                            //listeners: {
+                                //click: function(n) {
+                                    //openChooserOcean();
+                                //}
+                            //}
+                        //}
+                        //[>,{
+                            //id   : '2', 
+                            //text : 'Адреса',
+                            //leaf : true,
+                            //listeners: {
+                                //click: function(n) {
+                                    //openAddressSearch();
+                                //}
+                            //}
+                        //}*/
+                        //,{
+                            //id   : '3', 
+                            //text : 'Настройка сервисов',
+                            //leaf : true,
+                            //listeners: {
+                                //click: function(n) {
+									//if (!servicesSetting)
+										//servicesSetting = new gxp.ServicesSetting();
+									//servicesSetting.show();
+                                //}
+                            //}
+                        //}]
+                    //})
+                /*}*/]
             }
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 
             ]
         });
-        
+
+
+        //var queryPanel = new Ext.Panel(
+          //{
+            //layout: 'fit'
+          //}
+        //)
+        //var queryPanel = new gxp.QueryPanel({
+            //title: "Feature Query",
+            //region: "west",
+            //width: 390,
+            //autoScroll: true,
+            //bodyStyle: "padding: 10px",
+            //map: this.map,
+            //maxFeatures: 100,layout
+            //layerStore: new Ext.data.JsonStore({
+                //data: {
+                    //layers: this.featureTypes
+                //},
+                //root: "layers",
+                //fields: ["title", "name", "namespace", "url", "schema"]
+            //}),
+            //bbar: ["->",
+            //{
+                //text: "Query",
+                //iconCls: "icon-find",
+                //disabled: true,
+                //handler: function () {
+                    //queryPanel.query();
+                //}
+            //}],
+            //listeners: {
+                //ready: function (panel, store) {
+                    //panel.getBottomToolbar().enable();
+                    //this.featureStore = store;
+                    //var control = this.map.getControlsByClass("OpenLayers.Control.DrawFeature")[0];
+                    //var button = toolbar.find("iconCls", "icon-addfeature")[0];
+                    //var handlers = {
+                        //"Point": OpenLayers.Handler.Point,
+                        //"Line": OpenLayers.Handler.Path,
+                        //"Curve": OpenLayers.Handler.Path,
+                        //"Polygon": OpenLayers.Handler.Polygon,
+                        //"Surface": OpenLayers.Handler.Polygon
+                    //}
+                    //var simpleType = panel.geometryType.replace("Multi", "");
+                    //var Handler = handlers[simpleType];
+                    //if (Handler) {
+                        //var active = control.active;
+                        //if (active) {
+                            //control.deactivate();
+                        //}
+                        //control.handler = new Handler(control, control.callbacks, Ext.apply(control.handlerOptions, {
+                            //multi: (simpleType != panel.geometryType)
+                        //}));
+                        //if (active) {
+                            //control.activate();
+                        //}
+                        //button.enable();
+                        //delete button.initialConfig.disabled
+                    //} else {
+                        //button.disable();
+                    //}
+                //},
+                //query: function (panel, store) {
+                    //featureGrid.setStore(store);
+                    //featureGrid.setTitle("Search Results (loading ...)");
+                    //new Ext.LoadMask(featureGrid.el, {
+                        //msg: 'Please Wait...',
+                        //store: store
+                    //}).show();
+                //},
+                //storeload: function (panel, store, records) {
+                    //featureGrid.setTitle(this.getSearchResultsTitle(store.getTotalCount()));
+                    //store.on({
+                        //"remove": function () {
+                            //featureGrid.setTitle(this.getSearchResultsTitle(store.getTotalCount() - 1));
+                        //},
+                        //scope: this
+                    //})
+                //},
+                //scope: this
+            //}
+        //});
+ 
+        var featureGridWindow = new Ext.Window({
+          layout: {
+              type: 'hbox',
+              pack: 'start',
+              align: 'stretch'
+          },
+          defaults: {
+            flex: 1
+          },
+          width: 400,
+          height: 300,
+          featureGridPanel: "featureGridPanel",
+          id: "featureGridWindow",
+          closable: false,
+          listeners: {
+            render: function(){
+              this.addTool(
+                {
+                  id: 'unpin',
+                  scope: this,
+                  handler: function(){
+
+                    var c = Ext.getCmp(this.featureGridPanel)
+                    this.items.each(
+                      function(a){
+                        c.add(a)
+                      }
+                    )
+                    c.show()
+                    c.doLayout()
+                    c.expand()
+                    c.ownerCt.doLayout()
+                    this.hide()
+
+                  }
+                }
+              )
+              this.addTool({
+                id: 'close',
+                scope: this,
+                handler: function(){
+                  this.hide()
+                }
+              })
+            }
+          }
+        });
+
+        var featureGridPanel = new Ext.Panel({
+          layout: {
+              type: 'hbox',
+              pack: 'start',
+              align: 'stretch'
+          },
+          defaults: {
+            flex: 1
+          },
+          id: "featureGridPanel",
+          hidden: true,
+          region: "south",
+          height: 180,
+          split: true,
+          collapsible: true,
+          //hasContent: false,
+          //collapsed: true,
+          featureGridWindow: "featureGridWindow",
+          listeners: {
+            render: function(){
+              this.addTool(
+                {
+                  id: 'pin',
+                  scope: this,
+                  handler: function(){
+
+                    var c = Ext.getCmp(this.featureGridWindow)
+                    this.items.each(
+                      function(a){
+                        c.add(a)
+                      }
+                    )
+                    c.show()
+                    c.doLayout()
+                    this.hide()
+                    this.ownerCt.doLayout()
+
+                  }
+                }
+              )
+              this.addTool(
+                {
+                  id: 'close',
+                  scope: this,
+                  handler: function(){
+
+                    var c = Ext.getCmp(this.featureGridWindow)
+                    this.items.each(
+                      function(a){
+                        c.add(a)
+                      }
+                    )
+                    c.doLayout()
+                    this.hide()
+                    this.ownerCt.doLayout()
+
+                  }
+                }
+              )
+            }
+          }
+        });
+        //window.featureGridPanel = featureGridPanel
+
         this.toolbar = new Ext.Toolbar({
             disabled: true,
             id: 'paneltbar',
@@ -687,7 +937,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 }
             }
         });
-        
+
         // TODO: continue making this Google Earth Panel more independent
         // Currently, it's too tightly tied into the viewer.
         // In the meantime, we keep track of all items that the were already
@@ -724,7 +974,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         googleEarthPanel.on("hide", function() {
             // re-enable all tools
             this.toolbar.enable();
-            
+
             var layersContainer = Ext.getCmp("tree");
             var layersToolbar = layersContainer && layersContainer.getTopToolbar();
             if (layersToolbar) {
@@ -757,6 +1007,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             items: [
                 this.mapPanelContainer,
                 westPanel
+                ,featureGridPanel
             ]
         }];
         
@@ -829,42 +1080,42 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     },
         
 
-    changeProjection: function(desiredConfig, map, callback) {
+    //changeProjection: function(desiredConfig, map, callback) {
 
-        var curConfigObj = this.getState();
+        //var curConfigObj = this.getState();
         
-        var desiredProj = new OpenLayers.Projection(desiredConfig.projection);
-        var currentCenter;
-        currentCenter = new OpenLayers.LonLat(curConfigObj.map.center[0], curConfigObj.map.center[1]);
-        var currentProj = new OpenLayers.Projection(curConfigObj.map.projection);
-        currentCenter.transform(currentProj, desiredProj);
-        desiredConfig.center = [currentCenter.lon, currentCenter.lat];
+        //var desiredProj = new OpenLayers.Projection(desiredConfig.projection);
+        //var currentCenter;
+        //currentCenter = new OpenLayers.LonLat(curConfigObj.map.center[0], curConfigObj.map.center[1]);
+        //var currentProj = new OpenLayers.Projection(curConfigObj.map.projection);
+        //currentCenter.transform(currentProj, desiredProj);
+        //desiredConfig.center = [currentCenter.lon, currentCenter.lat];
         
-        if(desiredConfig.switchEko3){
-           for(var i=0;i<curConfigObj.map.layers.length;i++) {
-               if(curConfigObj.map.layers[i].name === 'eko_merge'){
-                   curConfigObj.map.layers[i].name = 'eko_merge_v';
-               }
-           }
-           delete desiredConfig.switchEko3;
-        }else{
-           for(i=0;i<curConfigObj.map.layers.length;i++) {
-               if(curConfigObj.map.layers[i].name === 'eko_merge_v'){
-                   curConfigObj.map.layers[i].name = 'eko_merge';
-               }
-           }
-        }
+        //if(desiredConfig.switchEko3){
+           //for(var i=0;i<curConfigObj.map.layers.length;i++) {
+               //if(curConfigObj.map.layers[i].name === 'eko_merge'){
+                   //curConfigObj.map.layers[i].name = 'eko_merge_v';
+               //}
+           //}
+           //delete desiredConfig.switchEko3;
+        //}else{
+           //for(i=0;i<curConfigObj.map.layers.length;i++) {
+               //if(curConfigObj.map.layers[i].name === 'eko_merge_v'){
+                   //curConfigObj.map.layers[i].name = 'eko_merge';
+               //}
+           //}
+        //}
         
-       for(var src in curConfigObj.sources) {
-           if(curConfigObj.sources[src].projection){
-               curConfigObj.sources[src].projection = 
-                   desiredConfig.projection;
-           }
-       }
+       //for(var src in curConfigObj.sources) {
+           //if(curConfigObj.sources[src].projection){
+               //curConfigObj.sources[src].projection = 
+                   //desiredConfig.projection;
+           //}
+       //}
         
-        Ext.apply(curConfigObj.map, desiredConfig);
-        this.save(callback, null, Ext.util.JSON.encode(curConfigObj));
-    },
+        //Ext.apply(curConfigObj.map, desiredConfig);
+        //this.save(callback, null, Ext.util.JSON.encode(curConfigObj));
+    //},
         
 
 /** private: method[handleSave]
