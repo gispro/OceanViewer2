@@ -46,7 +46,6 @@
       Proj4js.defs["EPSG:3976"] = 
           "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
     </script>
-            
 
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="theme/app/geoexplorer.css" />
@@ -64,12 +63,14 @@
     <!--<script type="text/javascript" src="script/app/ServicesSetting.js"></script>-->
 
     <script>
+
         Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
         OpenLayers.ImgPath = "externals/openlayers/img/";
+
         // optionally set locale based on query string parameter
         if (GeoExt.Lang) {
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
-			GeoExt.Lang.set("ru");
+            GeoExt.Lang.set("ru");
         }
         //var graticuleControl1 = new OpenLayers.Control.Graticule({
         //            numPoints: 2, 
@@ -130,6 +131,7 @@
 			onStoreAdd : animationLayerLoaderOnStoreAdd
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
         var app = new GeoExplorer.Composer({
             username: 'kyakovlev',
             password: 'Rbor7HOBISF4SbMkfphZ',
@@ -154,15 +156,15 @@
                 osm: {
                     ptype: "gxp_osmsource"
                 },
-                ol: {
+                baselayer: {
                     ptype: "gxp_olsource",
-                    title: "Картоосновы Google"
                 },
                 animation: {
                     ptype: "gxp_animationsource"
                 }
                 ,editable: {
-                   url: "http://localhost:8080/geoserver/wms"
+                    url: "http://localhost:8080/geoserver/wms",
+                    title: "Редактируемые"
                 }
                 //,editable: {
                 //    url: "http://uno:8082/resources/userlayers/wms",
@@ -186,15 +188,9 @@
 
             map: {
                 projection: "EPSG:900913",
-                //units: "m",
-                //maxResolution: 156543.0339,
-                //maxExtent: [
-                //    -20037508.34, -20037508.34,
-                //    20037508.34, 20037508.34
-                //],
                 layers: [
                   {
-                     source: "ol",
+                     source: "baselayer",
                      group: "background",
                      fixed: true,
                      type: "OpenLayers.Layer",
@@ -202,30 +198,30 @@
                          "Без картоосновы", {visibility: false}
                      ]
                   }
-                  ,{
-                     source: "google",
-                     title: "Google Карта",
-                     name: "ROADMAP",
-                     group: "background"
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Рельеф",
-                     name: "TERRAIN",
-                     group: "background"
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Спутник",
-                     name: "SATELLITE",
-                     group: "background"
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Гибрид",
-                     name: "HYBRID",
-                     group: "background"
-                  }
+                  //,{
+                  //   source: "google",
+                  //   title: "Google Карта",
+                  //   name: "ROADMAP",
+                  //   group: "background"
+                  //}
+                  //,{
+                  //   source: "google",
+                  //   title: "Google Рельеф",
+                  //   name: "TERRAIN",
+                  //   group: "background"
+                  //}
+                  //,{
+                  //   source: "google",
+                  //   title: "Google Спутник",
+                  //   name: "SATELLITE",
+                  //   group: "background"
+                  //}
+                  //,{
+                  //   source: "google",
+                  //   title: "Google Гибрид",
+                  //   name: "HYBRID",
+                  //   group: "background"
+                  //}
                   ,{
                      source: "osm",
                      name: "mapnik",
@@ -284,79 +280,30 @@
             animationStore.load()
             aquaStore.load()
 
-//          if(app.mapPanel.map.layers[0].mergeNewParams)
-//       		app.mapPanel.map.layers[0].mergeNewParams();
-//       		for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
-//       			app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
-//       			if(app.mapPanel.map.layers[ii].mergeNewParams){
-//                  app.mapPanel.map.layers[ii].mergeNewParams();
-//              };
-//       		}
-//
-//           app.mapPanel.on("afterlayeradd", function(){
-//              for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
-//                  app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
-//                  if(app.mapPanel.map.layers[ii].mergeNewParams){
-//                      app.mapPanel.map.layers[ii].mergeNewParams();
-//                  };
-//           }
-//       });
-//       
-//          var metMerc = false;
-//          for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
-//              //alert(app.mapPanel.map.layers[ii]);
-//              if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
-//                  if(!(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection)){
-//                      metMerc = true;
-//                  }
-//              }
-//          }
-//          if(!metMerc){
-//                      app.conicalMenuItem.enable();//disabled = false;
-//                      app.stereoMenuItem.enable();//disabled = false;
-//                      app.geographMenuItem.enable();//disabled = false;
-//                          app.southernMenuItem.enable();//disabled = false;
-//          }else{
-//                      app.conicalMenuItem.disable();//d = true;
-//                      app.stereoMenuItem.disable();//d = true;
-//                      app.geographMenuItem.disable();//d = true;
-//                          app.southernMenuItem.disable();
-//          }
-//
-//
-//       		app.mapPanel.on("afterlayervisibilitychange", function(){
-//               var metMerc = false;
-//              for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
-//                  //alert(app.mapPanel.map.layers[ii]);
-//                  if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
-//                      if(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection){
-//                       app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, function(){window.location.reload(true);});
-//                      }else{
-//                          metMerc = true;
-//                          break;
-//                      }
-//                  }
-//              }
-//              if(!metMerc){
-//                          app.conicalMenuItem.enable();//disabled = false;
-//                          app.stereoMenuItem.enable();//disabled = false;
-//                          app.geographMenuItem.enable();//disabled = false;
-//                          app.southernMenuItem.enable();//disabled = false;
-//              }else{
-//                          app.conicalMenuItem.disable();//d = true;
-//                          app.stereoMenuItem.disable();//d = true;
-//                          app.geographMenuItem.disable();//d = true;
-//                          app.southernMenuItem.disable();
-//              }
-//       		});
-//
-//           //TODO move to GeoExplorer.Composer initialize hash
-//           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
-//           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
-//           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
-//
-	})
+            this.mapPanel.on('beforeprojectionchanged', function(projection){
+              if(projection == 'EPSG:900913' || projection == 'EPSG:4326'){
+                //this - mapPanel
+                this.layers.each(function(rec){
+                  if(rec.getLayer().params && rec.getLayer().params.LAYERS == 'eko_merge_v'){
+                    rec.getLayer().params.LAYERS = 'eko_merge'
+                  }})
+              } else if (projection == 'EPSG:102012' || projection == 'EPSG:3576' || projection == 'EPSG:3976') {
+                //this - mapPanel
+                this.layers.each(function(rec){
+                  if(rec.getLayer().params && rec.getLayer().params.LAYERS == 'eko_merge'){
+                    rec.getLayer().params.LAYERS = 'eko_merge_v'
+                  }})
+              }
+            })
 
 
-        
+           //dinamic layers adding
+           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
+           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:linelayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
+           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:polylayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
+
+          })
+
+
+
     </script>
