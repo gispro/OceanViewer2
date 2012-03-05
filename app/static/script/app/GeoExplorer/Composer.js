@@ -146,6 +146,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             ,{
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 37}
+            },
+            {
+                ptype: "gxp_print",
+                customParams: {outputFilename: 'map-print'},
+                printService: config.printService,
+                actionTarget: {target: "paneltbar", index: 40}
             }
             ,{
                 ptype: "gxp_prickertool"
@@ -340,7 +346,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					{
 						text: 'Сохранить представление',
                                                 handler: function() {
-                                                    app.save(app.showEmbedWindow);
+                                                }
+					},
+					{
+						text: 'Печать',
+                                                handler: function() {
                                                 }
 					},
                                         "-",

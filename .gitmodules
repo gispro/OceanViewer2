@@ -15,7 +15,7 @@
 	url = git://github.com/gispro/openlayers.git
 [submodule "app/static/externals/PrintPreview"]
 	path = app/static/externals/PrintPreview
-	url = git://github.com/GeoNode/PrintPreview.git
+	url = git://github.com/gispro/PrintPreview.git
 [submodule "app/static/externals/gispro/pricker"]
 	path = app/static/externals/gispro/pricker
 	url = https://github.com/Talleyran/Ext.Pricker.git
