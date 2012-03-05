@@ -134,6 +134,7 @@
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         var app = new GeoExplorer.Composer({
+            authStatus:  <% status %>, //1,
             username: 'kyakovlev',
             password: 'Rbor7HOBISF4SbMkfphZ',
             proxy: "proxy/?url=",
@@ -180,7 +181,7 @@
                 //    title: "Слои картоосновы"
                 //}
                 ,gispro: {
-                    url: "/cache/service/wms",
+                    url: "http://oceanviewer.ru/cache/service/wms",
                     title: "Слои картоосновы"
                 }
             },
