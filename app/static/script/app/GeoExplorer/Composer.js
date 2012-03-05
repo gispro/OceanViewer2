@@ -228,11 +228,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_queryform",
                 featureManager: "featuremanager",
                 featureGrid: "featureGrid",
-                outputConfig: {
-                    title: "Query",
-                    width: 320,
-                    y: 100
-                },
                 actionTarget: {target: "geoToolsQueryPanel"}
             }
             ,{

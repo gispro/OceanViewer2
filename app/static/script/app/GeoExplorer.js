@@ -802,6 +802,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         //});
  
         var featureGridWindow = new Ext.Window({
+          title: 'Результаты запроса',
           layout: {
               type: 'hbox',
               pack: 'start',
@@ -850,6 +851,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         });
 
         var featureGridPanel = new Ext.Panel({
+          title: 'Результаты запроса',
           layout: {
               type: 'hbox',
               pack: 'start',
