@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2009-2010 The Open Planning Project
  *
  * @requires GeoExplorer.js
@@ -134,15 +134,15 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 iconCls: "gxp-icon-legend",
                 ptype: "gxp_legend",
                 actionTarget: {target: "paneltbar", index: 17}
-            }, 
+            },/* 
             {
                 ptype: "gxp_measure", toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 37}
-            },             
-            /*{
+            },*/
+            {
               ptype: "gxp_gis_measure", toggleGroup: this.toggleGroup,
               actionTarget: {target: "paneltbar", index: 37}
-            }*/
+            }
             /*, 
             {
                 ptype: "gxp_googleearth",
@@ -170,7 +170,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 outputConfig: {panIn: false},
                 toggleGroup: "layertools",
                 actionTarget: {target: "paneltbar", index:18}
-            }*//*, {
+            }*/ /*, {
                 ptype: "gxp_featuregrid",
                 featureManager: "featuremanager",
                 outputConfig: {
