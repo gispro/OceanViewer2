@@ -650,7 +650,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 items: [
                   {
                       xtype: 'panel',
-                      title: 'My Panel',
+                      title: 'Моя панель',
                       collapsible: true,
                       items: [
                         {
