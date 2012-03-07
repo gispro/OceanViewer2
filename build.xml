@@ -119,11 +119,8 @@
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/editor/stylesheets">
             <fileset dir="app/static/externals/gispro/editor/stylesheets"/>
         </copy>
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overview_map/overview_map.js">
-            <fileset dir="app/static/externals/gispro/overview_map/overview_map.js"/>
-        </copy>
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overview_map/locale">
-            <fileset dir="app/static/externals/gispro/overview_map/locale"/>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overview_map">
+            <fileset dir="app/static/externals/gispro/overview_map"/>
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/view_manager/public">
             <fileset dir="app/static/externals/gispro/view_manager/public"/>
