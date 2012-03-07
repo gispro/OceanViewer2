@@ -194,7 +194,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 // shared FeatureManager for feature editing, grid and querying
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
-                maxFeatures: 20,
+                maxFeatures: 100,
                 paging: false,
                 actionTarget: {target: "paneltbar", index:19}
             }
@@ -222,13 +222,15 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 usernameAttribute: 'author',
                 featureManagerToolText: '',
                 featureManagerToolTip: 'Панель редактирования',
-                toolWinText: 'Редактирование'
+                toolWinText: 'Редактирование',
+                autoLoadFeature: true
 
             }
             ,{
-              ptype: 'gispro_viewmenu'
-              ,actionTarget: {target: "paneltbar", index:2}
-              ,ovLayer: ["/cache/service/wms", "eko_merge"]
+                ptype: 'gispro_viewmenu'
+                ,actionTarget: {target: "paneltbar", index:2}
+                ,graticulOptions: {displayInLayerSwitcher: false}
+                ,ovLayer: ["http://oceanviewer.ru/cache/service/wms", "eko_merge_v"]
             }
             ,{
                 ptype: "gxp_queryform",
