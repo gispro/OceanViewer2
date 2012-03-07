@@ -163,29 +163,22 @@
                 animation: {
                     ptype: "gxp_animationsource"
                 }
+                //,editable: {
+                //    url: "http://192.168.0.171:8080/geoserver/wms",
+                //    title: "Редактируемые"
+                //}
                 ,editable: {
-                    url: "http://localhost:8080/geoserver/wms",
-                    title: "Редактируемые"
+                    url: "http://oceanviewer.ru/user/ru_hydrometcentre_61/wms",
+                    restUrl: "http://oceanviewer.ru/user/rest"
                 }
-                //,editable: {
-                //    url: "http://uno:8082/resources/userlayers/wms",
-                //    restUrl: "http://uno:8082/resources/rest"
-                //}
-                //,editable: {
-                //    url: "http://oceanviewer.ru/resources/userlayers/wms",
-                //    restUrl: "http://oceanviewer.ru/resources/rest"
-                //}
-                //,gispro: {
-                //    url: "http://oceanviewer.ru/cache/service/wms",
-                //    title: "Слои картоосновы"
-                //}
                 ,gispro: {
                     url: "http://oceanviewer.ru/cache/service/wms",
+                    //url: "/cache/service/wms",
                     title: "Слои картоосновы"
                 }
             },
-            wfs: "/geoserver/wfs",
-            wms: "/geoserver/wms",
+            //wfs: "/geoserver/wfs",
+            //wms: "/geoserver/wms",
 
             map: {
                 projection: "EPSG:900913",
@@ -243,21 +236,24 @@
                      args: [null, {alwaysInRange: true}]
                   }
                   ,{
-                    name:"userlayers:pointlayer",
+                    //name:"userlayers:pointlayer",
+                    name:"ru_hydrometcentre_61:pointlayer",
                     source:"editable",
                     group:'editable',
                     cached: false,
                     visibility: false
                   }
                   ,{
-                    name:"userlayers:linelayer",
+                    //name:"userlayers:linelayer",
+                    name:"ru_hydrometcentre_61:linelayer",
                     source:"editable",
                     group:'editable',
                     cached: false,
                     visibility: false
                   }
                   ,{
-                    name:"userlayers:polylayer",
+                    //name:"userlayers:polylayer",
+                    name:"ru_hydrometcentre_61:polylayer",
                     source:"editable",
                     group:'editable',
                     cached: false,
