@@ -246,13 +246,11 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             var tool;
             for (var i=0, len=this.initialConfig.tools.length; i<len; i++) {
                 //try {
-                    
                     if(this.initialConfig.tools[i]){
-                    
-                    tool = Ext.ComponentMgr.createPlugin(
-                        this.initialConfig.tools[i], this.defaultToolType
-                    );
-                        
+                      tool = Ext.ComponentMgr.createPlugin(
+                          this.initialConfig.tools[i], this.defaultToolType
+                      );
+                    }
                 //} catch (err) {
                     //throw new Error("Could not create tool plugin with ptype: " + this.initialConfig.tools[i].ptype);
                 //}
@@ -670,8 +668,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             scope: this
         });
     },
-        
-/** private: method[handleSave]
+
+    /** private: method[handleSave]
      *  :arg: ``XMLHttpRequest``
      */
     handleSave: function(request) {
@@ -769,55 +767,11 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         });
         win.show();
     }
+
+
+
 });
 
-    var alertMeFedd = function(shit){
-        alert(shit);
-    }
-    
-    // translation of fields annd layer codes (fedd)
-    var translatedSymbols = {
-        field: {},
-        layer: {}
-    };
-    
-    var translateSymbols = function(symbolType, symbolCodes){
-        var cached = translatedSymbols[symbolType];
-        if(cached){
-            var toAsk = [];
-            for(var i=0;i<symbolCodes.length;i++){
-                if(!cached[symbolCodes[i]]){
-                    toAsk.push(symbolCodes[i]);
-                }
-            }
-            if(toAsk.length>0){
-                //call the servlet
-                var url = "translate";
-                var request = OpenLayers.Request.issue({
-                    method: "GET",
-                    url: url,
-                    async: false,
-                    params:{
-                        type: symbolType,
-                        code: toAsk
-                    }
-                });
-
-                if(request.status==200){
-                    var answered = Ext.util.JSON.decode(request.responseText);
-                    for(var prop in answered){
-                        cached[prop] = answered[prop];
-                    }
-                }
-            }
-        }
-        var ret = {};
-        for(i=0;i<symbolCodes.length;i++){
-            if(cached && cached[symbolCodes[i]])
-                ret[symbolCodes[i]] = cached[symbolCodes[i]];
-            else
-                ret[symbolCodes[i]] = symbolCodes[i];
-        }
-        
-        return ret;
-    }
+var alertMeFedd = function(shit){
+    alert(shit);
+}
