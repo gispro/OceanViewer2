@@ -28,3 +28,6 @@
 [submodule "app/static/externals/gispro/overview_map"]
 	path = app/static/externals/gispro/overview_map
 	url = git://github.com/Talleyran/overview_map.git
+[submodule "app/static/externals/gispro/grid_wms_get_feature_info"]
+	path = app/static/externals/gispro/grid_wms_get_feature_info
+	url = git@github.com:Talleyran/grid_wms_get_feature_info.git
