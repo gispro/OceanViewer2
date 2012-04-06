@@ -4,9 +4,22 @@ body {
     font-family:helvetica,tahoma,verdana,sans-serif;
 }
 
-/* don't wrap lines on any tooltips */
 .x-tip {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
+    background: #e9f2ff;
+}
+
+.x-tip .x-tip-tc, .x-tip .x-tip-tl, .x-tip .x-tip-tr, .x-tip .x-tip-bc, .x-tip .x-tip-bl, .x-tip .x-tip-br, .x-tip .x-tip-ml, .x-tip .x-tip-mr {
+	background-image: none;
+}
+
+.x-tip .x-tip-ml {
+    background-color: transparent;
+}
+
+.x-tip .x-tip-body {
+    font: normal 11px tahoma,arial,helvetica,sans-serif;
+    color:#222;
 }
 
 /* get images on buttons with text to line up with those with no text */
