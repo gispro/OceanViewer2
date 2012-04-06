@@ -125,6 +125,26 @@
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/view_manager/public">
             <fileset dir="app/static/externals/gispro/view_manager/public"/>
         </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/grid_wms_get_feature_info">
+            <fileset dir="app/static/externals/gispro/grid_wms_get_feature_info"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overrides">
+            <fileset dir="app/static/externals/gispro/overrides"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/utils/public">
+            <fileset dir="app/static/externals/gispro/utils/public"/>
+        </copy>
+
+        <!-- copy deploys -->
+        <copy todir="${build}/${ant.project.name}/META-INF" file="app/deploy/context.xml"/>
+        <copy todir="${build}/${ant.project.name}/WEB-INF" file="app/deploy/web.xml"/>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/cgi">
+            <fileset dir="app/deploy/cgi"/>
+        </copy>
+
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overrides">
+            <fileset dir="app/static/externals/gispro/overrides"/>
+        </copy>
 
         <!-- copy ext4 resources -->
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/ext4">
