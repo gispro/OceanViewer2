@@ -31,30 +31,53 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
     constructor: function(config) {
 
-        //TODO ext_3_ request and ext_3_ iterator
-        Ext4.Ajax.request({
-                 method: 'post'
-                ,url: 'login'
-                ,params: {username: config.username, password: config.password}
-                ,scope: this
-                ,success: function(respond){
-                      this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
-                      Ext4.Array.each(this.tools, function(tool) {
-                          if (tool.needsAuthorization === true) {
-                              tool.enable();
-                          }
-                      })
-                    }
+        var authUrl = ''
+        ,authMethod = ''
+        ,authParams = {}
 
-                ,failure: function(er){
-                      this.authorizedRoles = [];
-                      Ext4.Array.each(this.tools, function(tool) {
-                          if (tool.needsAuthorization === true) {
-                              tool.disable();
-                          }
-                      })
+        if( config.authWay == 'ov' ){
+
+          authUrl = 'login'
+          authMethod = 'POST'
+          authParams =  {username: config.username, password: config.password}
+
+        } else if ( config.authWay == 'josso' ){
+
+          authUrl = config.authUrl + 'usernamePasswordLogin.do?josso_cmd=login&josso_back_to=&josso_username='+config.username+'&josso_password='+config.password
+          authMethod = 'GET'
+
+        }
+
+        if(config.authWay !== false) OpenLayers.Request[authMethod]({
+            url: authUrl,
+            data: OpenLayers.Util.getParameterString(authParams),
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            callback: function(request){
+              if(request.status == 200){
+
+                this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
+                Ext4.Array.each(this.tools, function(tool) {
+                    if (tool.needsAuthorization === true) {
+                        tool.enable();
                     }
-            })
+                })
+
+              }else{
+
+                this.authorizedRoles = [];
+                Ext4.Array.each(this.tools, function(tool) {
+                    if (tool.needsAuthorization === true) {
+                        tool.disable();
+                    }
+                })
+
+              }
+            },
+            scope: this,
+            proxy: config.proxy
+        })
 
         config.tools = [
             {
@@ -82,7 +105,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 id: "composer_layertree",
                 groups: {editable: 'Редактируемые'},
                 outputConfig: {
-                    id: "layertree",
+                    id: "layertree"
                 },
                 outputTarget: "tree"
             }
@@ -349,14 +372,15 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					{
 						text: 'Сохранить представление',
                                                 handler: function() {
+                                                  app.save(app.showEmbedWindow);
                                                 }
 					},
+                                        "-",
 					{
 						text: 'Печать',
                                                 handler: function() {
                                                 }
 					},
-                                        "-",
                                         {
 						text: 'Добавить слой',
                                                 handler: function(){
@@ -376,20 +400,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		function checkHandler(item, e) {
 			alert('Checked the item: ' + item.text);
 		}
-
-                //var MyWindowUi = Ext.create({
-                    //xtype: 'window',
-                    //height: 250,
-                    //width: 400,
-                    //title: 'My Window',
-                    //items: [
-                      //new gxp.QueryPanel
-                    //]
-                  //}
-                //)
-
-                //MyWindowUi.show()
-
         return tools;
     },
 
@@ -474,102 +484,5 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             title: this.exportMapText,
             items: [wizard]
        }).show();
-    }, 
-
-    // translation of fields and layer codes (fedd)
-    translatedSymbols: {
-        field: {},
-        layer: {}
-    },
-
-    translateSymbols: function(symbolType, symbolCodes){
-        var cached = this.translatedSymbols[symbolType];
-        if(cached){
-            var toAsk = [];
-            for(var i=0;i<symbolCodes.length;i++){
-                if(!cached[symbolCodes[i]]){
-                    toAsk.push(symbolCodes[i]);
-                }
-            }
-            if(toAsk.length>0){
-                //call the servlet
-                var url = "translate";
-                var request = OpenLayers.Request.issue({
-                    method: "GET",
-                    url: url,
-                    async: false,
-                    params:{
-                        type: symbolType,
-                        code: toAsk
-                    }
-                });
-
-                if(request.status==200){
-                    var answered = Ext.util.JSON.decode(request.responseText);
-                    for(var prop in answered){
-                        cached[prop] = answered[prop];
-                    }
-                }
-            }
-        }
-        var ret = {};
-        for(i=0;i<symbolCodes.length;i++){
-            if(cached && cached[symbolCodes[i]])
-                ret[symbolCodes[i]] = cached[symbolCodes[i]];
-            else
-                ret[symbolCodes[i]] = symbolCodes[i];
-        }
-
-        return ret;
-    },
-
-    // metadata of fields and of layer codes (fedd)
-    metaData: {
-        field: {},
-        layer: {}
-    },
-
-    getMetaData: function(symbolType, symbolCodes){
-//	console.log ('getMetaData : symbolType = ' + symbolType + ', symbolCodes = ' + symbolCodes);
-        var cached = this.metaData[symbolType];
-        if(cached){
-            var toAsk = [];
-            for(var i=0;i<symbolCodes.length;i++){
-                if(!cached[symbolCodes[i]]){
-                    toAsk.push(symbolCodes[i]);
-                }
-            }
-            if(toAsk.length>0){
-                //call the servlet
-                var url = "metadata";
-                var request = OpenLayers.Request.issue({
-                    method: "GET",
-                    url: url,
-                    async: false,
-                    params:{
-                        type: symbolType,
-                        code: toAsk
-                    }
-                });
-
-                if(request.status==200){
-                    var answered = Ext.util.JSON.decode(request.responseText);
-                    for(var prop in answered){
-                        cached[prop] = answered[prop];
-                    }
-                }
-            }
-        }
-        var ret = {};
-        for(i=0;i<symbolCodes.length;i++){
-            if(cached && cached[symbolCodes[i]])
-                ret[symbolCodes[i]] = cached[symbolCodes[i]];
-            else
-                ret[symbolCodes[i]] = symbolCodes[i];
-        }
-
-        return ret;
     }
-
-
 });
