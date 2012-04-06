@@ -15,6 +15,7 @@
     <script type="text/javascript" src="script/gxp.js"></script> 
 
     <!-- gispro resources -->
+    <script type="text/javascript" src="externals/gispro/utils/public/javascripts/utils.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerParser.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/PrickerWindow.js"></script>
     <script type="text/javascript" src="externals/gispro/pricker/javascripts/Pricker.js"></script>
@@ -28,6 +29,15 @@
     <script type="text/javascript" src="externals/gispro/view_manager/public/javascripts/locale/ru.js"></script>
     <script type="text/javascript" src="externals/gispro/overview_map/overview_map.js"></script>
     <script type="text/javascript" src="externals/gispro/grid_wms_get_feature_info/grid_wms_get_feature_info.js"></script>
+
+    <!-- gispro overrides -->
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/WMSLayerPanel.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/grid/FeatureGrid.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSCSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureManager.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerProperties.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/GeoExt/lib/GeoExt/widgets/MapPanel.js"></script>
 
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
@@ -52,7 +62,7 @@
     <!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="externals/PrintPreview/resources/css/printpreview.css">
     <script type="text/javascript" src="script/PrintPreview.js"></script>
-    
+
     <!--<script type="text/javascript" src="script/app/graticuleGxpTool.js"></script>-->
     <script type="text/javascript" src="script/choosers.js"></script>
     <!--<script type="text/javascript" src="script/app/ServicesSetting.js"></script>-->
@@ -93,9 +103,9 @@
 			addActions: RssPopupAddActions
 		});
 
-		Ext.override(gxp.WMSLayerPanel, {
-			createDisplayPanel: RssSourceCreateDisplayPanel
-		});
+		//Ext.override(gxp.WMSLayerPanel, {
+		//	createDisplayPanel: RssSourceCreateDisplayPanel
+		//});
 		
 		Ext.override(GeoExt.LegendPanel, {
 			addLegend : animationAddLegend
@@ -123,10 +133,15 @@
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         var app = new GeoExplorer.Composer({
-            username: 'admin',
-            password: 'geoserver',
-            proxy: "proxy/?url=",
+            //username: 'admin',
+            //password: 'geoserver',
+            //username: 'edit',
+            //password: 'pedit',
+            authWay: false, //josso,ov
+            proxy: "/proxy/?url=",
+            authUrl: "http://oceanviewer.ru/josso/signon/",
             printService: "http://oceanviewer.ru/print/pdf/",
+            jossoLoginLocation: ' http://oceanviewer.ru/josso/signon/usernamePasswordLogin.do',
             about: {
                 title: "Карта OceanViewer",
                 "abstract": "Сохраненная карта OceanViewer",
@@ -140,17 +155,17 @@
                 osm: { ptype: "gxp_osmsource" },
                 baselayer: { ptype: "gxp_olsource", },
                 animation: { ptype: "gxp_animationsource" }
-                ,editable: {
-                    url: "http://192.168.0.171:8080/geoserver/wms",
-                    //url: "http://oceanviewer.ru/user/ru_hydrometcentre_61/wms",
-                    //restUrl: "http://oceanviewer.ru/user/rest",
-                    title: "Редактируемые"
-                }
-                ,gispro: {
-                    //url: "http://oceanviewer.ru/cache/service/wms",
-                    url: "/cache/service/wms",
-                    title: "Слои картоосновы"
-                }
+                //,editable: {
+                //    //url: "http://192.168.0.171:8080/geoserver/wms",
+                //    url: "http://oceanviewer.ru/user/ru_hydrometcentre_61/wms",
+                //    restUrl: "http://oceanviewer.ru/user/rest",
+                //    title: "Редактируемые"
+                //}
+                //,gispro: {
+                //    //url: "/cache/service/wms",
+                //    url: "http://oceanviewer.ru/cache/service/wms",
+                //    title: "Слои картоосновы"
+                //}
             },
 
             map: {
@@ -194,44 +209,46 @@
                      name: "mapnik",
                      group: "background"
                   }
-                  ,{
-                     source: "gispro",
-                     title: "ЭКО 3.1 бланк",
-                     name: "eko_blank",
-                     group: "background",
-                     args: [null, {alwaysInRange: true}]
-                  }
-                  ,{
-                     source: "gispro",
-                     title: "ЭКО 3.1",
-                     name: "eko_merge",
-                     group: "background",
-                     args: [null, {alwaysInRange: true}]
-                  }
-                  ,{
-                    name:"userlayers:pointlayer",
-                    //name:"ru_hydrometcentre_61:pointlayer",
-                    source:"editable",
-                    group:'editable',
-                    cached: false,
-                    visibility: false
-                  }
-                  ,{
-                    name:"userlayers:linelayer",
-                    //name:"ru_hydrometcentre_61:linelayer",
-                    source:"editable",
-                    group:'editable',
-                    cached: false,
-                    visibility: false
-                  }
-                  ,{
-                    name:"userlayers:polylayer",
-                    //name:"ru_hydrometcentre_61:polylayer",
-                    source:"editable",
-                    group:'editable',
-                    cached: false,
-                    visibility: false
-                  }
+                  //,{
+                  //   source: "gispro",
+                  //   title: "ЭКО 3.1 бланк",
+                  //   name: "eko_blank",
+                  //   group: "background",
+                  //   args: [null, {alwaysInRange: true}],
+                  //   queryable: false
+                  //}
+                  //,{
+                  //   source: "gispro",
+                  //   title: "ЭКО 3.1",
+                  //   name: "eko_merge",
+                  //   group: "background",
+                  //   args: [null, {alwaysInRange: true}],
+                  //   queryable: false
+                  //}
+                  //,{
+                  //  //name:"userlayers:pointlayer",
+                  //  name:"ru_hydrometcentre_61:pointlayer",
+                  //  source:"editable",
+                  //  group:'editable',
+                  //  cached: false,
+                  //  visibility: false
+                  //}
+                  //,{
+                  //  //name:"userlayers:linelayer",
+                  //  name:"ru_hydrometcentre_61:linelayer",
+                  //  source:"editable",
+                  //  group:'editable',
+                  //  cached: false,
+                  //  visibility: false
+                  //}
+                  //,{
+                  //  //name:"userlayers:polylayer",
+                  //  name:"ru_hydrometcentre_61:polylayer",
+                  //  source:"editable",
+                  //  group:'editable',
+                  //  cached: false,
+                  //  visibility: false
+                  //}
                 ],
                 center: [0, 0],
                 zoom: 2
@@ -243,6 +260,29 @@
         downloadRSS()
         wmsStore.load()
 
+
+        app.on('portalready', function(){
+          var im = new Image()
+          im.src = 'http://oceanviewer.ru:80/resources/ru_hydrometcentre_42/wms?SERVICE=WMS&STYLES=&FORMAT=image%2Fpng&TRANSPARENT=TRUE&LAYERS=ru_hydrometcentre_42%3Aru_hydrometcentre_42_10_p0001_00_ln&VERSION=1.1.1&REQUEST=GetMap&TILED=true&SRS=EPSG%3A900913&BBOX=-20037508.34,-20037508.34,20037508.34,20037508.34&WIDTH=256&HEIGHT=256'
+          //setTimeout(function(){
+          //  var t = document.cookie.match(/ JOSSO_SESSIONID_josso/)
+          //  if(!t){
+          //    document.location=app.jossoLoginLocation + '?josso_back_to=' + document.location.href
+          //  }
+          //}, 10000)
+          //im.onload = function(){
+          //  document.body.appendChild(im)
+          //  setTimeout(function(){
+          //    document.body.removeChild(im)
+          //  }, 2000)
+          //}
+          //im.onabort = function(){
+          //    document.location=app.jossoLoginLocation + '?josso_back_to=' + document.location.href
+          //}
+          //im.onerror = function(){
+          //    document.location=app.jossoLoginLocation + '?josso_back_to=' + document.location.href
+          //}
+        })
 
         app.on("ready", function()
           {
@@ -280,7 +320,6 @@
             app.mapPanel.on( 'afterlayout', function(){
               google.maps.event.trigger(gobj, 'resize')
             } )
-
 
 
            //dinamic layers adding
