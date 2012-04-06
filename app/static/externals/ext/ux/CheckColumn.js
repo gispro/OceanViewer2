@@ -38,7 +38,7 @@ var grid = new Ext.grid.EditorGridPanel({
  */
 Ext.ux.grid.CheckColumn = Ext.extend(Ext.grid.Column, {
     initComponent : function(){
-      Ext.Container.superclass.initComponent.call(this);
+      Ext.ux.grid.CheckColumn.superclass.constructor.apply(this, arguments);
 
       this.addEvents(
         /**
@@ -67,7 +67,7 @@ Ext.ux.grid.CheckColumn = Ext.extend(Ext.grid.Column, {
     },
 
     renderer : function(v, p, record){
-        p.css += ' x-grid3-check-col-td'; 
+        p.css += ' x-grid3-check-col-td';
         return String.format('<div class="x-grid3-check-col{0}">&#160;</div>', v ? '-on' : '');
     },
 
