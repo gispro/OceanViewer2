@@ -162,7 +162,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     }, 
 
     loadConfig: function(config) {
-        
         var mapUrl = window.location.hash.substr(1);
         var match = mapUrl.match(/^maps\/(\d+)$/);
         if (match) {
@@ -307,7 +306,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 items: [
                   {
                       xtype: 'panel',
-                      title: 'Моя панель',
+                      title: 'Общие',
                       collapsible: true,
                       items: [
                         {
