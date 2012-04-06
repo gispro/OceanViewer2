@@ -378,7 +378,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 								owner          : record.data.owner              ,
 								serverName_new : panel.items.items[0].getValue(),
 								url_new        : panel.items.items[1].getValue(),
-								access         : panel.items.items[3].getValue(),
+								access         : panel.items.items[3].getValue()
 							},
 							callback: function(request) 
 							{
@@ -872,7 +872,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 								title_new : panel.items.items[0].getValue(),
 								url_new   : panel.items.items[1].getValue(),
 								icon      : panel.items.items[2].getValue(),
-								access    : panel.items.items[4].getValue(),
+								access    : panel.items.items[4].getValue()
 							},
 							callback: function(request) 
 							{
