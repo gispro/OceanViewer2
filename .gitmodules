@@ -31,3 +31,9 @@
 [submodule "app/static/externals/gispro/grid_wms_get_feature_info"]
 	path = app/static/externals/gispro/grid_wms_get_feature_info
 	url = git@github.com:Talleyran/grid_wms_get_feature_info.git
+[submodule "app/static/externals/gispro/overrides"]
+	path = app/static/externals/gispro/overrides
+	url = git@github.com:Talleyran/geoexplorer_overrides.git
+[submodule "app/static/externals/gispro/utils"]
+	path = app/static/externals/gispro/utils
+	url = git@github.com:Talleyran/gispro_utils.git
