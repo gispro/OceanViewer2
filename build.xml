@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="OceanViewer2" default="dist" basedir=".">
+<project name="beta" default="dist" basedir=".">
 
     <description>
-        OceanViewer2 Build File
+        OceanViewer Build File
     </description>
 
     <property name="build" location="build"/>
