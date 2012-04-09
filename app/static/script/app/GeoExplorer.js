@@ -1,3 +1,4 @@
+/*jshint  strict: false, undef: false, strict: false, white: false, asi: true, laxcomma: true */
 /**
  * Copyright (c) 2009-2011 The Open Planning Project
  */
@@ -281,25 +282,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             ,{
                 xtype: "container", 
 
-                //layout:'ux.accordionvbox',
-                    //defaults: {
-                        //// applied to each contained panel
-                        //bodyStyle: 'padding:15px',
-                                //collapsible: true,
-                                //flex			: 1			// The sizes of panels are divided according to the flex index
-                    //},
-                    //layoutConfig: {
-                                //align 			: 'stretch',
-                                //pack  			: 'start',
-                                //animate			: true,
-                                //titleCollapse	: true							    
-                        //},
-                //layout: {
-                    //type: 'vbox',
-                    //pack  : 'start'
-                //},
-                //
-
                 border: false, 
                 id: 'geoTools', 
                 title: 'Инструменты', 
@@ -311,7 +293,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                       items: [
                         {
                             xtype: 'button',
-                            text : 'Океаны и моря',
+                            text : 'Поиск по акватории',
                             listeners: {
                                 click: function(n) {
                                     openChooserOcean();
@@ -745,7 +727,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             title: this.mapInfoText,
             html: '<div class="gx-info-panel">' +
                   '<h2>'+this.titleText+'</h2><p>' + about.title +
-                  '</p><h2>'+this.descriptionText+'</h2><p>' + about['abstract'] +
+                  '</p><h2>'+this.descriptionText+'</h2><p>' + about.abstract +
                   '</p> <h2>'+this.contactText+'</h2><p>' + about.contact +'</p></div>',
             height: 'auto',
             width: 'auto'
