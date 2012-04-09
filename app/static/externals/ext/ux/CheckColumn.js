@@ -1,3 +1,4 @@
+/*jshint  strict: false, undef: false, strict: false, white: false, asi: true, laxcomma: true */
 /*!
  * Ext JS Library 3.4.0
  * Copyright(c) 2006-2011 Sencha Inc.

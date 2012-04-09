@@ -1,3 +1,4 @@
+/*jshint  strict: false, undef: false, strict: false, white: false, asi: true, laxcomma: true */
 /*!
  * Ext JS Library 3.4.0
  * Copyright(c) 2006-2011 Sencha Inc.
@@ -42,15 +43,16 @@ Ext.ux.grid.ButtonColumn = Ext.extend(Ext.grid.Column, {
     },
 
     renderer : function(value, id, r) {
-      var id = Ext.id();
-      this.createGridButton.defer(1, this, ['...', id, r]);
-      return('<div id="' + id + '"></div>');
+      var newId = Ext.id();
+      this.createGridButton.defer(1, this, ['...', newId, r]);
+      return('<div id="' + newId + '"></div>');
     },
 
     createGridButton : function(value, id, record) {
       new Ext.Button({
         text: value
         ,record: record
+        ,style: {display: 'inline-block'}
         ,handler : this.handler
       }).render(document.body, id);
     },
