@@ -18,16 +18,6 @@ var getDbConn = exports.getDbConn = function(request) {
             System.getProperty("GEOEXPLORER_JDBC_PARAMS") || 
             System.getenv("GEOEXPLORER_JDBC_PARAMS") || 
             '{ "driver" : "org.sqlite.JDBC" , "url" : "jdbc:sqlite:geoexplorer.db" }'
-        
-            //    '{ ' +
-            //        '"driver" : "org.postgresql.Driver" , '+
-            //        '"url" : "jdbc:postgresql://192.168.0.30:5432/oceanadmin" ,'+
-            //        '"table" : "savedmaps2",'+
-            //        '"user": "esimo",'+
-            //        '"password" : "gisproesimo"'+
-            //    '}'
-        
-        
         );
     }
 
