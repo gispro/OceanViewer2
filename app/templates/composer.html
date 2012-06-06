@@ -27,17 +27,30 @@
     <link rel="stylesheet" type="text/css" href="externals/gispro/editor/stylesheets/editor.css">
     <script type="text/javascript" src="externals/gispro/view_manager/public/javascripts/view_menu.js"></script>
     <script type="text/javascript" src="externals/gispro/view_manager/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="externals/gispro/username/public/javascripts/username.js"></script>
+    <script type="text/javascript" src="externals/gispro/username/public/javascripts/locale/ru.js"></script>
     <script type="text/javascript" src="externals/gispro/overview_map/overview_map.js"></script>
     <script type="text/javascript" src="externals/gispro/grid_wms_get_feature_info/grid_wms_get_feature_info.js"></script>
+    <script type="text/javascript" src="externals/gispro/upload/public/javascripts/upload.js"></script>
+    <script type="text/javascript" src="externals/gispro/upload/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="externals/gispro/arcgis_source/public/javascripts/ArcGISServiceReader.js"></script>
+    <script type="text/javascript" src="externals/gispro/arcgis_source/public/javascripts/ArcGISServiceStore.js"></script>
+    <script type="text/javascript" src="externals/gispro/arcgis_source/public/javascripts/ArcGISSource.js"></script>
 
     <!-- gispro overrides -->
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/WMSLayerPanel.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/grid/FeatureGrid.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerSource.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSSource.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSCSource.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureManager.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerProperties.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/AddLayers.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/QueryForm.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureGrid.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/form/FilterField.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/GeoExt/lib/GeoExt/widgets/MapPanel.js"></script>
+    <!--TODO<script type="text/javascript" src="externals/gispro/overrides/GeoExt/lib/GeoExt/data/AttributeReader.js"></script>-->
 
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
@@ -67,10 +80,23 @@
     <script type="text/javascript" src="script/choosers.js"></script>
     <!--<script type="text/javascript" src="script/app/ServicesSetting.js"></script>-->
 
-    <script>
+    <script type="text/javascript" src="HelpInfo.js"></script> 
 
-        Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
-        OpenLayers.ImgPath = "externals/openlayers/img/";
+    <script type="text/javascript" src="config.js"></script>
+
+    <script type="text/javascript">
+
+        //constants
+
+        Ext.BLANK_IMAGE_URL = CONFIG.blankImageUrl;
+
+        OpenLayers.ImgPath = CONFIG.openLayersImgPath;
+
+        Gispro.Utils.TRANSLATE_URL = CONFIG.translateUrl;
+
+        Gispro.Utils.METADATA_URL = CONFIG.metadataUrl;
+
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = CONFIG.imageReloadAttempts;
 
         // optionally set locale based on query string parameter
         if (GeoExt.Lang) {
@@ -132,157 +158,12 @@
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        var app = new GeoExplorer.Composer({
-            //username: 'admin',
-            //password: 'geoserver',
-            //username: 'edit',
-            //password: 'pedit',
-            authWay: false, //josso,ov
-            proxy: "/proxy/?url=",
-            authUrl: "http://oceanviewer.ru/josso/signon/",
-            printService: "http://oceanviewer.ru/print/pdf/",
-            jossoLoginLocation: ' http://oceanviewer.ru/josso/signon/usernamePasswordLogin.do',
-            about: {
-                title: "Карта OceanViewer",
-                "abstract": "Сохраненная карта OceanViewer",
-                contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
-            },
-            defaultSourceType: "gxp_wmscsource",
-            sources: {
-                arcgis93: { ptype: "gxp_arcgis93source" },
-                rss: { ptype: "gxp_rsssource" },
-                google: { ptype: "gxp_googlesource" },
-                osm: { ptype: "gxp_osmsource" },
-                baselayer: { ptype: "gxp_olsource", },
-                animation: { ptype: "gxp_animationsource" }
-                ,editable: {
-                    //url: "http://192.168.0.171:8080/geoserver/wms",
-                    url: "http://oceanviewer.ru/user/ru_hydrometcentre_61/wms",
-                    restUrl: "http://oceanviewer.ru/user/rest",
-                    title: "Редактируемые"
-                }
-                ,gispro: {
-                    //url: "/cache/service/wms",
-                    url: "http://oceanviewer.ru/cache/service/wms",
-                    title: "Слои картоосновы"
-                }
-            },
-
-            map: {
-                projection: "EPSG:900913",
-                layers: [
-                  {
-                     source: "baselayer",
-                     group: "background",
-                     fixed: true,
-                     type: "OpenLayers.Layer",
-                     args: [
-                         "Без картоосновы", {visibility: false}
-                     ]
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Карта",
-                     name: "ROADMAP",
-                     group: "background"
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Рельеф",
-                     name: "TERRAIN",
-                     group: "background"
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Спутник",
-                     name: "SATELLITE",
-                     group: "background"
-                  }
-                  ,{
-                     source: "google",
-                     title: "Google Гибрид",
-                     name: "HYBRID",
-                     group: "background"
-                  }
-                  ,{
-                     source: "osm",
-                     name: "mapnik",
-                     group: "background"
-                  }
-                  ,{
-                     source: "gispro",
-                     title: "ЭКО 3.1 бланк",
-                     name: "eko_blank",
-                     group: "background",
-                     args: [null, {alwaysInRange: true}],
-                     queryable: false
-                  }
-                  ,{
-                     source: "gispro",
-                     title: "ЭКО 3.1",
-                     name: "eko_merge",
-                     group: "background",
-                     args: [null, {alwaysInRange: true}],
-                     queryable: false
-                  }
-                  ,{
-                    //name:"userlayers:pointlayer",
-                    name:"ru_hydrometcentre_61:pointlayer",
-                    source:"editable",
-                    group:'editable',
-                    cached: false,
-                    visibility: false
-                  }
-                  ,{
-                    //name:"userlayers:linelayer",
-                    name:"ru_hydrometcentre_61:linelayer",
-                    source:"editable",
-                    group:'editable',
-                    cached: false,
-                    visibility: false
-                  }
-                  ,{
-                    //name:"userlayers:polylayer",
-                    name:"ru_hydrometcentre_61:polylayer",
-                    source:"editable",
-                    group:'editable',
-                    cached: false,
-                    visibility: false
-                  }
-                ],
-                center: [0, 0],
-                zoom: 2
-            }
-        })
+        var app = new GeoExplorer.Composer(CONFIG.composer)
 
 
         downloadArcgis()
         downloadRSS()
         wmsStore.load()
-
-
-        //app.on('portalready', function(){
-        //  var im = new Image()
-        //  im.src = 'http://oceanviewer.ru:80/resources/ru_hydrometcentre_42/wms?SERVICE=WMS&STYLES=&FORMAT=image%2Fpng&TRANSPARENT=TRUE&LAYERS=ru_hydrometcentre_42%3Aru_hydrometcentre_42_10_p0001_00_ln&VERSION=1.1.1&REQUEST=GetMap&TILED=true&SRS=EPSG%3A900913&BBOX=-20037508.34,-20037508.34,20037508.34,20037508.34&WIDTH=256&HEIGHT=256'
-        //  //setTimeout(function(){
-        //  //  var t = document.cookie.match(/ JOSSO_SESSIONID_josso/)
-        //  //  if(!t){
-        //  //    document.location=app.jossoLoginLocation + '?josso_back_to=' + document.location.href
-        //  //  }
-        //  //}, 10000)
-        //  //im.onload = function(){
-        //  //  document.body.appendChild(im)
-        //  //  setTimeout(function(){
-        //  //    document.body.removeChild(im)
-        //  //  }, 2000)
-        //  //}
-        //  //im.onabort = function(){
-        //  //    document.location=app.jossoLoginLocation + '?josso_back_to=' + document.location.href
-        //  //}
-        //  //im.onerror = function(){
-        //  //    document.location=app.jossoLoginLocation + '?josso_back_to=' + document.location.href
-        //  //}
-        //})
 
         app.on("ready", function()
           {
@@ -322,8 +203,95 @@
             } )
 
 
-           //dinamic layers adding
-           //app.mapPanel.layers.add([ app.layerSources['editable'].createLayerRecord({ name:"userlayers:pointlayer", source:"editable", group:'editable', cached: false, visibility: false}) ])
+            if(CONFIG.onloadResources){
+              for(var k in CONFIG.onloadResources.sources){
+
+                this.addLayerSource({
+                    id: k,
+                    config: CONFIG.onloadResources.sources[k].config,
+
+                    callback: function(sourceId){
+
+                      for(var i=0,len=CONFIG.onloadResources.sources[sourceId].layers.length; i<len; i++){
+
+                        app.mapPanel.layers.add([ 
+                          app.layerSources[ sourceId ].createLayerRecord({
+                            name: CONFIG.onloadResources.sources[sourceId].layers[i],
+                            source: CONFIG.onloadResources.sources[sourceId].id,
+                            group: CONFIG.onloadResources.sources[sourceId].group,
+                            cached: false,
+                            visibility: false
+                          })
+                        ])
+
+                      }
+
+                    }
+                });
+
+              }
+            }
+
+            if(app.authWay == "josso" && app.jossoAuthUrl ){
+              var el = document.createElement('iframe')
+              el.onload = function(){document.body.removeChild(el)}
+              el.src = app.jossoAuthUrl
+              document.body.appendChild(el)
+            }
+
+
+
+
+            var win = new Ext.Window({
+              title: 'Помощь',
+              layout:'fit',
+              width:700,
+              height:400,
+              closeAction:'hide',
+              maximizable: true,
+              items: [
+                  {
+                    layout:'border',
+                    defaults: {
+                        collapsible: true,
+                        split: true,
+                        //bodyStyle: 'padding:15px'
+                    },
+                    items: [
+                    {
+                      xtype:'treepanel',
+                      listeners: {
+                        click: function(a,b,c){
+                          Ext.getCmp('helpIframe').body.dom.innerHTML= '<iframe style="border: none;" height="100%" width="100%" src="' + a.attributes.url + '"></iframe>'
+                        }
+                      },
+                      rootVisible: false,
+                      region:'west',
+                      //margins: '5 0 0 0',
+                      //cmargins: '5 5 0 0',
+                      width: 175,
+                      minSize: 100,
+                      maxSize: 250,
+                      useArrows:true,
+                      autoScroll:true,
+                      animate:true,
+                      containerScroll: true,
+                      border: false,
+                      root: new Ext.tree.AsyncTreeNode({
+                          children: HelpInfo
+                      }),
+                    },
+                    {
+                        collapsible: false,
+                        region:'center',
+                        margins: '5 0 0 0',
+                        id: 'helpIframe'
+                    }
+                  ]
+                }
+              ]
+            });
+            Ext.getCmp('helpButton').handler = function(){win.show()}
 
           })
 

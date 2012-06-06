@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>OceanViewer2 0.3.8</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" href="theme/app/img/favicon.ico">
-        <!-- Ext resources -->
-        <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/ext-all.css">
-        <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/xtheme-blue.css">
-        <script type="text/javascript" src="externals/ext/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript" src="externals/ext/ext-all.js"></script>
-        <!--<script type="text/javascript" src="externals/ext/ext-all-debug.js"></script>-->
-        <!--<script type="text/javascript" src="externals/ext/ext-all-debug-w-comments.js"></script>-->
-        <script type="text/javascript" src="externals/ext/ux/CheckColumn.js"></script>
-        <script type="text/javascript" src="externals/ext/ux/ButtonColumn.js"></script>
+  <head>
+    <title>OceanViewer2 0.4.6</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" href="theme/app/img/favicon.ico">
 
-        <script type="text/javascript" src="externals/ext4/builds/ext-all-sandbox.js"></script>
-        <link rel="stylesheet" type="text/css" href="externals/ext4/resources/css/ext-sandbox.css">
+    <!-- Ext resources -->
+    <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/xtheme-blue.css">
+    <script type="text/javascript" src="externals/ext/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="externals/ext/ext-all.js"></script>
 
-        <script type="text/javascript">
-        // For IE9, make ExtJS think we're Chrome, not IE6.
-        // http://www.sencha.com/forum/showthread.php?115849-OPEN-1434-ExtJS-TreePanel-and-IE9
-        if (Ext.isIE6 && !Ext.isIE9 && /msie 9/i.test(navigator.userAgent)) {
-            Ext.isIE6 = Ext.isIE = false;
-            Ext.isChrome = Ext.isIE9 = true;
-        }
-        </script>
-        <% render extrahead %>
-		<script type="text/javascript">
+    <!--<script type="text/javascript" src="externals/ext/ext-all-debug.js"></script>-->
+    <!--<script type="text/javascript" src="externals/ext/ext-all-debug-w-comments.js"></script>-->
+    <script type="text/javascript" src="externals/ext/ux/CheckColumn.js"></script>
+    <script type="text/javascript" src="externals/ext/ux/ButtonColumn.js"></script>
 
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-5355556-7']);
-		  _gaq.push(['_setDomainName', 'oceanviewer.ru']);
-		  _gaq.push(['_trackPageview']);
+    <script type="text/javascript" src="externals/ext4/builds/ext-all-sandbox.js"></script>
+    <link rel="stylesheet" type="text/css" href="externals/ext4/resources/css/ext-sandbox.css">
 
-		  (function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
+    <script type="text/javascript">
+    // For IE9, make ExtJS think we're Chrome, not IE6.
+    // http://www.sencha.com/forum/showthread.php?115849-OPEN-1434-ExtJS-TreePanel-and-IE9
+    if (Ext.isIE6 && !Ext.isIE9 && /msie 9/i.test(navigator.userAgent)) {
+      Ext.isIE6 = Ext.isIE = false;
+      Ext.isChrome = Ext.isIE9 = true;
+    }
+    </script>
+    <% render extrahead %>
+    <script type="text/javascript">
 
-		</script>
-    </head>
-    <body>
-        <% render content %>
-    </body>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-5355556-7']);
+      _gaq.push(['_setDomainName', 'oceanviewer.ru']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <% render content %>
+  </body>
 </html>
