@@ -111,7 +111,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 text: gxp.plugins.WMSGetFeatureInfo.prototype.infoActionTip, 
                 checked: true, 
                 iconCls: "gxp-icon-getfeatureinfo",
-                ptype: "gxp_wmsgetfeatureinfo", 
+                ptype: "gxp_gridwmsgetfeatureinfo", 
                 toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index: 3}
             }, {
@@ -150,14 +150,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 iconCls: "gxp-icon-legend",
                 ptype: "gxp_legend",
                 actionTarget: {target: "paneltbar", index: 10}
-            }, {
-                leaf: true,
-                text: gxp.plugins.GoogleEarth.prototype.tooltip,
-                checked: true,
-                iconCls: "gxp-icon-googleearth",
-                ptype: "gxp_googleearth",
-                actionTarget: {target: "paneltbar", index: 11}
-        }];
+            }
+        ];
 
         GeoExplorer.superclass.constructor.apply(this, arguments);
     }, 
@@ -269,18 +263,19 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             activeTab: 0,
             region: "west",
             width: 350,
-			minWidth: 20,
+            minWidth: 20,
             split: true,
             collapsible: true,
-			collapsed: true,
+            collapsed: true,
             header: true,
-			title: 'Таблица содержания',
+            title: 'Таблица содержания',
             items: [
                 {/*region: 'center', */autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
                 {/*region: 'south', */xtype: "container", layout: "fit", border: false, /*height: 200, */id: 'legend', title: 'Легенда'}
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             ,{
                 xtype: "container", 
+                cls: 'toolsLeftPanel',
 
                 border: false, 
                 id: 'geoTools', 
@@ -293,6 +288,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                       items: [
                         {
                             xtype: 'button',
+                            iconCls: 'searchIcon',
                             text : 'Поиск по акватории',
                             listeners: {
                                 click: function(n) {
@@ -303,6 +299,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         {
                             xtype: 'button',
                             text : 'Настройка сервисов',
+                            iconCls: 'settingsIcon',
                             leaf : true,
                             listeners: {
                                 click: function(n) {
@@ -316,7 +313,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                   },
                   {
                       xtype: 'panel',
-                      title: 'Запросы',
+                      title: 'Выборка',
                       collapsible: true,
                       id: 'geoToolsQueryPanel'
                   }
