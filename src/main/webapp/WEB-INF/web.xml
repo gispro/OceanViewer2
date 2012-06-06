@@ -31,7 +31,7 @@
         <init-param>
             <param-name>GEOEXPLORER_JDBC_PARAMS</param-name>
             <param-value>
-                { 
+                {
                     "driver" : "org.postgresql.Driver" , 
                     "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
                     "table" : "admin.savedmaps",
@@ -40,8 +40,99 @@
                 }
             </param-value>
         </init-param>
+        <init-param>
+            <param-name>symbolTranslateConfigs</param-name>
+            <param-value>
+                {
+                    "layer": {
+                        "driver" : "org.postgresql.Driver" , 
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "table" : "resource_md",
+                        "codeField" : "resourceid",
+                        "translateField" : "objecttitle",
+                        "user": "esimo",
+                        "password" : "gisproesimo"
+                    },
+                    "field": {
+                        "driver" : "org.postgresql.Driver" , 
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "table" : "element_md",
+                        "codeField" : "objectsystemid",
+                        "translateField" : "objecttitle",
+                        "user": "esimo",
+                        "password" : "gisproesimo"
+                    }
+                }
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>metaDataConfigs</param-name>
+            <param-value>
+                {
+                    "layer": {
+                        "driver" : "org.postgresql.Driver" , 
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "table" : "resource_md",
+                        "codeField" : "resourceid",
+                        "metaDataFields" : {
+                            "minimumvalue" : "Минимальное значение",
+                            "maximumvalue" : "Максимальное значение"
+                        },
+                        "user": "esimo",
+                        "password" : "gisproesimo"
+                    },
+                    "field": {
+                        "driver" : "org.postgresql.Driver" , 
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "table" : "element_md",
+                        "codeField" : "objectsystemid",
+                        "metaDataFields" : {
+                            "objecttitle" : "Заголовок элемента",
+                            "objectdescription" : "Описание элемента",
+                            "objectinfourl" : "Ссылки на информацию по элементу",
+                            "descriptivekeywords" : "Ключевые слова",
+                            "objectversion" : "Версия объекта в тематической федерации",
+                            "creationdate" : "Дата регистрации",
+                            "publicationdate" : "Дата публикации",
+                            "revisiondate" : "Дата модификации",
+                            "elementstandardname" : "Имя стандарта",
+                            "referencesystems" : "Ссылочная информация",
+                            "elementtitle" : "Название элемента",
+                            "elementshortname" : "Аббревиатура",
+                            "elementname" : "Полная расшифровка названия",
+                            "unitofmeasure" : "Единица измерения",
+                            "elementminvalue" : "Минимальное значение элемента",
+                            "elementmaxvalue" : "Максимальное значение элемента",
+                            "elementformat" : "Формат элемента в синтаксисе OPeNDAP",
+                            "elementprintdec" : "Длина элемента",
+                            "elementprintfield" : "Кол-во знаков после запятой"
+                        },
+                        "user": "esimo",
+                        "password" : "gisproesimo"
+                    }
+                }
+            </param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet>
+        <servlet-name>cgi</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
+        <init-param>
+          <param-name>debug</param-name>
+          <param-value>0</param-value>
+        </init-param>
+        <init-param>
+          <param-name>cgiPathPrefix</param-name>
+          <param-value>WEB-INF/cgi</param-value>
+        </init-param>
+        <load-on-startup>5</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>cgi</servlet-name>
+        <url-pattern>/cgi-bin/*</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>ringo</servlet-name>
