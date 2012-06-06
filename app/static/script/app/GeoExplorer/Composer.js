@@ -16,7 +16,7 @@
  */
 GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
-    // Begin i18n.
+    // Begin i18n
     saveMapText: "Save Map",
     exportMapText: "Export Map",
     toolsTitle: "Choose tools to include in the toolbar:",
@@ -26,10 +26,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
     loginText: "Login",
     loginErrorText: "Invalid username or password.",
     userFieldText: "User",
-    passwordFieldText: "Password", 
+    passwordFieldText: "Password",
+    helpTip: 'Help',
     // End i18n.
 
     constructor: function(config) {
+        
 
         var authUrl = ''
         ,authMethod = ''
@@ -43,12 +45,17 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
         } else if ( config.authWay == 'josso' ){
 
-          authUrl = config.authUrl + 'usernamePasswordLogin.do?josso_cmd=login&josso_back_to=&josso_username='+config.username+'&josso_password='+config.password
+          authUrl = config.proxy + encodeURIComponent( config.authUrl + 'usernamePasswordLogin.do?josso_cmd=login&josso_back_to=&josso_username='+config.username+'&josso_password='+config.password )
           authMethod = 'GET'
+          config.jossoAuthUrl = config.authUrl + 'usernamePasswordLogin.do?josso_cmd=login&josso_back_to=&josso_username='+config.username+'&josso_password='+config.password
 
         }
 
-        if(config.authWay !== false) OpenLayers.Request[authMethod]({
+        config.jossoInfoUrl = config.authUrl + 'info.do'
+
+        if(config.authWay !== false){
+
+          OpenLayers.Request[authMethod]({
             url: authUrl,
             data: OpenLayers.Util.getParameterString(authParams),
             headers: {
@@ -56,6 +63,9 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             },
             callback: function(request){
               if(request.status == 200){
+
+
+
 
                 this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
                 Ext4.Array.each(this.tools, function(tool) {
@@ -74,10 +84,21 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 })
 
               }
+
+              this.fireEvent('authorizationchange')
+
             },
             scope: this,
             proxy: config.proxy
-        })
+          })
+
+        } else {
+
+          this.authorizedRoles = ["ROLE_ADMINISTRATOR"];
+
+        }
+
+
 
         config.tools = [
             {
@@ -90,7 +111,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     separator: ", Y:"
                 },
                 "outputTarget":"map"
-            },
+            }
             /*{
                 "ptype": "gxp_overviewgxptool",
                 "controlOptions":{
@@ -100,7 +121,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 },
                 "outputTarget":"map"
             },*/
-             {
+            ,{
                 ptype: "gxp_layertree",
                 id: "composer_layertree",
                 groups: {editable: 'Редактируемые'},
@@ -180,20 +201,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             ,{
                 ptype: "gxp_prickertool"
                 ,actionTarget: "paneltbar"
-                ,layers: [ "ru_hydrometcentre_42:ru_hydrometcentre_42_1",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_2",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_3",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_4",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_5",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_6",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_7",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_8",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_9",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_10",
-                           "ru_hydrometcentre_42:ru_hydrometcentre_42_11" ]
-                ,aliaseUrl: 'translate'
-                ,getInfoUrl: '/resources/wms'
-                ,saveChartUrl: '/save'
+                ,layers: config.prickerLayers
+                ,aliaseUrl: config.prickerAliaseUrl
+                ,getInfoUrl: config.prickerGetInfoUrl
+                ,saveChartUrl: config.prickerSaveChartUrl
                 ,actionTarget: {target: "paneltbar", index: 38}
                 ,toggleGroup: this.toggleGroup
                 //,buffer: 0
@@ -220,7 +231,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 id: "featuremanager",
                 maxFeatures: 100,
                 paging: false,
-                actionTarget: {target: "paneltbar", index:19}
+                actionTarget: {target: "paneltbar", index:18}
             }
             //,{
                 //ptype: "gxp_featureeditor",
@@ -237,7 +248,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 featureManager: "featuremanager",
                 outputConfig: {panIn: false},
                 toggleGroup: this.toggleGroup,
-                actionTarget: {target: "paneltbar", index:18},
+                actionTarget: {target: "paneltbar", index:19},
                 createFeatureActionTip: "Создать новый объект слоя",
                 editFeatureActionTip: "Редактировать объект слоя",
                 editFeatureActionText: '',
@@ -250,16 +261,26 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 autoLoadFeature: true
 
             }
+            ,'-'
+            //,{
+                //ptype: "gispro_josso_username",
+                //actionTarget: {target: "paneltbar", index: 20}
+            //}
+            ,{
+                ptype: "gispro_upload",
+                actionTarget: {target: "layertree.contextMenu", index: 5}
+            }
             ,{
                 ptype: 'gispro_viewmenu'
                 ,actionTarget: {target: "paneltbar", index:2}
                 ,graticulOptions: {displayInLayerSwitcher: false}
-                ,ovLayer: ["http://oceanviewer.ru/cache/service/wms", "eko_merge_v"]
+                ,ovLayer: config.ovLayer
             }
             ,{
                 ptype: "gxp_queryform",
                 featureManager: "featuremanager",
                 featureGrid: "featureGrid",
+                //TODO toggleGroup: this.toggleGroup,
                 actionTarget: {target: "geoToolsQueryPanel"}
             }
             ,{
@@ -270,18 +291,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 },
                 outputTarget: "featureGridWindow"
             }
-            //,{
-                //// not a useful tool - just a demo for additional items
-                //actionTarget: "mybbar", // ".bbar" would also work
-                //actions: [{text: "Click me - I'm a tool on the portal's bbar"}]
-            //}
         ];
     
 
 
 
         GeoExplorer.Composer.superclass.constructor.apply(this, arguments);
-
     },
 
     /** api: method[destroy]
@@ -328,6 +343,20 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                         ,actionTarget: {target: "paneltbar", index: 9}
                     }
                 );
+
+
+
+
+    var aboutButton = new Ext.Button({
+        tooltip: this.helpTip,
+        iconCls: "icon-about",
+        id: "helpButton",
+        //handler: this.displayAppInfo,
+        scope: this
+    });
+
+    tools.unshift("->");
+    tools.unshift(aboutButton);
 
 		tools.unshift('->');
 
@@ -380,17 +409,6 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						text: 'Печать',
                                                 handler: function() {
                                                 }
-					},
-                                        {
-						text: 'Добавить слой',
-                                                handler: function(){
-                                                    return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
-                                                }
-
-
-
-
-
 					}
 				]
 			})
@@ -422,13 +440,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
     /** private: method[showEmbedWindow]
      */
     showEmbedWindow: function() {
+
        var toolsArea = new Ext.tree.TreePanel({title: this.toolsTitle, 
            autoScroll: true,
            root: {
-               nodeType: 'async', 
+               nodeType: 'async',
                expanded: true,
                children: this.viewerTools
-           }, 
+           },
            rootVisible: false,
            id: 'geobuilder-0'
        })
@@ -480,7 +499,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
        new Ext.Window({
             layout: 'fit',
-            width: 500, height: 300,
+            width: 500,
+            height: 300,
             title: this.exportMapText,
             items: [wizard]
        }).show();
