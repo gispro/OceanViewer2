@@ -2,6 +2,9 @@ var JDBC = require("../jdbc");
 var Request = require("ringo/webapp/request").Request;
 var auth = require("../auth");
 var ringoParameters = require("ringo/webapp/parameters");
+var cr = require("../configurator");
+
+//java.lang.System.out.println(JSON.stringify(cr.c.ringo.metaDataConfigs));
 
 exports.app = function(env, pathInfo) {
     // TODO: make it so this is unnecessary
@@ -20,7 +23,7 @@ exports.app = function(env, pathInfo) {
                     "Content-Type": "text/plain"
                 },
                 body: [x.message + ": line " + x.lineNumber]
-            }
+            };
         }
     } else {
         resp = 
@@ -30,54 +33,12 @@ exports.app = function(env, pathInfo) {
                 "Content-Type": "text/plain"
             },
             body: ["Not allowed: " + method]
-        }
+        };
     }
     return resp;    
 };
 
-var metaDataConfigs = {
-    "layer": {
-        "driver" : "org.postgresql.Driver" , 
-        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
-        "table" : "resource_md",
-        "codeField" : "resourceid",
-        "metaDataFields" : {
-            "minimumvalue" : "Минимальное значение",
-            "maximumvalue" : "Максимальное значение"
-        },
-        "user": "esimo",
-        "password" : "gisproesimo"
-    },
-    "field": {
-        "driver" : "org.postgresql.Driver" , 
-        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
-        "table" : "element_md",
-        "codeField" : "objectsystemid",
-        "metaDataFields" : {
-            "objecttitle" : "Заголовок элемента",
-            "objectdescription" : "Описание элемента",
-            "objectinfourl" : "Ссылки на информацию по элементу",
-            "descriptivekeywords" : "Ключевые слова",
-            "objectversion" : "Версия объекта в тематической федерации",
-            "creationdate" : "Дата регистрации",
-            "publicationdate" : "Дата публикации",
-            "revisiondate" : "Дата модификации",
-            "elementstandardname" : "Имя стандарта",
-            "referencesystems" : "Ссылочная информация",
-            "elementtitle" : "Название элемента",
-            "elementshortname" : "Аббревиатура",
-            "elementname" : "Полная расшифровка названия",
-            "unitofmeasure" : "Единица измерения",
-            "elementminvalue" : "Минимальное значение элемента",
-            "elementmaxvalue" : "Максимальное значение элемента",
-            "elementformat" : "Формат элемента в синтаксисе OPeNDAP",
-            "elementprintdec" : "Длина элемента",
-            "elementprintfield" : "Кол-во знаков после запятой"
-        },
-        "user": "esimo",
-        "password" : "gisproesimo"
-    }
-}
+var metaDataConfigs = cr.c.ringo.metaDataConfigs;
 
 var handlers = {
     "GET": function(env) {
@@ -95,7 +56,7 @@ var handlers = {
                     "Content-Type": "text/plain"
                 },
                 body: ["No such type:" + type]
-            }
+            };
         }
         
         var conn = JDBC.connect(
@@ -112,9 +73,8 @@ var handlers = {
         }
         
         var sql = "select " + metaDataConfig.codeField +
-            fieldNames 
-            + " from " + metaDataConfig.table + " where " +
-            metaDataConfig.codeField + " in ("
+            fieldNames + " from " + metaDataConfig.table + " where " +
+            metaDataConfig.codeField + " in (";
         for(var i=0;i<codes.length;i++){
             if(i>0)
                 sql = sql + ", ?";
@@ -142,14 +102,14 @@ var handlers = {
         ps.close();
         conn.close();
         
-        if(ret.length==0){
+        if(ret.length===0){
             return {
                 status: 400,
                 headers: {
                     "Content-Type": "text/plain"
                 },
                 body: ["No such codes: " + codes + " of type " + queryParams.type + " ("+sql+")"]
-            }
+            };
         }else{
             return {
                 status: 200,
@@ -157,7 +117,7 @@ var handlers = {
                     "Content-Type": "application/json"
                 },
                 body: [JSON.stringify(ret)]
-            }
+            };
         }
     }
 };

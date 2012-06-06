@@ -2,6 +2,7 @@ var JDBC = require("../jdbc");
 var Request = require("ringo/webapp/request").Request;
 var auth = require("../auth");
 var ringoParameters = require("ringo/webapp/parameters");
+var cr = require("../configurator");
 
 exports.app = function(env, pathInfo) {
     // TODO: make it so this is unnecessary
@@ -20,7 +21,7 @@ exports.app = function(env, pathInfo) {
                     "Content-Type": "text/plain"
                 },
                 body: [x.message + ": line " + x.lineNumber]
-            }
+            };
         }
     } else {
         resp = 
@@ -30,31 +31,12 @@ exports.app = function(env, pathInfo) {
                 "Content-Type": "text/plain"
             },
             body: ["Not allowed: " + method]
-        }
+        };
     }
     return resp;    
 };
 
-var symbolTranslateConfigs = {
-    "layer": {
-        "driver" : "org.postgresql.Driver" , 
-        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
-        "table" : "resource_md",
-        "codeField" : "resourceid",
-        "translateField" : "objecttitle",
-        "user": "esimo",
-        "password" : "gisproesimo"
-    },
-    "field": {
-        "driver" : "org.postgresql.Driver" , 
-        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
-        "table" : "element_md",
-        "codeField" : "objectsystemid",
-        "translateField" : "objecttitle",
-        "user": "esimo",
-        "password" : "gisproesimo"
-    }
-}
+var symbolTranslateConfigs = cr.c.ringo.symbolTranslateConfigs;
 
 var handlers = {
     "GET": function(env) {
@@ -80,7 +62,7 @@ var handlers = {
                     "Content-Type": "text/plain"
                 },
                 body: ["No such type:" + type]
-            }
+            };
         }
         
         var conn = JDBC.connect(
@@ -92,9 +74,8 @@ var handlers = {
         });
         
         var sql = "select " + symbolTranslateConfig.codeField + ", " +
-            symbolTranslateConfig.translateField 
-            + " from " + symbolTranslateConfig.table + " where " +
-            symbolTranslateConfig.codeField + " in ("
+            symbolTranslateConfig.translateField + " from " + symbolTranslateConfig.table + " where " +
+            symbolTranslateConfig.codeField + " in (";
         for(var i=0;i<codes.length;i++){
             if(i>0)
                 sql = sql + ", ?";
@@ -110,20 +91,20 @@ var handlers = {
         var rs = ps.executeQuery();
         var ret = {};
         while(rs.next()){
-            ret[rs.getString(1)] = rs.getString(2)
+            ret[rs.getString(1)] = rs.getString(2);
         }
         rs.close();
         ps.close();
         conn.close();
         
-        if(ret.length==0){
+        if(ret.length===0){
             return {
                 status: 400,
                 headers: {
                     "Content-Type": "text/plain"
                 },
                 body: ["No such codes: " + codes + " of type " + queryParams.type + " ("+sql+")"]
-            }
+            };
         }else{
             return {
                 status: 200,
@@ -131,7 +112,7 @@ var handlers = {
                     "Content-Type": "application/json"
                 },
                 body: [JSON.stringify(ret)]
-            }
+            };
         }
     }
 };
