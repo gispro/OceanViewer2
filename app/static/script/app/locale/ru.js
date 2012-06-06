@@ -31,6 +31,7 @@ GeoExt.Lang.add("ru", {
         loginText: "Вход",
         loginErrorText: "Неверный пароль или имя пользователя.",
         userFieldText: "Пользователь",
-        passwordFieldText: "Пароль"
+        passwordFieldText: "Пароль",
+        helpTip: 'Помощь'
     }
 });
