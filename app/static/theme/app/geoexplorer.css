@@ -277,13 +277,47 @@ div.mousePos {
 .olControlOverviewMapMinimizeButton {
     right: 0;
     bottom: -80px;
- bottom1: 80px;
+    /*bottom: 80px;*/
     cursor: pointer;
 }    
 
 .olControlOverviewMapMaximizeButton {
     right: 0;
     bottom: -80px;
- bottom1: 80px;
+    bottom: 80px;
     cursor: pointer;
 }
+
+.toolsLeftPanel .x-btn td {
+  background-image: none;
+  color: #333;
+}
+.toolsLeftPanel .x-btn button {
+  color: #333;
+  text-decoration:underline;
+}
+.settingsIcon {
+  background-image: url('img/silk/wrench.png');
+  background-repeat: no-repeat;
+}
+.searchIcon {
+  background-image: url('img/silk/find.png');
+  background-repeat: no-repeat;
+}
+.downloadIcon {
+  background-image: url('img/silk/arrow_down.png');
+  background-repeat: no-repeat;
+}
+.uploadIcon {
+  background-image: url('img/silk/arrow_up.png');
+  background-repeat: no-repeat;
+}
+
+div.helpPointer {
+  cursor:help;
+}
+
+.x-tree-node-leaf  .gxp-tree-projectionerror-icon {
+    background-image: url(img/silk/error.png);
+}
+
