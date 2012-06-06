@@ -20,7 +20,14 @@ GeoExplorer.Viewer = Ext.extend(GeoExplorer, {
     
     applyConfig: function(config) {
         var allTools = config.viewerTools || this.viewerTools;
-        var tools = [];
+        var tools = [
+            {
+                ptype: 'gispro_viewmenu',
+                actionTarget: {target: "paneltbar", index:2},
+                graticulOptions: {displayInLayerSwitcher: false},
+                ovLayer: config.ovLayer
+            }
+        ];
         var toolConfig;
         for (var i=0, len=allTools.length; i<len; i++) {
             var tool = allTools[i];
