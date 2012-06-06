@@ -125,6 +125,12 @@
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/view_manager/public">
             <fileset dir="app/static/externals/gispro/view_manager/public"/>
         </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/username/public">
+            <fileset dir="app/static/externals/gispro/username/public"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/upload/public">
+            <fileset dir="app/static/externals/gispro/upload/public"/>
+        </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/grid_wms_get_feature_info">
             <fileset dir="app/static/externals/gispro/grid_wms_get_feature_info"/>
         </copy>
@@ -136,10 +142,9 @@
         </copy>
 
         <!-- copy deploys -->
-        <copy todir="${build}/${ant.project.name}/META-INF" file="app/deploy/context.xml"/>
-        <copy todir="${build}/${ant.project.name}/WEB-INF" file="app/deploy/web.xml"/>
+        <copy todir="${build}/${ant.project.name}/META-INF" file="deploy/context.xml"/>
         <copy todir="${build}/${ant.project.name}/WEB-INF/cgi">
-            <fileset dir="app/deploy/cgi"/>
+            <fileset dir="deploy/cgi"/>
         </copy>
 
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overrides">
