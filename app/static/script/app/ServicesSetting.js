@@ -33,13 +33,13 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				servicesSetting.newObject = true;
 				if (servicesSetting.tabs.activeTab.id === 'wmsPanel') {
 					servicesSetting.wmsPanel.clear();
-					servicesSetting.lockControl ("wmsAccessSelector", false);
+					//servicesSetting.lockControl ("wmsAccessSelector", false);
 				} else if (servicesSetting.tabs.activeTab.id === 'arcgisPanel') {
 					servicesSetting.arcgisPanel.clear();
-					servicesSetting.lockControl ("arcgisAccessSelector", false);
+					//servicesSetting.lockControl ("arcgisAccessSelector", false);
 				} else if (servicesSetting.tabs.activeTab.id === 'rssPanel') {
 					servicesSetting.rssPanel.clear();
-					servicesSetting.lockControl ("rssAccessSelector", false);
+					//servicesSetting.lockControl ("rssAccessSelector", false);
 				}
 				servicesSetting.buttons[4].setDisabled (true );
 			} 
@@ -111,7 +111,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			autoLoad : false,
 			idCustom : '',
 			proxy    : new Ext.data.HttpProxy({
-				 url : ''
+				url : ''
 			}),
 			reader: new Ext.data.XmlReader({
 				record : 'Layer',
@@ -157,49 +157,49 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				      ['Закрыт'      , 'private'],
 					  ['Ограниченный', 'limited']]
 		});
-		this.rssAccessSelector = new Ext.form.ComboBox({
-			id            : 'rssAccessSelector',
-			fieldLabel    : "Доступ",
-			emptyText     : "Установите доступ к сервису",
-			displayField  : 'rus',
-			valueField    : 'eng',
-			disabled      : true,
-			triggerAction : 'all',
-			mode          : 'local',
-			store         : this.accessStore,
-			anchor        : "100%",
-			labelStyle    : 'font-size:12px;font-weight: normal; color:#909090'
-		});
-		this.arcgisAccessSelector = new Ext.form.ComboBox({
-			id            : 'arcgisAccessSelector',
-			fieldLabel    : "Доступ",
-			emptyText     : "Установите доступ к сервису",
-			displayField  : 'rus',
-			valueField    : 'eng',
-			disabled      : true,
-			triggerAction : 'all',
-			mode          : 'local',
-			store         : this.accessStore,
-			anchor        : "100%",
-			labelStyle    : 'font-size:12px;font-weight: normal; color:#909090'
-		});
-		this.wmsAccessSelector = new Ext.form.ComboBox({
-			id            : 'wmsAccessSelector',
-			fieldLabel    : "Доступ",
-			emptyText     : "Установите доступ к сервису",
-			displayField  : 'rus',
-			valueField    : 'eng',
-			disabled      : true,
-			triggerAction : 'all',
-			mode          : 'local',
-			store         : this.accessStore,
-			anchor        : "100%",
-			labelStyle    : 'font-size:12px;font-weight: normal; color:#909090'
-		});
+		//this.rssAccessSelector = new Ext.form.ComboBox({
+			//id            : 'rssAccessSelector',
+			//fieldLabel    : "Доступ",
+			//emptyText     : "Установите доступ к сервису",
+			//displayField  : 'rus',
+			//valueField    : 'eng',
+			//disabled      : true,
+			//triggerAction : 'all',
+			//mode          : 'local',
+			//store         : this.accessStore,
+			//anchor        : "100%",
+			//labelStyle    : 'font-size:12px;font-weight: normal; color:#909090'
+		//});
+		//this.arcgisAccessSelector = new Ext.form.ComboBox({
+			//id            : 'arcgisAccessSelector',
+			//fieldLabel    : "Доступ",
+			//emptyText     : "Установите доступ к сервису",
+			//displayField  : 'rus',
+			//valueField    : 'eng',
+			//disabled      : true,
+			//triggerAction : 'all',
+			//mode          : 'local',
+			//store         : this.accessStore,
+			//anchor        : "100%",
+			//labelStyle    : 'font-size:12px;font-weight: normal; color:#909090'
+		//});
+		//this.wmsAccessSelector = new Ext.form.ComboBox({
+			//id            : 'wmsAccessSelector',
+			//fieldLabel    : "Доступ",
+			//emptyText     : "Установите доступ к сервису",
+			//displayField  : 'rus',
+			//valueField    : 'eng',
+			//disabled      : true,
+			//triggerAction : 'all',
+			//mode          : 'local',
+			//store         : this.accessStore,
+			//anchor        : "100%",
+			//labelStyle    : 'font-size:12px;font-weight: normal; color:#909090'
+		//});
 		//~~ ArcGIS Store ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		var arcgisDS = new Ext.data.JsonStore({
 			root      : 'servers',
-			fields : ['title', 'url', 'format', 'owner', 'access'],
+			fields : ['title', 'url', 'format', 'owner', 'access']
 		});
 		arcgisDS.loadData(arcgisStore.reader.jsonData.arcgis);
 		
@@ -253,9 +253,9 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			{
 				Ext.getCmp("wmsPanel").items.items[1].items.items[0].setValue('');
 				Ext.getCmp("wmsPanel").items.items[1].items.items[1].setValue('');
-				Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(servicesSetting.user);
-				Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue('public');
-				Ext.getCmp("wmsAccessSelector").setDisabled (false);
+				//Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(servicesSetting.user);
+				//Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue('public');
+				//Ext.getCmp("wmsAccessSelector").setDisabled (false);
 				
 				if ((Ext.getCmp("wmsGrid").store.getCount() > 0) && Ext.getCmp("wmsGrid").getSelectionModel().getSelected())
 				{
@@ -307,13 +307,13 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			{
 				Ext.getCmp("wmsPanel").items.items[1].items.items[0].setValue(record.data.serverName);
 				Ext.getCmp("wmsPanel").items.items[1].items.items[1].setValue(record.data.url       );
-				Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(record.data.owner     );
-				Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue(record.data.access    );
+				//Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(record.data.owner     );
+				//Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue(record.data.access    );
 				
 				var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
-				servicesSetting.lockControl ("wmsAccessSelector", disabled);
+				//servicesSetting.lockControl ("wmsAccessSelector", disabled);
 				servicesSetting.newObject = false;
 				
 				this.clearGridLayers();
@@ -342,7 +342,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					{
 						servicesSetting.wmsPanel.clear();
 						Ext.getCmp("wmsGrid").store.remove (record);
-						servicesSetting.lockControl ("wmsAccessSelector", true);
+						//servicesSetting.lockControl ("wmsAccessSelector", true);
 						servicesSetting.wmsLayersStore.data = [];
 					}					
 				});
@@ -429,7 +429,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									{name: "serverName", type: "string" },
 									{name: "url"       , type: "string" },
 									{name: "owner"     , type: "string" },
-									{name: "access"    , type: "string" },
+									{name: "access"    , type: "string" }
 								]); 
 								var record = new structure({
 									serverName : panel.items.items[0].getValue(),
@@ -527,14 +527,15 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						name       : 'url',
 						anchor     : "100%",
 						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},{
-						xtype      : 'textfield',
-						fieldLabel : 'Владелец',
-						name       : 'owner',
-						disabled   : true,
-						anchor     : "100%",
-						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},	this.wmsAccessSelector,
+					},
+          //{
+						//xtype      : 'textfield',
+						//fieldLabel : 'Владелец',
+						//name       : 'owner',
+						//disabled   : true,
+						//anchor     : "100%",
+						//labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
+					//},	//this.wmsAccessSelector,
 					{
 						id         : 'wmsLayersCount',
 						xtype      : 'label',  
@@ -650,7 +651,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				Ext.getCmp("arcgisPanel").items.items[1].items.items[2].setValue('');
 				Ext.getCmp("arcgisPanel").items.items[1].items.items[3].setValue(servicesSetting.user);
 				Ext.getCmp("arcgisPanel").items.items[1].items.items[4].setValue('public');
-				Ext.getCmp("arcgisAccessSelector").setDisabled (false);
+				//Ext.getCmp("arcgisAccessSelector").setDisabled (false);
 				
 				if ((Ext.getCmp("arcgisGrid").store.getCount() > 0) && Ext.getCmp("arcgisGrid").getSelectionModel().getSelected())
 				{
@@ -663,13 +664,13 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				Ext.getCmp("arcgisPanel").items.items[1].items.items[0].setValue(record.data.title );
 				Ext.getCmp("arcgisPanel").items.items[1].items.items[1].setValue(record.data.url   );
 				Ext.getCmp("arcgisPanel").items.items[1].items.items[2].setValue(record.data.format);
-				Ext.getCmp("arcgisPanel").items.items[1].items.items[3].setValue(record.data.owner );
-				Ext.getCmp("arcgisPanel").items.items[1].items.items[4].setValue(record.data.access);
+				//Ext.getCmp("arcgisPanel").items.items[1].items.items[3].setValue(record.data.owner );
+				//Ext.getCmp("arcgisPanel").items.items[1].items.items[4].setValue(record.data.access);
 
 				var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
-				servicesSetting.lockControl ("arcgisAccessSelector", disabled);
+				//servicesSetting.lockControl ("arcgisAccessSelector", disabled);
 				servicesSetting.newObject = false;
 			},
 			items: [{
@@ -733,14 +734,15 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						name       : 'format',
 						anchor     : "100%",
 						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},{
-						xtype      : 'textfield',
-						fieldLabel : 'Владелец',
-						name       : 'owner',
-						disabled   : true,
-						anchor     : "100%",
-						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},	this.arcgisAccessSelector
+					}
+          //,{
+						//xtype      : 'textfield',
+						//fieldLabel : 'Владелец',
+						//name       : 'owner',
+						//disabled   : true,
+						//anchor     : "100%",
+						//labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
+					//},	//this.arcgisAccessSelector
 				]
 			}]
 		});
@@ -774,9 +776,9 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				Ext.getCmp("rssPanel").items.items[1].items.items[0].setValue('');
 				Ext.getCmp("rssPanel").items.items[1].items.items[1].setValue('');
 				Ext.getCmp("rssPanel").items.items[1].items.items[2].setValue('');
-				Ext.getCmp("rssPanel").items.items[1].items.items[4].setValue('public');
+				//Ext.getCmp("rssPanel").items.items[1].items.items[4].setValue('public');
 				Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(servicesSetting.user);
-				Ext.getCmp("rssAccessSelector").setDisabled (false);
+				//Ext.getCmp("rssAccessSelector").setDisabled (false);
 
 				if ((Ext.getCmp("rssGrid").store.getCount() > 0) && Ext.getCmp("rssGrid").getSelectionModel().getSelected())
 				{
@@ -790,12 +792,12 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				Ext.getCmp("rssPanel").items.items[1].items.items[1].setValue(record.data.url   );
 				Ext.getCmp("rssPanel").items.items[1].items.items[2].setValue(record.data.icon  );
 				Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(record.data.owner );
-				Ext.getCmp("rssPanel").items.items[1].items.items[4].setValue(record.data.access);
+				//Ext.getCmp("rssPanel").items.items[1].items.items[4].setValue(record.data.access);
 				
 				var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
-				servicesSetting.lockControl ("rssAccessSelector", disabled);
+				//servicesSetting.lockControl ("rssAccessSelector", disabled);
 				servicesSetting.newObject = false;
 			},
 			extractFileName : function (url)
@@ -833,7 +835,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					callback: function(request) 
 					{
 						Ext.getCmp("rssGrid").store.remove (record);
-						servicesSetting.lockControl ("rssAccessSelector", true);
+						//servicesSetting.lockControl ("rssAccessSelector", true);
 					}					
 				});
 			},
@@ -932,7 +934,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									{name: "icon"  , type: "string" },
 									{name: "url"   , type: "string" },
 									{name: "owner" , type: "string" },
-									{name: "access", type: "string" },
+									{name: "access", type: "string" }
 								]); 
 								var record = new structure({
 									timer  : 5,
@@ -1031,7 +1033,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						disabled   : true,
 						anchor     : "100%",
 						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},	this.rssAccessSelector
+					},	//this.rssAccessSelector
 				]
 			}]
 		});
@@ -1064,11 +1066,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					if (tab.id === 'wmsPanel') {
 						servicesSetting.newObject = true;
 						servicesSetting.wmsPanel.clear();
-						servicesSetting.lockControl ("wmsAccessSelector", true);
+						//servicesSetting.lockControl ("wmsAccessSelector", true);
 						servicesSetting.buttons[4].setDisabled (true);
 					} else if (tab.id === 'rssPanel') {
 						servicesSetting.rssPanel.clear();
-						servicesSetting.lockControl ("rssAccessSelector", true);
+						//servicesSetting.lockControl ("rssAccessSelector", true);
 //						servicesSetting.buttons[4].setDisabled (true);
 					}
                 }
