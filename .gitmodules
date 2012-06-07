@@ -37,3 +37,12 @@
 [submodule "app/static/externals/gispro/utils"]
 	path = app/static/externals/gispro/utils
 	url = git@github.com:Talleyran/gispro_utils.git
+[submodule "app/static/externals/gispro/arcgis_source"]
+	path = app/static/externals/gispro/arcgis_source
+	url = git@github.com:Talleyran/arcgis_source.git
+[submodule "app/static/externals/gispro/upload"]
+	path = app/static/externals/gispro/upload
+	url = git@github.com:Talleyran/upload.git
+[submodule "app/static/externals/gispro/username"]
+	path = app/static/externals/gispro/username
+	url = git@github.com:Talleyran/username.git
