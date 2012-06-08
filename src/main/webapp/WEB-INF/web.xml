@@ -114,6 +114,12 @@
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+<!--
+        <security-role-ref>
+          <role-name>ADMINISTRATOR</role-name>
+          <role-link>RIHMI-WDC.RCITU:GIS:ADMIN</role-link>
+        </security-role-ref>
+-->
     </servlet>
 
     <servlet>
@@ -142,4 +148,42 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+	
+    <!-- JOSSO Roles definition -->
+<!--
+    <security-constraint>
+        <display-name>Limit JOSSO access to the OceanViewer2</display-name>
+        <web-resource-collection>
+            <web-resource-name>protected-resources</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>RIHMI-WDC.RCITU:GIS:ADMIN</role-name>
+            <role-name>ADMINISTRATOR</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-role>
+        <description>admin role</description>
+        <role-name>RIHMI-WDC.RCITU:GIS:ADMIN</role-name>
+    </security-role>
+    <security-role>
+        <description>admin role</description>
+        <role-name>ADMINISTRATOR</role-name>
+    </security-role>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/login-josso.html</url-pattern>
+    </servlet-mapping>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>JOSSO Secure Zone</realm-name>
+        <form-login-config>
+            <form-login-page>/login-josso.html</form-login-page>
+            <form-error-page>/login-josso.html</form-error-page>
+        </form-login-config>
+    </login-config>
+-->
 </web-app>

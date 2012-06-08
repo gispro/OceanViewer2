@@ -161,7 +161,9 @@
             <fileset dir="app/static/externals/ext4"/>
         </copy>
 
-	</target>
+        <!-- JOSSO redirect file -->
+        <copy todir="${build}/${ant.project.name}" file="src/main/webapp/login-josso.html"/>
+    </target>
 
     <target name="war" depends="dist">
         <war destfile="${build}/${ant.project.name}.war">
