@@ -266,7 +266,7 @@
                       xtype:'treepanel',
                       listeners: {
                         click: function(a,b,c){
-                          Ext.getCmp('helpIframe').body.dom.innerHTML= '<iframe style="border: none;" height="100%" width="100%" src="' + a.attributes.url + '"></iframe>'
+                          if(a.attributes.url) Ext.getCmp('helpIframe').body.dom.innerHTML= '<iframe style="border: none;" height="100%" width="100%" src="' + a.attributes.url + '"></iframe>'
                         }
                       },
                       rootVisible: false,
