@@ -38,20 +38,23 @@
     <script type="text/javascript" src="externals/gispro/arcgis_source/public/javascripts/ArcGISSource.js"></script>
 
     <!-- gispro overrides -->
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/WMSLayerPanel.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/grid/FeatureGrid.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerSource.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSSource.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSCSource.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureManager.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerProperties.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/AddLayers.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/QueryForm.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureGrid.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/form/FilterField.js"></script>
-    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/form/WMSStylesDialog.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/GeoExt/lib/GeoExt/widgets/MapPanel.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/GeoExt/lib/GeoExt/data/AttributeReader.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/QueryForm.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureManager.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/AddLayers.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureGrid.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSCSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/LayerProperties.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/GoogleSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/WMSSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/OSMSource.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/grid/FeatureGrid.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/WMSLayerPanel.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/WMSStylesDialog.js"></script>
+    <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/widgets/form/FilterField.js"></script>
+
 
     <!-- proj4js resources -->
     <script type="text/javascript" src="externals/proj4js/lib/proj4js-compressed.js"></script>
@@ -263,7 +266,7 @@
                       xtype:'treepanel',
                       listeners: {
                         click: function(a,b,c){
-                          Ext.getCmp('helpIframe').body.dom.innerHTML= '<iframe style="border: none;" height="100%" width="100%" src="' + a.attributes.url + '"></iframe>'
+                          if(a.attributes.url) Ext.getCmp('helpIframe').body.dom.innerHTML= '<iframe style="border: none;" height="100%" width="100%" src="' + a.attributes.url + '"></iframe>'
                         }
                       },
                       rootVisible: false,
