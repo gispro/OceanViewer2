@@ -7,7 +7,8 @@ window.CONFIG = {
   imageReloadAttempts: 2,
 
   composer: {
-    authWay: 'josso',
+    jossoReload: false,
+    authWay: false,
     username: 'admin',
     password: 'uno!geoserver',
     authUrl: "http://oceanviewer.ru/josso/signon/",
@@ -20,6 +21,11 @@ window.CONFIG = {
     },
     defaultSourceType: "gxp_wmscsource",
     downloadFilePageUrl: 'http://192.168.0.171:8080/beta/cgi-bin/get_features.py',
+
+    jossoLoginUrl: 'http://oceanviewer.ru/josso/signon/login.do',
+    jossoOutUrl: 'http://oceanviewer.ru/josso/signon/logout.do',
+
+    uploadUrl: '/geoserver/rest',
 
     //pricker
     prickerLayers: [

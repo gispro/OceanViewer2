@@ -7,7 +7,11 @@ window.CONFIG = {
   imageReloadAttempts: 2,
 
   composer: {
+    jossoReload: true,
     authWay: false,
+    username: 'edit',
+    password: 'pedit',
+    authUrl: "http://oceanviewer.ru/josso/signon/",
     proxy: "cgi-bin/nph-proxy.cgi/00/?url=",
     printService: "http://oceanviewer.ru/print/pdf/",
     about: {
@@ -17,6 +21,11 @@ window.CONFIG = {
     },
     defaultSourceType: "gxp_wmscsource",
     downloadFilePageUrl: 'cgi-bin/get_features_24.py',
+
+    jossoLoginUrl: 'http://oceanviewer.ru/josso/signon/login.do',
+    jossoOutUrl: 'http://oceanviewer.ru/josso/signon/logout.do',
+
+    uploadUrl: 'http://oceanviewer.ru/user/rest',
 
     //pricker
     prickerLayers: [
