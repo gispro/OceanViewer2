@@ -140,6 +140,9 @@
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/utils/public">
             <fileset dir="app/static/externals/gispro/utils/public"/>
         </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/login/public">
+            <fileset dir="app/static/externals/gispro/login/public"/>
+        </copy>
 
         <!-- copy deploys -->
         <copy todir="${build}/${ant.project.name}/META-INF" file="deploy/context.xml"/>
