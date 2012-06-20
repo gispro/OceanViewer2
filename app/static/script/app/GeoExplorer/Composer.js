@@ -268,7 +268,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             //}
             ,{
                 ptype: "gispro_upload",
-                actionTarget: {target: "layertree.contextMenu", index: 5}
+                actionTarget: {target: "layertree.contextMenu", index: 5},
+                featureManager: "featuremanager"
+            }
+            ,{
+                ptype: "gispro_josso_login",
+                actionTarget: {target: "paneltbar", index:2},
+                jossoLoginUrl: config.jossoLoginUrl,
+                jossoOutUrl: config.jossoOutUrl
             }
             ,{
                 ptype: 'gispro_viewmenu'
