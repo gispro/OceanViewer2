@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #deploy config
-version=0.4.6a
+version=0.4.9
 build_project_name=beta
 build_dir=./build
 config_dir=./deploy/static_config
