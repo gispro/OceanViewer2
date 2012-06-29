@@ -114,12 +114,11 @@
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-<!--
+		
         <security-role-ref>
           <role-name>ADMINISTRATOR</role-name>
           <role-link>RIHMI-WDC.RCITU:GIS:ADMIN</role-link>
         </security-role-ref>
--->
     </servlet>
 
     <servlet>
@@ -150,7 +149,6 @@
     </welcome-file-list>
 	
     <!-- JOSSO Roles definition -->
-<!--
     <security-constraint>
         <display-name>Limit JOSSO access to the OceanViewer2</display-name>
         <web-resource-collection>
@@ -185,5 +183,4 @@
             <form-error-page>/login-josso.html</form-error-page>
         </form-login-config>
     </login-config>
--->
 </web-app>
