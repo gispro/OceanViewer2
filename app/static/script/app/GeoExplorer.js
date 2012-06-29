@@ -158,7 +158,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 
     loadConfig: function(config) {
         var mapUrl = window.location.hash.substr(1);
-        var match = mapUrl.match(/^maps\/(\d+)$/);
+        var match = mapUrl.match(/^maps\/(\d+).*$/);
         if (match) {
             this.id = Number(match[1]);
             OpenLayers.Request.GET({

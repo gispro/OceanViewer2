@@ -10,7 +10,8 @@
         setTimeout('Redirect()',1500);
         function Redirect()
         {
-            location.href = 'http://oceanviewer.ru/josso/signon/login.do';
+            var url = encodeURIComponent(location.href);
+            location.href = 'http://oceanviewer.ru/josso/signon/login.do?josso_back_to=' + url;
         }
     </script>
 </body>
