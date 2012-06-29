@@ -271,12 +271,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 actionTarget: {target: "layertree.contextMenu", index: 5},
                 featureManager: "featuremanager"
             }
-            ,{
+            /*,{
                 ptype: "gispro_josso_login",
                 actionTarget: {target: "paneltbar", index:2},
                 jossoLoginUrl: config.jossoLoginUrl,
                 jossoOutUrl: config.jossoOutUrl
-            }
+            }*/
             ,{
                 ptype: 'gispro_viewmenu'
                 ,actionTarget: {target: "paneltbar", index:2}
