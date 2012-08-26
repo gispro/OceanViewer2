@@ -300,6 +300,12 @@ div.mousePos {
   background-image: url('img/silk/wrench.png');
   background-repeat: no-repeat;
 }
+
+.animationIcon {
+  background-image: url('img/silk/palette.png');
+  background-repeat: no-repeat;
+}
+
 .searchIcon {
   background-image: url('img/silk/find.png');
   background-repeat: no-repeat;

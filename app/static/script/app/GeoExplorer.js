@@ -304,8 +304,19 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                             listeners: {
                                 click: function(n) {
                                   if (!servicesSetting)
-                                    servicesSetting = new gxp.ServicesSetting();
+									servicesSetting = new gxp.ServicesSetting(); 
                                   servicesSetting.show();
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text : 'Мастер настройки анимации',
+                            iconCls: 'animationIcon',
+                            leaf : true,
+                            listeners: {
+                                click: function(n) {
+                                  return app.tools.gxp_animationManager_ctl.showAnimationWindow();
                                 }
                             }
                         }
