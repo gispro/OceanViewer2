@@ -605,6 +605,31 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         return tools;
     },
     
+	
+	
+	saveAnimation: function(callback, scope, configStr) {
+		OpenLayers.Request.issue({
+			method: "GET",
+			url: "save",
+			async: true,
+			params:{
+				service : "animation",
+				action  : "add",
+				title    : "NEW",
+				url   : "NEW",
+				x_axis    : "NEW",
+				layers     : "NEW",
+				owner   : "NEW"
+			},
+			callback: function(request) 
+			{
+				alert(request.status);
+				//servicesSetting.lockControl ("rssAccessSelector", true);
+			}					
+		});
+	},
+	
+	
     /** private: method[save]
      *
      * Saves the map config and displays the URL in a window.

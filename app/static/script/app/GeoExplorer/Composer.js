@@ -143,9 +143,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             }
 			,{
                 id: "gxp_animationManager_ctl",
-                ptype: "gxp_animationManager",
-                actionTarget: "tree.tbar",
-                upload: true
+                ptype: "gxp_animationManager"                
             }
             ,{
                 ptype: "gxp_removelayer",
