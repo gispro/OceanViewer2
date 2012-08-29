@@ -36,7 +36,17 @@ exports.app = function(request)
 		} else
 			content = {result : "OK"};
 		content = JSON.stringify(content);
-	} else if (request.params.service === "arcgis") {
+	} else if (request.params.service === "animation") {
+		statusCode = transAnimationRecord(request, appDir);
+		if (statusCode !== 200)
+		{
+			if (statusCode === 409)
+				content = {note : "doubled"};
+		} else
+			content = {result : "OK"};
+		content = JSON.stringify(content);
+	}
+	else if (request.params.service === "arcgis") {
 		addArcGisRecord(request, appDir);
 	}
 	var resp = 
@@ -89,6 +99,25 @@ function getWMSRecordID (json, request)
 	return result;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function getAnimationRecordID (json, request)
+{
+	var result = -1;
+	if (json.services.length > 0)
+	{
+		for (var i = 0; i < json.services.length; i++)
+		{
+			if ((json.services[i].url   === request.params.url  ) &&
+				(json.services[i].owner === request.params.owner) &&
+				(json.services[i].title === request.params.title))
+			{
+				result = i;
+				break;
+			}
+		}
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function isDoubledRssRecord (json, url)
 {
 	var result = false;
@@ -114,6 +143,25 @@ function isDoubledWMSRecord (json, url)
 		for (var i = 0; i < json.services.length; i++)
 		{
 			if (json.services[i].url === url) 
+			{
+				result = true;
+				break;
+			}
+		}
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function isDoubledAnimationRecord (json, url, title, owner)
+{
+	var result = false;
+	if (json.layers.length > 0)
+	{
+		for (var i = 0; i < json.layers.length; i++)
+		{
+			if ((json.layers[i].url === url)
+				&&(json.layers[i].title === title)
+				&&(json.layers[i].owner === owner))
 			{
 				result = true;
 				break;
@@ -217,7 +265,62 @@ function transWMSRecord(request, dir)
 			}
 		}
 	} else {
-		system.print ("transWMSRecord : file not found, path = " + dir + "app/static/rss.json");
+		// ".../rss.json"  replaced with .../wms.json" 
+		system.print ("transWMSRecord : file not found, path = " + dir + "app/static/wms.json");
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function transAnimationRecord(request, dir)
+{
+	var result = 200;
+	var file = java.io.File(dir + "app/static/animation.json");
+	if (file.exists())
+	{
+		var content    = readFileContent (file.getAbsolutePath());
+		var jsonObject = JSON.parse (content);
+
+		if (request.params.action === 'remove') {
+			var idx = getAnimationRecordID (jsonObject, request);
+			if (idx >= 0) {
+				jsonObject.services.splice(idx, 1);
+				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
+			}
+		} else if (request.params.action === 'update') {
+			var idx = getAnimationRecordID (jsonObject, request);
+			if ((jsonObject.layers[idx].url !== request.params.url_new) &&
+				isDoubledAnimationRecord(jsonObject, request.params.url_new, request.params.title, request.params.owner))				
+				result = 409;
+			else {
+				if (idx >= 0) {
+					// deseiralize strings
+					var x_axis = request.params.x_axis.split(",");
+					var layers = request.params.layers.split(",");
+					jsonObject.layers[idx].title = request.params.title;
+					jsonObject.layers[idx].url        = request.params.url_new;
+					jsonObject.layers[idx].x_axis     = x_axis;
+					jsonObject.layers[idx].layers     = layers;
+					
+					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
+				}
+			}
+		} else if (request.params.action === 'add') {
+			if (isDoubledAnimationRecord(jsonObject, request.params.url, request.params.title, request.params.owner))
+				result = 409;
+			else {
+				var x_axis = request.params.x_axis.split(",");
+				var layers = request.params.layers.split(",");
+				jsonObject.layers.push ({
+					"title" : request.params.title,
+					"url"        : request.params.url,
+					"x_axis"      : x_axis,
+					"layers"     : layers
+				});
+				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
+			}
+		}
+	} else {
+		system.print ("transAnimationRecord : file not found, path = " + dir + "app/static/animation.json");
 	}
 	return result;
 }
