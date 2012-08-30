@@ -18,34 +18,34 @@
 	url = git://github.com/gispro/PrintPreview.git
 [submodule "app/static/externals/gispro/pricker"]
 	path = app/static/externals/gispro/pricker
-	url = git://github.com/Talleyran/Ext.Pricker.git
+	url = git://github.com/gispro/Ext.Pricker.git
 [submodule "app/static/externals/gispro/editor"]
 	path = app/static/externals/gispro/editor
-	url = git://github.com/Talleyran/editor.git
+	url = git://github.com/gispro/editor.git
 [submodule "app/static/externals/gispro/view_manager"]
 	path = app/static/externals/gispro/view_manager
-	url = git://github.com/Talleyran/view_manager.git
+	url = git://github.com/gispro/view_manager.git
 [submodule "app/static/externals/gispro/overview_map"]
 	path = app/static/externals/gispro/overview_map
-	url = git://github.com/Talleyran/overview_map.git
+	url = git://github.com/gispro/overview_map.git
 [submodule "app/static/externals/gispro/grid_wms_get_feature_info"]
 	path = app/static/externals/gispro/grid_wms_get_feature_info
-	url = git://github.com/Talleyran/grid_wms_get_feature_info.git
+	url = git://github.com/gispro/grid_wms_get_feature_info.git
 [submodule "app/static/externals/gispro/overrides"]
 	path = app/static/externals/gispro/overrides
-	url = git://github.com/Talleyran/geoexplorer_overrides.git
+	url = git://github.com/gispro/geoexplorer_overrides.git
 [submodule "app/static/externals/gispro/utils"]
 	path = app/static/externals/gispro/utils
-	url = git://github.com/Talleyran/gispro_utils.git
+	url = git://github.com/gispro/gispro_utils.git
 [submodule "app/static/externals/gispro/arcgis_source"]
 	path = app/static/externals/gispro/arcgis_source
-	url = git://github.com/Talleyran/arcgis_source.git
+	url = git://github.com/gispro/arcgis_source.git
 [submodule "app/static/externals/gispro/upload"]
 	path = app/static/externals/gispro/upload
-	url = git://github.com/Talleyran/upload.git
+	url = git://github.com/gispro/upload.git
 [submodule "app/static/externals/gispro/username"]
 	path = app/static/externals/gispro/username
-	url = git://github.com/Talleyran/username.git
+	url = git://github.com/gispro/username.git
 [submodule "app/static/externals/gispro/login"]
 	path = app/static/externals/gispro/login
-	url = git://github.com/Talleyran/login.git
+	url = git://github.com/gispro/login.git
