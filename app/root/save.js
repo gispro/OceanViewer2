@@ -102,13 +102,11 @@ function getWMSRecordID (json, request)
 function getAnimationRecordID (json, request)
 {
 	var result = -1;
-	if (json.services.length > 0)
+	if (json.layers.length > 0)
 	{
-		for (var i = 0; i < json.services.length; i++)
+		for (var i = 0; i < json.layers.length; i++)
 		{
-			if ((json.services[i].url   === request.params.url  ) &&
-				(json.services[i].owner === request.params.owner) &&
-				(json.services[i].title === request.params.title))
+			if (json.layers[i].animId === request.params.animId)
 			{
 				result = i;
 				break;
@@ -152,16 +150,14 @@ function isDoubledWMSRecord (json, url)
 	return result;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function isDoubledAnimationRecord (json, url, title, owner)
+function isDoubledAnimationRecord (json, animId)
 {
 	var result = false;
 	if (json.layers.length > 0)
 	{
 		for (var i = 0; i < json.layers.length; i++)
 		{
-			if ((json.layers[i].url === url)
-				&&(json.layers[i].title === title)
-				&&(json.layers[i].owner === owner))
+			if (json.layers[i].animId === animId)				
 			{
 				result = true;
 				break;
@@ -278,43 +274,41 @@ function transAnimationRecord(request, dir)
 	if (file.exists())
 	{
 		var content    = readFileContent (file.getAbsolutePath());
-		var jsonObject = JSON.parse (content);
-
+		var jsonObject = JSON.parse (content);		
 		if (request.params.action === 'remove') {
 			var idx = getAnimationRecordID (jsonObject, request);
 			if (idx >= 0) {
-				jsonObject.services.splice(idx, 1);
+				jsonObject.layers.splice(idx, 1);
 				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
 			}
 		} else if (request.params.action === 'update') {
 			var idx = getAnimationRecordID (jsonObject, request);
-			if ((jsonObject.layers[idx].url !== request.params.url_new) &&
-				isDoubledAnimationRecord(jsonObject, request.params.url_new, request.params.title, request.params.owner))				
-				result = 409;
-			else {
 				if (idx >= 0) {
 					// deseiralize strings
 					var x_axis = request.params.x_axis.split(",");
 					var layers = request.params.layers.split(",");
-					jsonObject.layers[idx].title = request.params.title;
-					jsonObject.layers[idx].url        = request.params.url_new;
-					jsonObject.layers[idx].x_axis     = x_axis;
-					jsonObject.layers[idx].layers     = layers;
-					
-					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
+					jsonObject.layers[idx].title 		= request.params.title;
+					jsonObject.layers[idx].url   		= request.params.url;
+					jsonObject.layers[idx].animId       = request.params.animId;
+					jsonObject.layers[idx].owner     	= request.params.owner;
+					jsonObject.layers[idx].x_axis     	= x_axis;
+					jsonObject.layers[idx].layers     	= layers;
+
+					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));				
 				}
-			}
 		} else if (request.params.action === 'add') {
-			if (isDoubledAnimationRecord(jsonObject, request.params.url, request.params.title, request.params.owner))
+			if (isDoubledAnimationRecord(jsonObject, request.params.animId))
 				result = 409;
 			else {
 				var x_axis = request.params.x_axis.split(",");
 				var layers = request.params.layers.split(",");
 				jsonObject.layers.push ({
-					"title" : request.params.title,
-					"url"        : request.params.url,
-					"x_axis"      : x_axis,
-					"layers"     : layers
+					"title" 	: request.params.title,
+					"url"       : request.params.url,
+					"animId"		:request.params.animId,
+					"owner"		:request.params.owner,
+					"x_axis"    : x_axis,
+					"layers"    : layers
 				});
 				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
 			}
