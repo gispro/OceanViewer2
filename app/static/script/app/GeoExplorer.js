@@ -311,12 +311,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         },
                         {
                             xtype: 'button',
-                            text : 'Мастер настройки анимации',
+                            text : 'Менеджер анимации',
                             iconCls: 'animationIcon',
                             leaf : true,
                             listeners: {
                                 click: function(n) {
-                                  return app.tools.gxp_animationManager_ctl.showAnimationWindow();
+                                  return app.tools.gxp_animationGrid_ctl.showAnimationGrid();
+								  //return app.tools.gxp_animationManager_ctl.showAnimationWindow();
                                 }
                             }
                         }

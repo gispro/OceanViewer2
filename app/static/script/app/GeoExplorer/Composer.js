@@ -145,6 +145,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 id: "gxp_animationManager_ctl",
                 ptype: "gxp_animationManager"                
             }
+			,{
+                id: "gxp_animationGrid_ctl",
+                ptype: "gxp_animationGrid"                
+            }
             ,{
                 ptype: "gxp_removelayer",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
