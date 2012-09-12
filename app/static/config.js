@@ -52,7 +52,8 @@ window.CONFIG = {
     sources: {
       arcgis93: { ptype: "gxp_arcgis93source" },
       rss: { ptype: "gxp_rsssource" },
-      google: { ptype: "gxp_googlesource" },
+      //google: { ptype: "gxp_googlesource" },
+	  bing: { ptype: "gxp_bingsource" },
       osm: { ptype: "gxp_osmsource" },
       baselayer: { ptype: "gxp_olsource" },
       animation: { ptype: "gxp_animationsource" },
@@ -79,7 +80,7 @@ window.CONFIG = {
             "Без картоосновы", {visibility: false}
           ]
         },
-        {
+       /* {
           source: "google",
           title: "Google Карта",
           name: "ROADMAP",
@@ -101,6 +102,24 @@ window.CONFIG = {
           source: "google",
           title: "Google Гибрид",
           name: "HYBRID",
+          group: "background"
+        },*/
+		{
+          source: "bing",
+          title: "Bing карта",
+          name: "Road",
+          group: "background"
+        },
+		{
+          source: "bing",
+          title: "Bing спутник",
+          name: "Aerial",
+          group: "background"
+        },
+		{
+          source: "bing",
+          title: "Bing гибрид",
+          name: "AerialWithLabels",
           group: "background"
         },
         {
