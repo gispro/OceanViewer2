@@ -204,7 +204,8 @@
 
             //google hybrid after resize bug fix
             //TODO move to source
-            var gobj
+			// Google layers removed -> bug fix removed
+            /*var gobj
             for(var i=0, len=app.mapPanel.map.layers.length; i<len; i++){
               if( app.mapPanel.map.layers[i].type == 'hybrid'){
                 gobj=app.mapPanel.map.layers[i].mapObject
@@ -212,7 +213,7 @@
             }
             app.mapPanel.on( 'afterlayout', function(){
               google.maps.event.trigger(gobj, 'resize')
-            } )
+            } )*/
 
 
             if(CONFIG.onloadResources){
