@@ -317,7 +317,17 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                             listeners: {
                                 click: function(n) {
                                   return app.tools.gxp_animationGrid_ctl.showAnimationGrid();
-								  //return app.tools.gxp_animationManager_ctl.showAnimationWindow();
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text : 'Менеджер графиков',
+                            iconCls: 'chartIcon',
+                            leaf : true,
+                            listeners: {
+                                click: function(n) {
+                                  return app.tools.gxp_chartManager_ctl.showChartWindow();
                                 }
                             }
                         }
