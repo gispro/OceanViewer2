@@ -306,6 +306,11 @@ div.mousePos {
   background-repeat: no-repeat;
 }
 
+.chartIcon {
+  background-image: url('img/silk/chart.png');
+  background-repeat: no-repeat;
+}
+
 .searchIcon {
   background-image: url('img/silk/find.png');
   background-repeat: no-repeat;
