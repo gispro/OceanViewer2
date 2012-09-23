@@ -154,6 +154,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_chartManager"                
             }
 			,{
+                id: "gxp_chartEditor_ctl",
+                ptype: "gxp_chartEditor"                
+            }
+			,{
                 id: "gxp_chartSource_ctl",
                 ptype: "gxp_chartsource"                
             }			

@@ -45,7 +45,17 @@ exports.app = function(request)
 		} else
 			content = {result : "OK"};
 		content = JSON.stringify(content);
+	} else if (request.params.service === "charts") {
+		statusCode = transChartRecord(request, appDir);
+		if (statusCode !== 200)
+		{
+			if (statusCode === 409)
+				content = {note : "doubled"};
+		} else
+			content = {result : "OK"};
+		content = JSON.stringify(content);
 	}
+	
 	else if (request.params.service === "arcgis") {
 		addArcGisRecord(request, appDir);
 	}
@@ -107,6 +117,23 @@ function getAnimationRecordID (json, request)
 		for (var i = 0; i < json.layers.length; i++)
 		{
 			if (json.layers[i].animId === request.params.animId)
+			{
+				result = i;
+				break;
+			}
+		}
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function getChartRecordID (json, request)
+{
+	var result = -1;
+	if (json.charts.length > 0)
+	{
+		for (var i = 0; i < json.charts.length; i++)
+		{
+			if (json.charts[i].chartId === request.params.chartId)
 			{
 				result = i;
 				break;
@@ -315,6 +342,50 @@ function transAnimationRecord(request, dir)
 		}
 	} else {
 		system.print ("transAnimationRecord : file not found, path = " + dir + "app/static/animation.json");
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function transChartRecord(request, dir)
+{
+	var result = 200;
+	var file = java.io.File(dir + "app/static/charts.json");
+	if (file.exists())
+	{
+		var content    = readFileContent (file.getAbsolutePath());
+		var jsonObject = JSON.parse (content);		
+		if (request.params.action === 'remove') {
+			var idx = getChartRecordID (jsonObject, request);
+			if (idx >= 0) {
+				jsonObject.charts.splice(idx, 1);
+				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
+			}
+		} else if (request.params.action === 'update') {
+			var idx = getChartRecordID (jsonObject, request);
+				if (idx >= 0) {
+					// deseiralize strings					
+					jsonObject.charts[idx].name 		= request.params.name;
+					jsonObject.charts[idx].url   		= request.params.url;
+					jsonObject.charts[idx].chartId      = request.params.chartId;
+					jsonObject.charts[idx].x_axis     	= request.params.x_axis;
+					jsonObject.charts[idx].y_axis     	= request.params.y_axis;
+					jsonObject.charts[idx].isDefault  	= request.params.isDefault;
+
+					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));				
+				}
+		} else if (request.params.action === 'add') {
+			jsonObject.charts.push ({
+				"name" 		: request.params.name,
+				"url"       : request.params.url,
+				"chartId"	: request.params.chartId,
+				"x_axis"    : request.params.x_axis,
+				"y_axis"    : request.params.y_axis,
+				"isDefault" : request.params.isDefault
+			});
+			writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));			
+		}
+	} else {
+		system.print ("transChartRecord : file not found, path = " + dir + "app/static/charts.json");
 	}
 	return result;
 }

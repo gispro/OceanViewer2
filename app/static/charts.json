@@ -1,1 +1,1 @@
-{"charts":[]}
+{"charts":[{"name":"вап","chartId":"1383443312122","url":"http://oceanviewer.ru/resources/ru_hydrometcentre_61/wms?service=WMS&request=GetMap","owner":"Администратор","x_axis":"вап","y_axis":"вап","isDefault":"false"},{"name":"fghfgh","url":"undefined?service=WMS&request=GetMap","chartId":"1348344225945","x_axis":"hfgh","y_axis":"gfhfg","isDefault":"true"},{"name":"ert","url":"undefined?service=WMS&request=GetMap","chartId":"1348344333230","x_axis":"ert","y_axis":"ert","isDefault":"false"}]}

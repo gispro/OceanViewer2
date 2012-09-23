@@ -7,7 +7,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
     title        : 'Настройка',
     closeAction  : 'hide',
     modal        : true,
-
+	maximizable  : true,
 	height       : 600,
 	width        : 750,
 	newObject    : false,
@@ -19,6 +19,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			disabled : false, 
 			width    : 150,
 			text     :'Добавить на карту',
+			id		 : 'addButton',
 			handler  : function(){  
 				if (servicesSetting.tabs.activeTab.id === 'wmsPanel') 
 					servicesSetting.wmsPanel.addRecord2Map();
@@ -29,17 +30,18 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		{
 			disabled : false,  
 			text     : 'Новый',
+			id		 : 'newButton',
 			handler  : function(){  
 				servicesSetting.newObject = true;
 				if (servicesSetting.tabs.activeTab.id === 'wmsPanel') {
 					servicesSetting.wmsPanel.clear();
-					//servicesSetting.lockControl ("wmsAccessSelector", false);
+					servicesSetting.lockControl ("wmsAccessSelector", false);
 				} else if (servicesSetting.tabs.activeTab.id === 'arcgisPanel') {
 					servicesSetting.arcgisPanel.clear();
-					//servicesSetting.lockControl ("arcgisAccessSelector", false);
+					servicesSetting.lockControl ("arcgisAccessSelector", false);
 				} else if (servicesSetting.tabs.activeTab.id === 'rssPanel') {
 					servicesSetting.rssPanel.clear();
-					//servicesSetting.lockControl ("rssAccessSelector", false);
+					servicesSetting.lockControl ("rssAccessSelector", false);
 				}
 				servicesSetting.buttons[4].setDisabled (true );
 			} 
@@ -47,6 +49,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		{
 			disabled : true,
 			text     : 'Сохранить',
+			id		 : 'saveButton',
 			handler  : function(){
 				if (servicesSetting.tabs.activeTab.id === 'wmsPanel') {
 //					console.log ('Save WMS object : newObject = ' + servicesSetting.newObject);
@@ -67,6 +70,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		{
 			disabled : true,
 			text     :'Удалить',
+			id		 : 'deleteButton',
 			handler  : function(){
 				if ((servicesSetting.tabs.activeTab.id === 'wmsPanel') && (servicesSetting.newObject === false)) {
 					// console.log ('Delete WMS object : newObject = ' + servicesSetting.newObject);
@@ -80,6 +84,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		},
 		{
 			disabled : false,
+			id		 : 'closeButton',
 			text     :'Закрыть',
 			handler  : function(){  
 				servicesSetting.hide();
@@ -230,8 +235,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		this.wmsPanel = new Ext.Panel({
 			id: 'wmsPanel',
 			title: 'WMS',
-			width: 750,
-			layout: 'column', 
+			heigth: 750,
+			layout: {
+				type: 'vbox', 
+				align:'stretch'
+			},
 			getSelectedRow : function (store, data)
 			{
 				var row = -1;
@@ -251,8 +259,8 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			},
 			clear : function()
 			{
-				Ext.getCmp("wmsPanel").items.items[1].items.items[0].setValue('');
-				Ext.getCmp("wmsPanel").items.items[1].items.items[1].setValue('');
+				Ext.getCmp("serverNameField").setValue('');
+				Ext.getCmp("serverURLField").setValue('');
 				//Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(servicesSetting.user);
 				//Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue('public');
 				//Ext.getCmp("wmsAccessSelector").setDisabled (false);
@@ -272,8 +280,8 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					if (app.layerSources[rec].baseParams && (app.layerSources[rec].baseParams.SERVICE === 'WMS') &&
 					   (app.layerSources[rec].baseParams.REQUEST === 'GetCapabilities') &&
 					   (app.layerSources[rec].ptype === 'gxp_wmscsource') &&
-					   (app.layerSources[rec].title === Ext.getCmp("wmsPanel").items.items[1].items.items[0].getValue()) &&
-					   (app.layerSources[rec].url   === Ext.getCmp("wmsPanel").items.items[1].items.items[1].getValue()))
+					   (app.layerSources[rec].title === Ext.getCmp("serverNameField").getValue()) &&
+					   (app.layerSources[rec].url   === Ext.getCmp("serverURLField").getValue()))
 					{
 //									console.log ('title = ' + app.layerSources[rec].title + ', url = ' + app.layerSources[rec].url +
 //									                                         ', ptype = ' + app.layerSources[rec].ptype);
@@ -305,15 +313,15 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			},
 			rowSelect : function (record)
 			{
-				Ext.getCmp("wmsPanel").items.items[1].items.items[0].setValue(record.data.serverName);
-				Ext.getCmp("wmsPanel").items.items[1].items.items[1].setValue(record.data.url       );
+				Ext.getCmp("serverNameField").setValue(record.data.serverName);
+				Ext.getCmp("serverURLField").setValue(record.data.url);
 				//Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(record.data.owner     );
 				//Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue(record.data.access    );
 				
 				var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
-				//servicesSetting.lockControl ("wmsAccessSelector", disabled);
+				servicesSetting.lockControl ("wmsAccessSelector", disabled);
 				servicesSetting.newObject = false;
 				
 				this.clearGridLayers();
@@ -342,7 +350,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					{
 						servicesSetting.wmsPanel.clear();
 						Ext.getCmp("wmsGrid").store.remove (record);
-						//servicesSetting.lockControl ("wmsAccessSelector", true);
+						servicesSetting.lockControl ("wmsAccessSelector", true);
 						servicesSetting.wmsLayersStore.data = [];
 					}					
 				});
@@ -402,7 +410,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			},
 			addRecord : function()
 			{
-				var panel = Ext.getCmp("wmsPanel").items.items[1];
+				var panel = Ext.getCmp("wmsPanelFields");
 
 				if ((panel.items.items[0].getValue().length === 0) || (panel.items.items[1].getValue().length === 0))
 					servicesSetting.errorFieldEmpty();
@@ -470,133 +478,153 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			},
 			items: [
 			{
-				width : 260,
-				height: 260,
-				layout: 'fit',
-				items: {
-					xtype  : 'grid',
-					id     : 'wmsGrid',
-					border : false ,
-					ds     : wmsStore,
-					columns: [
-						{
-							id       : 'serverName',
-							header   : 'Наименование', 
-							width    : 238, 
-							sortable : true,
-							dataIndex: 'serverName',
-							renderer : function(value,metaData,record,colIndex,store,view) {
-								metaData.attr  = 'ext:qtip="' + value + '"';
-								return value;
-							}
-						}
-					],
-					sm: new Ext.grid.RowSelectionModel({
-						singleSelect: true,
-						listeners: {
-							rowselect: function(sm, row, rec) {
-								servicesSetting.wmsPanel.rowSelect (rec);
-							}
-						}
-					}),
-					listeners: {
-						viewready: function(grid) {
-							grid.getSelectionModel().selectRow(0);
-						}
-					}					
-				}
-			},{
-				xtype       : 'fieldset',
-				height      : 280,
-				width       : 464,
-				labelAlign  : 'top',
-				bodyStyle   : 'padding: 10px 10px 5px 10px;border-color: #f86c6c;',
-				style: {
-					"margin-left": "10px",
-					"margin-right": "0"
+				width: 750,
+				border: false,
+				layout: {
+					type:'column', 
+					align:'stretch'
 				},
-				items: [{
-						xtype      : 'textfield',
-						fieldLabel : 'Наименование',
-						name       : 'serverName',
-						anchor     : "100%",
-						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},{
-						xtype      : 'textfield',
-						fieldLabel : 'URL',
-						name       : 'url',
-						anchor     : "100%",
-						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},
-          //{
-						//xtype      : 'textfield',
-						//fieldLabel : 'Владелец',
-						//name       : 'owner',
-						//disabled   : true,
-						//anchor     : "100%",
-						//labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					//},	//this.wmsAccessSelector,
-					{
-						id         : 'wmsLayersCount',
-						xtype      : 'label',  
-						html       : '&nbsp;',
-						style      : 'font-size:11px;font-weight: normal; font-style: italic;color:#8080ff'
-					},
-					{
-						xtype      : 'label',  
-						html       : '&nbsp;',
-						style      : 'font-size:20px;font-weight: bold'
-					},
-					{
-						xtype      : 'button',  
-						width      :  100,
-						text       : 'Подключиться',
-						style      : 'font-size:14px;font-weight: bold;color:#ffff00',
-						handler  : function(){  
-							// check 
-							var wmsCapabilities = Ext.getCmp("wmsPanel").items.items[1].items.items[1].getValue() + '?request=GetCapabilities';
-							
-							var id = servicesSetting.wmsPanel.getLayerSources();
-
-							if (id) {
-								servicesSetting.wmsPanel.showLayerSources (id);
-							} else {
-								var conf = {
-									url   : Ext.getCmp("wmsPanel").items.items[1].items.items[1].getValue(),
-									title : Ext.getCmp("wmsPanel").items.items[1].items.items[0].getValue()
+				bodyStyle   : 'background-color: #efefef',
+				items: [
+							{
+								width : 260,
+								height: 260,
+								layout: 'fit',
+								items: {
+									xtype  : 'grid',
+									id     : 'wmsGrid',
+									border : false ,
+									ds     : wmsStore,
+									columns: [
+										{
+											id       : 'serverName',
+											header   : 'Наименование', 
+											width    : 238, 
+											sortable : true,
+											dataIndex: 'serverName',
+											renderer : function(value,metaData,record,colIndex,store,view) {
+												metaData.attr  = 'ext:qtip="' + value + '"';
+												return value;
+											}
+										}
+									],
+									sm: new Ext.grid.RowSelectionModel({
+										singleSelect: true,
+										listeners: {
+											rowselect: function(sm, row, rec) {
+												servicesSetting.wmsPanel.rowSelect (rec);
+											}
+										}
+									}),
+									listeners: {
+										viewready: function(grid) {
+											grid.getSelectionModel().selectRow(0);
+										}
+									}					
 								}
-								app.addLayerSource({
-									config: conf,
-									callback: function(id) {
-//										console.log ('app.addLayerSource : id = ' + id);
-										servicesSetting.wmsLayersStore.idCustom = id;
+							},
+							{
+								xtype       : 'fieldset',
+								height      : 280,
+								columnWidth : 1.0,
+								labelAlign  : 'top',
+								anchor      : '100%',
+								bodyStyle   : 'padding: 10px 10px 5px 10px; background-color: #efefef',
+								id			: "wmsPanelFields",
+								style: {
+									"margin-left": "10px",
+									"margin-right": "0"
+								},
+								items: [{
+										xtype      : 'textfield',
+										fieldLabel : 'Наименование',
+										name       : 'serverName',
+										id		   : 'serverNameField',	
+										anchor     : "100%",
+										labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
+									},{
+										xtype      : 'textfield',
+										fieldLabel : 'URL',
+										name       : 'url',
+										id		   : 'serverURLField',
+										anchor     : "100%",
+										labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
+									},
+						  //{
+										//xtype      : 'textfield',
+										//fieldLabel : 'Владелец',
+										//name       : 'owner',
+										//disabled   : true,
+										//anchor     : "100%",
+										//labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
+									//},	//this.wmsAccessSelector,
+									{
+										id         : 'wmsLayersCount',
+										xtype      : 'label',  
+										html       : '&nbsp;',
+										style      : 'font-size:11px;font-weight: normal; font-style: italic;color:#8080ff'
+									},
+									{
+										xtype      : 'label',  
+										html       : '&nbsp;',
+										style      : 'font-size:20px;font-weight: bold'
+									},
+									{
+										xtype      : 'button',  
+										width      :  100,
+										text       : 'Подключиться',
+										style      : 'font-size:14px;font-weight: bold;color:#ffff00',
+										handler  : function(){  
+											// check 
+											var wmsCapabilities = Ext.getCmp("serverURLField") + '?request=GetCapabilities';
+											
+											var id = servicesSetting.wmsPanel.getLayerSources();
 
-										servicesSetting.wmsLayersStore.data = app.layerSources[id].store.data;
-										Ext.getCmp("wmsLayers"     ).getView().refresh();
-										Ext.getCmp('wmsLayersCount').getEl().update('Количество слоев ' + servicesSetting.wmsLayersStore.data.length);
-									},
-									fallback: function(source, msg) {
-										Ext.Msg.alert(msg);	
-										console.log ('wmsLayersStore.fallback : ' + msg);
-									},
-									scope: this
-								});
-							}
-						}
-					}
+											if (id) {
+												servicesSetting.wmsPanel.showLayerSources (id);
+											} else {
+												var conf = {
+													url   : Ext.getCmp("serverURLField").getValue(),
+													title : Ext.getCmp("serverNameField").getValue()
+												}
+												app.addLayerSource({
+													config: conf,
+													callback: function(id) {
+				//										console.log ('app.addLayerSource : id = ' + id);
+														servicesSetting.wmsLayersStore.idCustom = id;
+
+														servicesSetting.wmsLayersStore.data = app.layerSources[id].store.data;
+														Ext.getCmp("wmsLayers"     ).getView().refresh();
+														Ext.getCmp('wmsLayersCount').getEl().update('Количество слоев ' + servicesSetting.wmsLayersStore.data.length);
+													},
+													fallback: function(source, msg) {
+														Ext.Msg.alert(msg);	
+														console.log ('wmsLayersStore.fallback : ' + msg);
+													},
+													scope: this
+												});
+											}
+										}
+									}
+								]
+							},						
 				]
-			},{
+			},
+			{
 				xtype     : 'label',  
 				colspan   : 2,
 				text      : 'Список слоев',
-				style     : 'padding: 5px 0px 5px 3px;font-size:12px;font-weight: bold;color:#909090'
-			},{
+				style     : 'padding: 5px 5px 5px 3px;font-size:12px;font-weight: bold;color:#909090'
+			},
+			{
 				id        : 'wmsLayers',
-				xtype     : 'grid',  
+				xtype     : 'grid',
 				colspan   : 2,
-				style     : 'padding: 5px 0px 5px 0px',
+				style     : 'padding: 5px 5x 5px 5px',
 				border    : true,
 				height    : 206,
+				//width     : "100%",				
+				autoWidth : true,
 				ds        : this.wmsLayersStore,
 				columns: [
 					{
@@ -616,7 +644,8 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						dataIndex : 'name'
 					}
 				]
-			}]
+			}
+]
 		});
 		//~~ WMS panel end ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -670,14 +699,14 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
-				//servicesSetting.lockControl ("arcgisAccessSelector", disabled);
+				servicesSetting.lockControl ("arcgisAccessSelector", disabled);
 				servicesSetting.newObject = false;
 			},
 			items: [{
-				 width : 260
-				,height: 390
-				,layout: 'fit'
-				,items: {
+				 width : 260,
+				 height: 485,
+				 layout: 'fit',
+				 items: {
 					xtype  : 'grid',
 					id     : 'arcgisGrid',
 					border : false ,
@@ -707,7 +736,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				}
 			},{
 				xtype       : 'fieldset',
-				height      : 410,
+				height      : 505,
 				columnWidth : 1.0,
 				labelAlign  : 'top',
 				anchor      : '100%',
@@ -797,7 +826,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
-				//servicesSetting.lockControl ("rssAccessSelector", disabled);
+				servicesSetting.lockControl ("rssAccessSelector", disabled);
 				servicesSetting.newObject = false;
 			},
 			extractFileName : function (url)
@@ -835,7 +864,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					callback: function(request) 
 					{
 						Ext.getCmp("rssGrid").store.remove (record);
-						//servicesSetting.lockControl ("rssAccessSelector", true);
+						servicesSetting.lockControl ("rssAccessSelector", true);
 					}					
 				});
 			},
@@ -1041,10 +1070,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		
 		this.tabs = new Ext.TabPanel({
 			deferredRender    : false,
+			flex			  : 1,
 			layoutOnTabChange : true,
 			activeTab         : 0,
-			height            : 535,
-			width             : '100%',
+			height            : 540,
+			plain:true,
 			defaults          : {
 				bodyStyle : 'padding: 10px; background-color: #efefef',
 				hideMode  : 'offsets'
@@ -1066,11 +1096,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					if (tab.id === 'wmsPanel') {
 						servicesSetting.newObject = true;
 						servicesSetting.wmsPanel.clear();
-						//servicesSetting.lockControl ("wmsAccessSelector", true);
+						servicesSetting.lockControl ("wmsAccessSelector", true);
 						servicesSetting.buttons[4].setDisabled (true);
 					} else if (tab.id === 'rssPanel') {
 						servicesSetting.rssPanel.clear();
-						//servicesSetting.lockControl ("rssAccessSelector", true);
+						servicesSetting.lockControl ("rssAccessSelector", true);
 //						servicesSetting.buttons[4].setDisabled (true);
 					}
                 }
