@@ -558,7 +558,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 										labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
 									},{
 										xtype      : 'textfield',
-										fieldLabel : 'Rest URL',
+										fieldLabel : 'REST URL',
 										name       : 'restUrl',
 										id		   : 'serverRestURLField',
 										anchor     : "100%",
