@@ -298,7 +298,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         },
                         {
                             xtype: 'button',
-                            text : 'Настройка сервисов',
+                            text : 'Менеджер сервисов',
                             iconCls: 'settingsIcon',
                             leaf : true,
                             listeners: {
