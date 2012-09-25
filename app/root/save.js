@@ -57,7 +57,15 @@ exports.app = function(request)
 	}
 	
 	else if (request.params.service === "arcgis") {
-		addArcGisRecord(request, appDir);
+		//addArcGisRecord(request, appDir);
+		statusCode = transArcGisRecord(request, appDir);
+		if (statusCode !== 200)
+		{
+			if (statusCode === 409)
+				content = {note : "doubled"};
+		} else
+			content = {result : "OK"};
+		content = JSON.stringify(content);		
 	}
 	var resp = 
 	{
@@ -143,6 +151,23 @@ function getChartRecordID (json, request)
 	return result;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function getArcGisRecordID (json, request)
+{
+	var result = -1;
+	if (json.arcgis.servers.length > 0)
+	{
+		for (var i = 0; i < json.arcgis.servers.length; i++)
+		{
+			if ((json.arcgis.servers[i].url === request.params.url)&&(json.arcgis.servers[i].title === request.params.title))
+			{
+				result = i;
+				break;
+			}
+		}
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function isDoubledRssRecord (json, url)
 {
 	var result = false;
@@ -161,6 +186,23 @@ function isDoubledRssRecord (json, url)
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function isDoubledWMSRecord (json, url)
+{
+	var result = false;
+	if (json.services.length > 0)
+	{
+		for (var i = 0; i < json.services.length; i++)
+		{
+			if (json.services[i].url === url) 
+			{
+				result = true;
+				break;
+			}
+		}
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function isDoubledArcGisRecord (json, url)
 {
 	var result = false;
 	if (json.services.length > 0)
@@ -251,9 +293,9 @@ function transWMSRecord(request, dir)
 	var result = 200;
 	var file = java.io.File(dir + "app/static/wms.json");
 	if (file.exists())
-	{
+	{		
 		var content    = readFileContent (file.getAbsolutePath());
-		var jsonObject = JSON.parse (content);
+		var jsonObject = JSON.parse (content);		
 
 		if (request.params.action === 'remove') {
 			var idx = getWMSRecordID (jsonObject, request);
@@ -270,6 +312,7 @@ function transWMSRecord(request, dir)
 				if (idx >= 0) {
 					jsonObject.services[idx].serverName = request.params.serverName_new;
 					jsonObject.services[idx].url        = request.params.url_new       ;
+					jsonObject.services[idx].restUrl    = request.params.restUrl       ;
 					jsonObject.services[idx].access     = request.params.access        ;
 					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
 				}
@@ -281,6 +324,7 @@ function transWMSRecord(request, dir)
 				jsonObject.services.push ({
 					"serverName" : request.params.serverName,
 					"url"        : request.params.url       ,
+					"restUrl"    : request.params.restUrl   ,
 					"owner"      : request.params.owner     ,
 					"access"     : request.params.access
 				});
@@ -386,6 +430,41 @@ function transChartRecord(request, dir)
 		}
 	} else {
 		system.print ("transChartRecord : file not found, path = " + dir + "app/static/charts.json");
+	}
+	return result;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function transArcGisRecord(request, dir)
+{
+	var result = 200;
+	var file = java.io.File(dir + "app/static/arcgis.json");
+	if (file.exists())
+	{
+		var content    = readFileContent (file.getAbsolutePath());
+		var jsonObject = JSON.parse (content);		
+		if (request.params.action === 'remove') {
+			var idx = getArcGisRecordID (jsonObject, request);
+			if (idx >= 0) {
+				jsonObject.arcgis.servers.splice(idx, 1);
+				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));
+			}
+		} else if (request.params.action === 'update') {
+			var idx = getArcGisRecordID (jsonObject, request);
+				if (idx >= 0) {
+					// deseiralize strings					
+					jsonObject.arcgis.servers[idx].title 		= request.params.title;
+					jsonObject.arcgis.servers[idx].url   		= request.params.url_new;
+					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));				
+				}
+		} else if (request.params.action === 'add') {	
+			jsonObject.arcgis.servers.push ({
+				"title" 		: request.params.title,
+				"url"       	: request.params.url
+			});
+			writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));			
+		}
+	} else {
+		system.print ("transChartRecord : file not found, path = " + dir + "app/static/arcgis.json");
 	}
 	return result;
 }
