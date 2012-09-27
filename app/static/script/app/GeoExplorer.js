@@ -283,10 +283,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 items: [
                   {
                       xtype: 'panel',
-                      title: 'Общие',
+                      title: 'Поиск',
                       collapsible: true,
                       items: [
-                        {
+						{
                             xtype: 'button',
                             iconCls: 'searchIcon',
                             text : 'Поиск по акватории',
@@ -295,7 +295,14 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                     openChooserOcean();
                                 }
                             }
-                        },
+                        }
+					  ]
+				  },
+				  {
+                      xtype: 'panel',
+                      title: 'Настройка',
+                      collapsible: true,
+                      items: [                        
                         {
                             xtype: 'button',
                             text : 'Менеджер сервисов',
