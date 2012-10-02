@@ -396,7 +396,28 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                                                 handler: function(){
                                                     return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
                                                 }
+					},
+					{
+						text: 'Редактировать стиль',
+                                                handler: function(){
+                                                    /*styler = new gxp.plugins.Styler();
+													app.on({
+														layerselectionchange: styler.handleLayerChange,
+														scope: styler
+													});
+													styler.addOutput();*/
+													if (!Ext.getCmp("layerStyleButton").disabled)
+													Ext.getCmp("layerStyleButton").handler.call(Ext.getCmp("layerStyleButton").scope)
+                                                }
+					},
+					{
+						text: 'Свойства слоя',
+                                                handler: function(){
+                                                    if (!Ext.getCmp("layerPropertiesButton").disabled)
+													Ext.getCmp("layerPropertiesButton").handler.call(Ext.getCmp("layerPropertiesButton").scope)
+                                                }
 					}
+					
 				]
 			})
 		});
