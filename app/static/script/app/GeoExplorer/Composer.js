@@ -407,14 +407,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 													});
 													styler.addOutput();*/
 													if (!Ext.getCmp("layerStyleButton").disabled)
-													Ext.getCmp("layerStyleButton").handler.call(Ext.getCmp("layerStyleButton").scope)
+													Ext.getCmp("layerStyleButton").handler.call(Ext.getCmp("layerStyleButton").scope);
                                                 }
 					},
 					{
 						text: 'Свойства слоя',
                                                 handler: function(){
                                                     if (!Ext.getCmp("layerPropertiesButton").disabled)
-													Ext.getCmp("layerPropertiesButton").handler.call(Ext.getCmp("layerPropertiesButton").scope)
+													Ext.getCmp("layerPropertiesButton").handler.call(Ext.getCmp("layerPropertiesButton").scope);
                                                 }
 					}
 					

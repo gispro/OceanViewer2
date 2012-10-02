@@ -949,11 +949,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				Ext.getCmp("rssPanel").items.items[1].items.items[0].setValue(record.data.title );
 				Ext.getCmp("rssPanel").items.items[1].items.items[1].setValue(record.data.url   );
 				Ext.getCmp("rssPanel").items.items[1].items.items[2].setValue(record.data.icon  );
-				Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(record.data.owner );
+				//Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(record.data.owner );
 				//Ext.getCmp("rssPanel").items.items[1].items.items[4].setValue(record.data.access);
 				
 				var disabled = true;
-				if (record.data.owner === servicesSetting.user) 
+				//if (record.data.owner === servicesSetting.user) 
 					disabled = false;
 				servicesSetting.lockControl ("rssAccessSelector", disabled);
 				servicesSetting.newObject = false;
@@ -987,8 +987,8 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						name    : this.extractFileName (record.data.url),
 						title   : record.data.title                     ,
 						icon    : record.data.icon                      ,
-						url     : record.data.url                       ,
-						owner   : record.data.owner
+						url     : record.data.url                       //,
+						//owner   : record.data.owner
 					},
 					callback: function(request) 
 					{
@@ -1028,7 +1028,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 								name      : fname                          ,
 								title     : record.data.title              ,
 								url       : record.data.url                ,
-								owner     : record.data.owner              ,
+								//owner     : record.data.owner              ,
 								title_new : Ext.getCmp("rssPanelTitle").getValue(),
 								url_new   : Ext.getCmp("rssPanelURL").getValue(),
 								icon      : panel.items.items[2].getValue(),
@@ -1077,9 +1077,9 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 							name      : fname                          ,
 							title     : Ext.getCmp("rssPanelTitle").getValue(),
 							url       : Ext.getCmp("rssPanelURL").getValue(),
-							icon      : panel.items.items[2].getValue(),
+							icon      : panel.items.items[2].getValue()//,
 							//access    : panel.items.items[4].getValue(),
-							owner     : servicesSetting.user
+							//owner     : servicesSetting.user
 						},
 						callback: function(request) 
 						{
@@ -1090,8 +1090,8 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									{name: "name"  , type: "string" },
 									{name: "title" , type: "string" },
 									{name: "icon"  , type: "string" },
-									{name: "url"   , type: "string" },
-									{name: "owner" , type: "string" },
+									{name: "url"   , type: "string" }//,
+									//{name: "owner" , type: "string" },
 								//	{name: "access", type: "string" }
 								]); 
 								var record = new structure({
@@ -1099,8 +1099,8 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									name   : fname,
 									title  : Ext.getCmp("rssPanelTitle").getValue(),
 									icon   : panel.items.items[2].getValue(),
-									url    : Ext.getCmp("rssPanelURL").getValue(),
-									owner  : servicesSetting.user           ,
+									url    : Ext.getCmp("rssPanelURL").getValue()//,
+									//owner  : servicesSetting.user           ,
 									//access : panel.items.items[4].getValue()
 								}); 
 								rssStore.add(record);
@@ -1185,7 +1185,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						anchor     : "100%",
 						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
 					},
-					this.iconSelector,
+					this.iconSelector/*,
 					{
 						xtype      : 'textfield',
 						id		   : 'rssPanelOwner',
@@ -1194,7 +1194,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						disabled   : true,
 						anchor     : "100%",
 						labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
-					},	//this.rssAccessSelector
+					},*/	//this.rssAccessSelector
 				]
 			}]
 		});

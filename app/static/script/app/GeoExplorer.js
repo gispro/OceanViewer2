@@ -345,7 +345,100 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                       title: 'Выборка',
                       collapsible: true,
                       id: 'geoToolsQueryPanel'
-                  }
+                  },
+				  {
+                      xtype: 'panel',
+                      title: 'Редактирование',
+                      collapsible: true,
+                      items: [
+						{
+                            xtype: 'button',
+                            iconCls: 'gxp-icon-addfeature',
+                            text : 'Создать новый объект слоя',
+                            listeners: {
+                                click: function(n) {
+                                    if (!Ext.getCmp("createFeatureButton").disabled) {
+										Ext.getCmp("createFeatureButton").toggle();
+									}
+                                }
+                            }
+                        },
+						{
+                            xtype: 'button',
+                            iconCls: 'gxp-icon-editfeature',
+                            text : 'Редактировать объект слоя',
+                            listeners: {
+                                click: function(n) {
+                                    if (!Ext.getCmp("editFeatureButton").disabled) {										
+										Ext.getCmp("editFeatureButton").toggle();
+									}
+                                }
+                            }
+                        }
+					  ]
+				  },
+				  {
+                      xtype: 'panel',
+                      title: 'Измерения',
+                      collapsible: true,
+                      items: [					  
+								{
+									xtype: 'button',
+									text : 'Измерение длины',
+									iconCls: 'gxp-icon-measure-length',	
+									listeners: {
+										click: function(n) {
+											Ext.getCmp("distanceMeasureButton").setChecked(!Ext.getCmp("distanceMeasureButton").checked);
+										}
+									}
+								},
+								
+								{
+									xtype: 'button',
+									iconCls: 'gxp-icon-measure-area',
+									text : 'Измерение площади',
+									listeners: {
+										click: function(n) {
+											Ext.getCmp("areaMeasureButton").setChecked(!Ext.getCmp("areaMeasureButton").checked);
+										}
+									}
+								}                         
+					  ]
+				  },
+				  {
+                      xtype: 'panel',
+                      title: 'Печать',
+                      collapsible: true,
+                      items: [						
+						{
+                            xtype: 'button',
+                            iconCls: 'gxp-icon-print',
+                            text : 'Печать карты',
+                            listeners: {
+                                click: function(n) {
+                                    Ext.getCmp("printMapButton").handler.call(Ext.getCmp("printMapButton").scope);
+                                }
+                            }
+                        }
+					  ]
+				  },
+				  {
+                      xtype: 'panel',
+                      title: 'Графики',
+                      collapsible: true,
+                      items: [						
+						{
+                            xtype: 'button',
+                            iconCls: 'chartIcon',
+                            text : 'Построить график',
+                            listeners: {
+                                click: function(n) {
+                                    Ext.getCmp("prickerButton").toggle();
+                                }
+                            }
+                        }
+					  ]
+				  }
                 /*{*/
                     //xtype: "treepanel",
                     //id: "geoToolsTreepanel",
