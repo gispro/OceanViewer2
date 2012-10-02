@@ -399,22 +399,22 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					},
 					{
 						text: 'Редактировать стиль',
-                                                handler: function(){
-                                                    /*styler = new gxp.plugins.Styler();
-													app.on({
-														layerselectionchange: styler.handleLayerChange,
-														scope: styler
-													});
-													styler.addOutput();*/
-													if (!Ext.getCmp("layerStyleButton").disabled)
-													Ext.getCmp("layerStyleButton").handler.call(Ext.getCmp("layerStyleButton").scope);
+                                                handler: function(){                                                    
+													if (!Ext.getCmp("layerStyleButton").disabled) {
+														Ext.getCmp("layerStyleButton").handler.call(Ext.getCmp("layerStyleButton").scope);
+													}else {
+														Ext.Msg.alert('Оповещение','Невозможно редактировать стиль для выбранного слоя');
+													}
                                                 }
 					},
 					{
 						text: 'Свойства слоя',
                                                 handler: function(){
-                                                    if (!Ext.getCmp("layerPropertiesButton").disabled)
-													Ext.getCmp("layerPropertiesButton").handler.call(Ext.getCmp("layerPropertiesButton").scope);
+                                                    if (!Ext.getCmp("layerPropertiesButton").disabled){
+														Ext.getCmp("layerPropertiesButton").handler.call(Ext.getCmp("layerPropertiesButton").scope);}
+													else {
+														Ext.Msg.alert('Оповещение','Невозможно просмотреть свойства выбранного слоя');
+													}
                                                 }
 					}
 					

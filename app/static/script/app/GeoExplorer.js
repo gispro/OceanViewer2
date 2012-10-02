@@ -359,6 +359,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 click: function(n) {
                                     if (!Ext.getCmp("createFeatureButton").disabled) {
 										Ext.getCmp("createFeatureButton").toggle();
+									}else {
+										Ext.Msg.alert('Оповещение','Невозможно редактировать выбранный слой');
 									}
                                 }
                             }
@@ -371,6 +373,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                                 click: function(n) {
                                     if (!Ext.getCmp("editFeatureButton").disabled) {										
 										Ext.getCmp("editFeatureButton").toggle();
+									}
+									else {
+										Ext.Msg.alert('Оповещение', 'Невозможно редактировать выбранный слой');
 									}
                                 }
                             }
@@ -488,6 +493,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             ]
         });
 
+		
+		
+		//Ext.getCmp('tree').getTopToolbar().items.insert(Ext.getCmp('tree').getTopToolbar().items.items.length, uploadButton);
 
         var featureGridWindow = new Ext.Window({
           title: 'Результаты запроса',
@@ -656,7 +664,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     if (item.disabled) {
                         preGoogleDisabled.push(item);
                     }
-                });
+                });				
                 layersToolbar.disable();
             }
         }, this);
