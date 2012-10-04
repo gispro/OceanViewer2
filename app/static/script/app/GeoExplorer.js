@@ -281,13 +281,17 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 id: 'geoTools', 
                 title: 'Инструменты', 
                 items: [
-                  {
+                  
+				  
+				  {
                       xtype: 'panel',
+					  id: 'panel1',
                       title: 'Поиск',
                       collapsible: true,
                       items: [
 						{
                             xtype: 'button',
+							id: 'panelbutton1',
                             iconCls: 'searchIcon',
                             text : 'Поиск по акватории',
                             listeners: {
@@ -300,11 +304,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				  },
 				  {
                       xtype: 'panel',
+					  id: 'panel2',
                       title: 'Настройка',
                       collapsible: true,
                       items: [                        
                         {
                             xtype: 'button',
+							id: 'panelbutton2',
                             text : 'Менеджер сервисов',
                             iconCls: 'settingsIcon',
                             leaf : true,
@@ -318,6 +324,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         },
                         {
                             xtype: 'button',
+							id: 'panelbutton3',
                             text : 'Менеджер анимации',
                             iconCls: 'animationIcon',
                             leaf : true,
@@ -329,6 +336,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         },
                         {
                             xtype: 'button',
+							id: 'panelbutton4',
                             text : 'Менеджер графиков',
                             iconCls: 'chartIcon',
                             leaf : true,
@@ -342,17 +350,20 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                   },
                   {
                       xtype: 'panel',
+					  id: 'panel3',
                       title: 'Выборка',
                       collapsible: true,
                       id: 'geoToolsQueryPanel'
                   },
 				  {
                       xtype: 'panel',
+					  id: 'panel4',
                       title: 'Редактирование',
                       collapsible: true,
                       items: [
 						{
                             xtype: 'button',
+							id: 'panelbutton5',
                             iconCls: 'gxp-icon-addfeature',
                             text : 'Создать новый объект слоя',
                             listeners: {
@@ -367,6 +378,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         },
 						{
                             xtype: 'button',
+							id: 'panelbutton6',
                             iconCls: 'gxp-icon-editfeature',
                             text : 'Редактировать объект слоя',
                             listeners: {
@@ -384,11 +396,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				  },
 				  {
                       xtype: 'panel',
+					  id: 'panel5',
                       title: 'Измерения',
                       collapsible: true,
                       items: [					  
 								{
 									xtype: 'button',
+									id: 'panelbutton7',
 									text : 'Измерение длины',
 									iconCls: 'gxp-icon-measure-length',	
 									listeners: {
@@ -400,6 +414,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 								
 								{
 									xtype: 'button',
+									id: 'panelbutton8',
 									iconCls: 'gxp-icon-measure-area',
 									text : 'Измерение площади',
 									listeners: {
@@ -412,11 +427,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				  },
 				  {
                       xtype: 'panel',
+					  id: 'panel6',
                       title: 'Печать',
                       collapsible: true,
                       items: [						
 						{
                             xtype: 'button',
+							id: 'panelbutton9',
                             iconCls: 'gxp-icon-print',
                             text : 'Печать карты',
                             listeners: {
@@ -429,11 +446,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				  },
 				  {
                       xtype: 'panel',
+					  id: 'panel7',
                       title: 'Графики',
                       collapsible: true,
                       items: [						
 						{
                             xtype: 'button',
+							id: 'panelbutton10',
                             iconCls: 'chartIcon',
                             text : 'Построить график',
                             listeners: {
@@ -493,9 +512,38 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             ]
         });
 
+		var uploadButton = new Ext.Button({
+				xtype: "button",
+				tooltip: "Загрузить данные",
+				iconCls: "gxp-icon-filebrowse",
+				handler: function() {
+					var panel = new gxp.LayerUploadPanel(Ext.apply({
+						url: app.uploadUrl,
+						width: 350,
+						border: false,
+						bodyStyle: "padding: 10px 10px 0 10px;",
+						frame: true,
+						labelWidth: 65,
+						defaults: {
+							anchor: "95%",
+							allowBlank: false,
+							msgTarget: "side"
+						}
+					}));
+					
+					var win = new Ext.Window({
+						title: "Загрузить данные",
+						modal: true,
+						resizable: false,
+						items: [panel]
+					});
+					win.show();
+				},
+				scope: this
+			});
+			
+		Ext.getCmp('tree').getTopToolbar().items.add(uploadButton);
 		
-		
-		//Ext.getCmp('tree').getTopToolbar().items.insert(Ext.getCmp('tree').getTopToolbar().items.items.length, uploadButton);
 
         var featureGridWindow = new Ext.Window({
           title: 'Результаты запроса',
@@ -659,7 +707,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             }
             var layersContainer = Ext.getCmp("tree");
             var layersToolbar = layersContainer && layersContainer.getTopToolbar();
-            if (layersToolbar) {
+			
+            if (layersToolbar) {				
+				
                 layersToolbar.items.each(function(item) {
                     if (item.disabled) {
                         preGoogleDisabled.push(item);
@@ -687,6 +737,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 
         this.mapPanelContainer = new Ext.Panel({
             layout: "card",
+			id: "centerLayoutItem",
             region: "center",
             defaults: {
                 border: false
@@ -701,6 +752,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         this.portalItems = [{
             region: "center",
             layout: "border",
+			id: "centerRenderer",
             tbar: this.toolbar,
             items: [
                 this.mapPanelContainer,

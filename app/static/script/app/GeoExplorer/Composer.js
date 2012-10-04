@@ -162,7 +162,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_chartsource"                
             }			
             ,{
-                ptype: "gxp_removelayer",
+                id: "gxp_removelayer_ctl",
+				ptype: "gxp_removelayer",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
             }
             ,{
@@ -395,6 +396,38 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						text: 'Добавить',
                                                 handler: function(){
                                                     return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
+                                                }
+					},
+					{
+						text: 'Удалить',
+                                                handler: function(){
+                                                    app.tools.gxp_removelayer_ctl.tryRemoveCurrent();
+                                                }
+					},
+					{
+						text: 'Загрузить',
+                                                handler: function(){
+                                                    var panel = new gxp.LayerUploadPanel(Ext.apply({
+														url: app.uploadUrl,
+														width: 350,
+														border: false,
+														bodyStyle: "padding: 10px 10px 0 10px;",
+														frame: true,
+														labelWidth: 65,
+														defaults: {
+															anchor: "95%",
+															allowBlank: false,
+															msgTarget: "side"
+														}
+													}));
+													
+													var win = new Ext.Window({
+														title: "Загрузить данные",
+														modal: true,
+														resizable: false,
+														items: [panel]
+													});
+													win.show();
                                                 }
 					},
 					{
