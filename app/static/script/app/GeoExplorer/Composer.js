@@ -123,7 +123,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             },*/
             ,{
                 ptype: "gxp_layertree",
-                id: "composer_layertree",
+                //id: "composer_layertree",
                 groups: {editable: 'Редактируемые'},
                 outputConfig: {
                     id: "layertree"
@@ -134,6 +134,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_legend",
                 outputTarget: 'legend',
                 outputConfig: {autoScroll: true}
+            }
+			,{
+                ptype: "gxp_rubricatortree",
+                id: "gxp_rubricatortree_ctl",                
+                outputTarget: "rubricatorTree"
             }
             ,{
                 id: "gxp_addlayers_ctl",
@@ -165,7 +170,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 id: "gxp_removelayer_ctl",
 				ptype: "gxp_removelayer",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
-            }
+            }			
             ,{
                 ptype: "gxp_layerproperties",
                 actionTarget: ["tree.tbar", "layertree.contextMenu"],
@@ -175,6 +180,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 ptype: "gxp_styler",
                 sameOriginStyling: false,
                 actionTarget: ["tree.tbar", "layertree.contextMenu"]
+            }
+			,{
+                id: "gxp_uploadplugin_ctl",
+				ptype: "gxp_uploadplugin",
+                actionTarget: ["tree.tbar"]
             }
             ,{
                 ptype: "gxp_zoomtolayerextent",
@@ -400,34 +410,14 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					},
 					{
 						text: 'Удалить',
-                                                handler: function(){
+                                                handler: function(a,b,c){
                                                     app.tools.gxp_removelayer_ctl.tryRemoveCurrent();
                                                 }
 					},
 					{
 						text: 'Загрузить',
                                                 handler: function(){
-                                                    var panel = new gxp.LayerUploadPanel(Ext.apply({
-														url: app.uploadUrl,
-														width: 350,
-														border: false,
-														bodyStyle: "padding: 10px 10px 0 10px;",
-														frame: true,
-														labelWidth: 65,
-														defaults: {
-															anchor: "95%",
-															allowBlank: false,
-															msgTarget: "side"
-														}
-													}));
-													
-													var win = new Ext.Window({
-														title: "Загрузить данные",
-														modal: true,
-														resizable: false,
-														items: [panel]
-													});
-													win.show();
+                                                    app.tools.gxp_uploadplugin_ctl.showImporterWindow();
                                                 }
 					},
 					{

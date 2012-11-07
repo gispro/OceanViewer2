@@ -12,7 +12,7 @@ window.CONFIG = {
     username: 'edit',
     password: 'pedit',
     authUrl: "http://oceanviewer.ru/josso/signon/",
-    proxy: "cgi-bin/nph-proxy.cgi/00/?url=",
+    proxy: "http://oceanviewer.ru/OceanViewer2/cgi-bin/nph-proxy.cgi/00/?url=",
     printService: "http://oceanviewer.ru/print/pdf/",
     about: {
       title: "Карта OceanViewer",

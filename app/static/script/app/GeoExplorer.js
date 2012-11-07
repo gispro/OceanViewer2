@@ -52,7 +52,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     loadConfigErrorDefaultText: "Server Error.",
     xhrTroubleText: "Communication Trouble: Status ",
     layersText: "Layers",
-    titleText: "Title",
+    titleText: "Title",	
     saveErrorText: "Trouble saving: ",
     bookmarkText: "Bookmark URL",
     permakinkText: 'Permalink',
@@ -260,6 +260,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         var westPanel = new Ext.TabPanel({//Panel({
             border: false,
             //layout: "border",
+			id: 'westPanel',
             activeTab: 0,
             region: "west",
             width: 350,
@@ -273,278 +274,219 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 {/*region: 'center', */autoScroll: true, tbar: [], border: false, id: 'tree', title: this.layersText}, 
                 {/*region: 'south', */xtype: "container", layout: "fit", border: false, /*height: 200, */id: 'legend', title: 'Легенда'}
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            ,{
-                xtype: "container", 
-                cls: 'toolsLeftPanel',
+				,{
+					xtype: "container", 
+					cls: 'toolsLeftPanel',
 
-                border: false, 
-                id: 'geoTools', 
-                title: 'Инструменты', 
-                items: [
-                  
-				  
-				  {
-                      xtype: 'panel',
-					  id: 'panel1',
-                      title: 'Поиск',
-                      collapsible: true,
-                      items: [
-						{
-                            xtype: 'button',
-							id: 'panelbutton1',
-                            iconCls: 'searchIcon',
-                            text : 'Поиск по акватории',
-                            listeners: {
-                                click: function(n) {
-                                    openChooserOcean();
-                                }
-                            }
-                        }
-					  ]
-				  },
-				  {
-                      xtype: 'panel',
-					  id: 'panel2',
-                      title: 'Настройка',
-                      collapsible: true,
-                      items: [                        
-                        {
-                            xtype: 'button',
-							id: 'panelbutton2',
-                            text : 'Менеджер сервисов',
-                            iconCls: 'settingsIcon',
-                            leaf : true,
-                            listeners: {
-                                click: function(n) {
-                                  if (!servicesSetting)
-									servicesSetting = new gxp.ServicesSetting(); 
-                                  servicesSetting.show();
-                                }
-                            }
-                        },
-                        {
-                            xtype: 'button',
-							id: 'panelbutton3',
-                            text : 'Менеджер анимации',
-                            iconCls: 'animationIcon',
-                            leaf : true,
-                            listeners: {
-                                click: function(n) {
-                                  return app.tools.gxp_animationGrid_ctl.showAnimationGrid();
-                                }
-                            }
-                        },
-                        {
-                            xtype: 'button',
-							id: 'panelbutton4',
-                            text : 'Менеджер графиков',
-                            iconCls: 'chartIcon',
-                            leaf : true,
-                            listeners: {
-                                click: function(n) {
-                                  return app.tools.gxp_chartManager_ctl.showChartWindow();
-                                }
-                            }
-                        }
-                      ]
-                  },
-                  {
-                      xtype: 'panel',
-					  id: 'panel3',
-                      title: 'Выборка',
-                      collapsible: true,
-                      id: 'geoToolsQueryPanel'
-                  },
-				  {
-                      xtype: 'panel',
-					  id: 'panel4',
-                      title: 'Редактирование',
-                      collapsible: true,
-                      items: [
-						{
-                            xtype: 'button',
-							id: 'panelbutton5',
-                            iconCls: 'gxp-icon-addfeature',
-                            text : 'Создать новый объект слоя',
-                            listeners: {
-                                click: function(n) {
-                                    if (!Ext.getCmp("createFeatureButton").disabled) {
-										Ext.getCmp("createFeatureButton").toggle();
-									}else {
-										Ext.Msg.alert('Оповещение','Невозможно редактировать выбранный слой');
+					border: false, 
+					id: 'geoTools', 
+					title: 'Инструменты', 
+					items: [
+					  
+					  
+					  {
+						  xtype: 'panel',
+						  id: 'panel1',
+						  title: 'Поиск',
+						  collapsible: true,
+						  items: [
+							{
+								xtype: 'button',
+								id: 'panelbutton1',
+								iconCls: 'searchIcon',
+								text : 'Поиск по акватории',
+								listeners: {
+									click: function(n) {
+										openChooserOcean();
 									}
-                                }
-                            }
-                        },
-						{
-                            xtype: 'button',
-							id: 'panelbutton6',
-                            iconCls: 'gxp-icon-editfeature',
-                            text : 'Редактировать объект слоя',
-                            listeners: {
-                                click: function(n) {
-                                    if (!Ext.getCmp("editFeatureButton").disabled) {										
-										Ext.getCmp("editFeatureButton").toggle();
+								}
+							}
+						  ]
+					  },
+					  {
+						  xtype: 'panel',
+						  id: 'panel2',
+						  title: 'Настройка',
+						  collapsible: true,
+						  items: [                        
+							{
+								xtype: 'button',
+								id: 'panelbutton2',
+								text : 'Менеджер сервисов',
+								iconCls: 'settingsIcon',
+								leaf : true,
+								listeners: {
+									click: function(n) {
+									  if (!servicesSetting)
+										servicesSetting = new gxp.ServicesSetting(); 
+									  servicesSetting.show();
 									}
-									else {
-										Ext.Msg.alert('Оповещение', 'Невозможно редактировать выбранный слой');
+								}
+							},
+							{
+								xtype: 'button',
+								id: 'panelbutton3',
+								text : 'Менеджер анимации',
+								iconCls: 'animationIcon',
+								leaf : true,
+								listeners: {
+									click: function(n) {
+									  return app.tools.gxp_animationGrid_ctl.showAnimationGrid();
 									}
-                                }
-                            }
-                        }
-					  ]
-				  },
-				  {
-                      xtype: 'panel',
-					  id: 'panel5',
-                      title: 'Измерения',
-                      collapsible: true,
-                      items: [					  
-								{
-									xtype: 'button',
-									id: 'panelbutton7',
-									text : 'Измерение длины',
-									iconCls: 'gxp-icon-measure-length',	
-									listeners: {
-										click: function(n) {
-											Ext.getCmp("distanceMeasureButton").setChecked(!Ext.getCmp("distanceMeasureButton").checked);
+								}
+							},
+							{
+								xtype: 'button',
+								id: 'panelbutton4',
+								text : 'Менеджер графиков',
+								iconCls: 'chartIcon',
+								leaf : true,
+								listeners: {
+									click: function(n) {
+									  return app.tools.gxp_chartManager_ctl.showChartWindow();
+									}
+								}
+							}
+						  ]
+					  },
+					  {
+						  xtype: 'panel',
+						  id: 'panel3',
+						  title: 'Выборка',
+						  collapsible: true,
+						  id: 'geoToolsQueryPanel'
+					  },
+					  {
+						  xtype: 'panel',
+						  id: 'panel4',
+						  title: 'Редактирование',
+						  collapsible: true,
+						  items: [
+							{
+								xtype: 'button',
+								id: 'panelCreateFeatureButton',
+								iconCls: 'gxp-icon-addfeature',
+								text : 'Создать новый объект слоя',
+								disabled: true,
+								listeners: {
+									click: function(n) {
+										if (!Ext.getCmp("createFeatureButton").disabled) {
+											Ext.getCmp("createFeatureButton").toggle();
+										}else {
+											Ext.Msg.alert('Оповещение','Невозможно редактировать выбранный слой');
 										}
 									}
-								},
-								
-								{
-									xtype: 'button',
-									id: 'panelbutton8',
-									iconCls: 'gxp-icon-measure-area',
-									text : 'Измерение площади',
-									listeners: {
-										click: function(n) {
-											Ext.getCmp("areaMeasureButton").setChecked(!Ext.getCmp("areaMeasureButton").checked);
+								}
+							},
+							{
+								xtype: 'button',
+								id: 'panelEditFeatureButton',
+								iconCls: 'gxp-icon-editfeature',
+								text : 'Редактировать объект слоя',
+								disabled: true,
+								listeners: {
+									click: function(n) {
+										if (!Ext.getCmp("editFeatureButton").disabled) {										
+											Ext.getCmp("editFeatureButton").toggle();
+										}
+										else {
+											Ext.Msg.alert('Оповещение', 'Невозможно редактировать выбранный слой');
 										}
 									}
-								}                         
-					  ]
-				  },
-				  {
-                      xtype: 'panel',
-					  id: 'panel6',
-                      title: 'Печать',
-                      collapsible: true,
-                      items: [						
-						{
-                            xtype: 'button',
-							id: 'panelbutton9',
-                            iconCls: 'gxp-icon-print',
-                            text : 'Печать карты',
-                            listeners: {
-                                click: function(n) {
-                                    Ext.getCmp("printMapButton").handler.call(Ext.getCmp("printMapButton").scope);
-                                }
-                            }
-                        }
-					  ]
-				  },
-				  {
-                      xtype: 'panel',
-					  id: 'panel7',
-                      title: 'Графики',
-                      collapsible: true,
-                      items: [						
-						{
-                            xtype: 'button',
-							id: 'panelbutton10',
-                            iconCls: 'chartIcon',
-                            text : 'Построить график',
-                            listeners: {
-                                click: function(n) {
-                                    Ext.getCmp("prickerButton").toggle();
-                                }
-                            }
-                        }
-					  ]
-				  }
-                /*{*/
-                    //xtype: "treepanel",
-                    //id: "geoToolsTreepanel",
-                    //rootVisible: false,
-                    //lines: false,
-                    //root: new Ext.tree.AsyncTreeNode({
-                        //id: 'isroot',
-                        //expanded: true,
-                        //children: [
-                        //{
-                            //id   : '1', 
-                            //text : 'Океаны и моря',
-                            //leaf : true,
-                            //listeners: {
-                                //click: function(n) {
-                                    //openChooserOcean();
-                                //}
-                            //}
-                        //}
-                        //[>,{
-                            //id   : '2', 
-                            //text : 'Адреса',
-                            //leaf : true,
-                            //listeners: {
-                                //click: function(n) {
-                                    //openAddressSearch();
-                                //}
-                            //}
-                        //}*/
-                        //,{
-                            //id   : '3', 
-                            //text : 'Настройка сервисов',
-                            //leaf : true,
-                            //listeners: {
-                                //click: function(n) {
-									//if (!servicesSetting)
-										//servicesSetting = new gxp.ServicesSetting();
-									//servicesSetting.show();
-                                //}
-                            //}
-                        //}]
-                    //})
-                /*}*/]
-            }
+								}
+							}
+						  ]
+					  },
+					  {
+						  xtype: 'panel',
+						  id: 'panel5',
+						  title: 'Измерения',
+						  collapsible: true,
+						  items: [					  
+									{
+										xtype: 'button',
+										id: 'panelbutton7',
+										text : 'Измерение длины',
+										iconCls: 'gxp-icon-measure-length',	
+										listeners: {
+											click: function(n) {
+												Ext.getCmp("distanceMeasureButton").setChecked(!Ext.getCmp("distanceMeasureButton").checked);
+											}
+										}
+									},
+									
+									{
+										xtype: 'button',
+										id: 'panelbutton8',
+										iconCls: 'gxp-icon-measure-area',
+										text : 'Измерение площади',
+										listeners: {
+											click: function(n) {
+												Ext.getCmp("areaMeasureButton").setChecked(!Ext.getCmp("areaMeasureButton").checked);
+											}
+										}
+									}                         
+						  ]
+					  },
+					  {
+						  xtype: 'panel',
+						  id: 'panel6',
+						  title: 'Печать',
+						  collapsible: true,
+						  items: [						
+							{
+								xtype: 'button',
+								id: 'panelbutton9',
+								iconCls: 'gxp-icon-print',
+								text : 'Печать карты',
+								listeners: {
+									click: function(n) {
+										Ext.getCmp("printMapButton").handler.call(Ext.getCmp("printMapButton").scope);
+									}
+								}
+							}
+						  ]
+					  },
+					  {
+						  xtype: 'panel',
+						  id: 'panel7',
+						  title: 'Графики',
+						  collapsible: true,
+						  items: [						
+							{
+								xtype: 'button',
+								id: 'panelbutton10',
+								iconCls: 'chartIcon',
+								text : 'Построить график',
+								listeners: {
+									click: function(n) {
+										Ext.getCmp("prickerButton").toggle();
+									}
+								}
+							}
+						  ]
+					  }
+					]
+				},
+				{
+					//xtype: "treepanel",
+					id: "rubricatorTree",
+					title: "Рубрикатор",
+					autoScroll: true,
+					border: false
+				}
+			
+			]
+            
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                
-            ]
+                            
         });
 
-		var uploadButton = new Ext.Button({
-				xtype: "button",
-				tooltip: "Загрузить данные",
-				iconCls: "gxp-icon-filebrowse",
-				handler: function() {
-					var panel = new gxp.LayerUploadPanel(Ext.apply({
-						url: app.uploadUrl,
-						width: 350,
-						border: false,
-						bodyStyle: "padding: 10px 10px 0 10px;",
-						frame: true,
-						labelWidth: 65,
-						defaults: {
-							anchor: "95%",
-							allowBlank: false,
-							msgTarget: "side"
-						}
-					}));
-					
-					var win = new Ext.Window({
-						title: "Загрузить данные",
-						modal: true,
-						resizable: false,
-						items: [panel]
-					});
-					win.show();
-				},
-				scope: this
-			});
-			
-		Ext.getCmp('tree').getTopToolbar().items.add(uploadButton);
+		app.tools["featuremanager"].on("layerchange", function(mgr, rec, schema) {
+			Ext.getCmp("panelCreateFeatureButton").setDisabled(!schema);
+			Ext.getCmp("panelEditFeatureButton").setDisabled(!schema);
+		}, this);
 		
-
         var featureGridWindow = new Ext.Window({
           title: 'Результаты запроса',
           layout: {
