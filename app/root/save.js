@@ -239,7 +239,7 @@ function isDoubledAnimationRecord (json, animId)
 function transRSSRecord(request, dir)
 {
 	var result = 200;
-	var file = java.io.File(dir + "app/static/rss.json");
+	var file = java.io.File("app/static/rss.json");
 	if (file.exists())
 	{
 		var content    = readFileContent (file.getAbsolutePath());
@@ -291,7 +291,7 @@ function transRSSRecord(request, dir)
 function transWMSRecord(request, dir)
 {
 	var result = 200;
-	var file = java.io.File(dir + "app/static/wms.json");
+	var file = java.io.File("app/static/wms.json");
 	if (file.exists())
 	{		
 		var content    = readFileContent (file.getAbsolutePath());
@@ -341,7 +341,7 @@ function transWMSRecord(request, dir)
 function transAnimationRecord(request, dir)
 {
 	var result = 200;
-	var file = java.io.File(dir + "app/static/animation.json");
+	var file = java.io.File("app/static/animation.json");
 	if (file.exists())
 	{
 		var content    = readFileContent (file.getAbsolutePath());
@@ -393,7 +393,7 @@ function transAnimationRecord(request, dir)
 function transChartRecord(request, dir)
 {
 	var result = 200;
-	var file = java.io.File(dir + "app/static/charts.json");
+	var file = java.io.File("app/static/charts.json");
 	if (file.exists())
 	{
 		var content    = readFileContent (file.getAbsolutePath());
