@@ -274,6 +274,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																// TRUE
 																 var name = node.attributes.layer.jsonNode.layername;
 																 var ws = node.attributes.layer.jsonNode.workspace;
+																 var style = node.attributes.layer.jsonNode.stylename;
 																//var name = "ru_hydrometcentre_42_1";
 																var records = [];
 																node.attributes.storeId = id;
@@ -281,7 +282,9 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																	if (record.get("name") == (ws ? ws+":"+name : name)) {
 																		last = index;
 																		record.get('layer').id = node.id;
+																		record.data.styles = style;
 																		records.push(record);
+																		
 																	}
 																});
 																if (records.length==0) {
