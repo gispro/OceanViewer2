@@ -91,7 +91,7 @@ var handlers = {
         var rs = ps.executeQuery();
         var ret = {};
         while(rs.next()){
-            ret[rs.getString(1)] = rs.getString(2);
+			ret[rs.getString(1)] = rs.getString(2);
         }
         rs.close();
         ps.close();
@@ -105,7 +105,7 @@ var handlers = {
                 },
                 body: ["No such codes: " + codes + " of type " + queryParams.type + " ("+sql+")"]
             };
-        }else{
+        }else{		
             return {
                 status: 200,
                 headers: {
@@ -114,6 +114,7 @@ var handlers = {
                 body: [JSON.stringify(ret)]
             };
         }
+		
     }
 };
 

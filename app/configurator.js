@@ -2,7 +2,7 @@ var fs = require("fs");
 var objects = require("ringo/utils/objects");
 
 var content = fs.read('src/main/webapp/WEB-INF/web.xml'); //SED
-
+//system.print(ringoHome);
 var servelets = {};
 var serveletsArr = content.split('<servlet>');
 

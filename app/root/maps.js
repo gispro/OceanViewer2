@@ -1,6 +1,7 @@
 var JDBC = require("../jdbc");
 var Request = require("ringo/webapp/request").Request;
 var auth = require("../auth");
+var cr = require("../configurator");
 
 var System = Packages.java.lang.System;
 var dbMapsTableCreated = false;
@@ -50,6 +51,45 @@ var getDbConn = exports.getDbConn = function(request) {
     }
 
     return connection;
+}
+
+var getRubricatorDbConn = exports.getRubricatorDbConn = function(request) {
+    
+    var jdbcParams = cr.c.ringo.RUBRICATOR_JDBC_PARAMS;
+   
+    if (!jdbcParams) {
+        system.print("Can't access RUBRICATOR_JDBC_PARAMS");
+		return 500;		
+    }/*
+	else {
+		system.print (jdbcParams.url);z
+		system.print (jdbcParams.table);
+		system.print (jdbcParams.user);
+	}*/
+
+    //jdbcParams = JSON.parse(jdbcParams);
+    var jdbcUrl = jdbcParams.url;
+    //delete jdbcParams.url;
+    jdbcDriver = jdbcParams.driver;
+    //delete jdbcParams.driver;
+   /* if(jdbcParams.table){
+        dbMapsTableName = jdbcParams.table;
+        delete jdbcParams.table;
+    }*/
+
+    try {
+        var connection = JDBC.connect(jdbcDriver, jdbcUrl, jdbcParams);
+    } catch (err) {
+        // TODO: nicer exception handling - this is hard for the user to find
+        throw new Error("Can't open '" + jdbcUrl + "': " + err);
+		system.print(err.toString());
+    }
+
+    return connection;
+}
+
+var getRubrucatorTable = exports.getRubrucatorTable = function() {
+	return cr.c.ringo.RUBRICATOR_JDBC_PARAMS.table;
 }
 
 
@@ -327,20 +367,116 @@ var deleteMap = exports.deleteMap = function(id, request) {
     return result;
 };
 
+var getLayers = function(request) {
+	var conn = getRubricatorDbConn(request);
+	if (conn==500) return "Can't find table toc";
+    var sql = "SELECT gid, nodeid, nodename, resourceid, layername, stylename, serverpath, servicepath, servicetype, parentnode, isservice, islayer, workspace FROM " + getRubrucatorTable() + " order by nodeid asc";
+        
+	var ps = conn.prepareStatement(sql);        
+	var rs = ps.executeQuery();
+	var layers = {children: []};
+	
+	var getParentNode = function(root, currentNodeId) {
+		var found;
+		if (!root.children) { system.print(':(');return null;}
+		for (var i=0; i<root.children.length; i++) {
+			//system.print ('entered ' + root.nodeid + ' searching '+ currentNodeId);
+			if (root.children[i].nodeid==currentNodeId) { 
+				//system.print('result ok');
+				return root.children[i];
+			}
+			else {
+				//system.print('search next....');
+				found = getParentNode (root.children[i], currentNodeId);
+			}
+		}
+		return found;
+	}
+	
+	var i = 0;
+	var ch =0;
+	var par = 0;
+	
+	while(rs.next()){
+		parsed = {
+			gid: rs.getString("gid"),
+			nodeid: rs.getString("nodeid"),
+			nodename: rs.getString("nodename"),
+			resourceid: rs.getString("resourceid"),
+			layername: rs.getString("layername"),
+			stylename: rs.getString("stylename"),
+			serverpath: rs.getString("serverpath"),
+			servicepath: rs.getString("servicepath"),
+			servicetype: rs.getString("servicetype"),
+			parentnode: rs.getString("parentnode"),
+			isservice: rs.getString("isservice"),
+			islayer: rs.getString("islayer"),
+			workspace: rs.getString("workspace"),
+			children: []
+		};
+		
+		var parent = getParentNode(layers, parsed.parentnode)
+//		system.print(parent);
+		if (parent) {
+			parent.children.push(parsed);		
+			par++;			
+		}
+		else {
+			if (parsed.parentnode=="."){
+				layers.children.push(parsed);				
+			}
+			ch++;
+		}
+		i++;
+	}
+	
+	rs.close();
+	ps.close();
+	conn.close();	
+	return JSON.stringify(layers);
+}
+
+var getServers = function(request) {
+	var conn = getRubricatorDbConn(request);
+	if (conn==500) return "Can't find table toc";
+    var sql = "select serverpath as server from " + getRubrucatorTable() + " where servicetype='wms' group by serverpath";
+        
+	var ps = conn.prepareStatement(sql);        
+	var rs = ps.executeQuery();
+	var result = {servers:[]};
+	
+	while(rs.next()){
+		result.servers.push(rs.getString("server"));
+	}
+	
+	rs.close();
+	ps.close();
+	conn.close();
+	
+	return JSON.stringify(result);
+}
+
 exports.app = function(env, pathInfo) {
     // TODO: make it so this is unnecessary
     env.pathInfo = pathInfo || "";
     var resp;
     var method = env.method;
-    var handler = handlers[method];
-    if (handler) {
-        try {
-            resp = handler(env);            
-        } catch (x) {
-            resp = createResponse({error: x.message + ": line " + x.lineNumber}, x.code || 500);
-        }
-    } else {
-        resp = createResponse({error: "Not allowed: " + method}, 405);
-    }
+	if (env.params.action=="getLayers") {
+		resp = createResponse(getLayers(env));
+	} else if (env.params.action=="getServers") {
+		resp = createResponse(getServers(env));
+	}
+	else {
+		var handler = handlers[method];
+		if (handler) {
+			try {
+				resp = handler(env);            
+			} catch (x) {
+				resp = createResponse({error: x.message + ": line " + x.lineNumber}, x.code || 500);
+			}
+		} else {
+			resp = createResponse({error: "Not allowed: " + method}, 405);
+		}
+	}
     return resp;    
 };

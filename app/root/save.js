@@ -376,7 +376,7 @@ function transAnimationRecord(request, dir)
 				jsonObject.layers.push ({
 					"title" 	: request.params.title,
 					"url"       : request.params.url,
-					"animId"		:request.params.animId,
+					"animId"	:request.params.animId,
 					"owner"		:request.params.owner,
 					"x_axis"    : x_axis,
 					"layers"    : layers
@@ -408,25 +408,39 @@ function transChartRecord(request, dir)
 			var idx = getChartRecordID (jsonObject, request);
 				if (idx >= 0) {
 					// deseiralize strings					
+					var layers = request.params.layers.split(",");
 					jsonObject.charts[idx].name 		= request.params.name;
 					jsonObject.charts[idx].url   		= request.params.url;
 					jsonObject.charts[idx].chartId      = request.params.chartId;
 					jsonObject.charts[idx].x_axis     	= request.params.x_axis;
 					jsonObject.charts[idx].y_axis     	= request.params.y_axis;
-					jsonObject.charts[idx].isDefault  	= request.params.isDefault;
-
+					jsonObject.charts[idx].isDefault  	= jsonObject.charts[idx].isDefault 
+					jsonObject.charts[idx].layers		= layers;
+					if (jsonObject.charts[idx].isDefault=="true") 
+						jsonObject.lastUpdate = (new Date()).getTime();
 					writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));				
 				}
 		} else if (request.params.action === 'add') {
+			var layers = request.params.layers.split(",");
 			jsonObject.charts.push ({
 				"name" 		: request.params.name,
 				"url"       : request.params.url,
 				"chartId"	: request.params.chartId,
 				"x_axis"    : request.params.x_axis,
 				"y_axis"    : request.params.y_axis,
-				"isDefault" : request.params.isDefault
+				"isDefault" : jsonObject.charts.length==0,
+				"layers"    : layers
 			});
 			writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));			
+		} else if (request.params.action === 'setDefault') {
+			var idx = getChartRecordID (jsonObject, request);
+			if (idx >= 0) {	
+				jsonObject.lastUpdate = (new Date()).getTime();
+				for (var i=0; i<jsonObject.charts.length; i++) {
+					jsonObject.charts[i].isDefault = jsonObject.charts[i].chartId==request.params.chartId;
+				}
+				writeFileContent (file.getAbsolutePath(), JSON.stringify (jsonObject));		
+			}
 		}
 	} else {
 		system.print ("transChartRecord : file not found, path = " + dir + "app/static/charts.json");
