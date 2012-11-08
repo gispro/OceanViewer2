@@ -559,7 +559,7 @@ EOB
 # On some systems, 127.x.x.x all point to localhost, so disallow all of "127".
 # This feature is simple now but may be more complete in future releases.
 #   How would you like this to be extended?  What would be useful to you?
-@BANNED_NETWORKS= ('127', '172', '10', '169.254', '244.0.0') ;
+@BANNED_NETWORKS= ('127', '172', '169.254', '244.0.0') ;
 
 
 # Settings to fine-tune cookie filtering, if cookies are not banned altogether
