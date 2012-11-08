@@ -119,6 +119,12 @@ HelpInfo = [
 	          url:"docs/4.3.html",
 	          id:"page-4.3",
 	          leaf: true
+        },
+	    {
+	          text:"Рубрикатор",
+	          url:"docs/4.4.html",
+	          id:"page-4.4",
+	          leaf: true			  
 	    }
 	    ]
    },

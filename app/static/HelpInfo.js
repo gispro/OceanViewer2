@@ -8,6 +8,7 @@ HelpInfo = [
   {
     text:"Начало работы",
     id:"page-2",
+    leaf: false,
     children:[
         {
           text:"Запуск приложения",
@@ -52,7 +53,7 @@ HelpInfo = [
           id:"page-3.4",
           leaf: true
         },
-    {
+		{
           text:"Кнопки управления",
           url:"docs/3.5.html",
           id:"page-3.5",
@@ -76,50 +77,56 @@ HelpInfo = [
                 id:"page-4.1.1",
                 leaf: true
               },
-        {
-              text:"Папка Картоосновы",
-              url:"docs/4.1.2.html",
-              id:"page-4.1.2",
-              leaf: true
-            },
-        {
-              text:"Папка Редактируемые",
-              url:"docs/4.1.3.html",
-              id:"page-4.1.3",
-              leaf: true
-            },
-        {
-              text:"Папка Анимация",
-              url:"docs/4.1.4.html",
-              id:"page-4.1.4",
-              leaf: true
-            },
-        {
-              text:"Кнопки управления",
-              url:"docs/4.1.5.html",
-              id:"page-4.1.5",
-              leaf: true
-            },
-        {
-              text:"Контекстные меню слоев",
-              url:"docs/4.1.6.html",
-              id:"page-4.1.6",
-              leaf: true
-            }]
+			  {
+	            text:"Папка Картоосновы",
+	            url:"docs/4.1.2.html",
+	            id:"page-4.1.2",
+	            leaf: true
+	          },
+			  {
+	            text:"Папка Редактируемые",
+	            url:"docs/4.1.3.html",
+	            id:"page-4.1.3",
+	            leaf: true
+	          },
+			  {
+	            text:"Папка Анимация",
+	            url:"docs/4.1.4.html",
+	            id:"page-4.1.4",
+	            leaf: true
+	          },
+			  {
+	            text:"Кнопки управления",
+	            url:"docs/4.1.5.html",
+	            id:"page-4.1.5",
+	            leaf: true
+	          },
+			  {
+	            text:"Контекстные меню слоев",
+	            url:"docs/4.1.6.html",
+	            id:"page-4.1.6",
+	            leaf: true
+	          }]
         },
-    {
-            text:"Легенда",
-            url:"docs/4.2.html",
-            id:"page-4.2",
-            leaf: true
-      },
-      {
-            text:"Инструменты",
-            url:"docs/4.3.html",
-            id:"page-4.3",
-            leaf: true
-      }
-      ]
+		{
+	          text:"Легенда",
+	          url:"docs/4.2.html",
+	          id:"page-4.2",
+	          leaf: true
+	    },
+	    {
+	          text:"Инструменты",
+	          url:"docs/4.3.html",
+	          id:"page-4.3",
+	          leaf: true
+        },
+	    {
+	          text:"Рубрикатор",
+	          url:"docs/4.4.html",
+	          id:"page-4.4",
+	          leaf: true			  
+	    }
+	    ]
    },
   {
           text:"Рабочее окно карты",
