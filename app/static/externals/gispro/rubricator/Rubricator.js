@@ -137,7 +137,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 						
 						
 								
-						for (var i=0; i<jsonNode.children.length;i++) {
+						for (var i=jsonNode.children.length-1; i>=0;i--) {
 					
 							if (jsonNode.children[i].islayer=="1") {
 
