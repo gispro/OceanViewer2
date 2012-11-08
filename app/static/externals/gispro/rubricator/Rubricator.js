@@ -282,7 +282,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																	if (record.get("name") == (ws ? ws+":"+name : name)) {
 																		last = index;
 																		record.get('layer').id = node.id;
-																		record.data.styles = style;
+																		record.data.rubstyles = style;
 																		records.push(record);
 																		
 																	}
