@@ -260,7 +260,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																 restUrl: (node.attributes.layer.jsonNode.serverpath+"/rest").replace(/\/\//g,"/").replace("http:/","http://")};
 													//var conf = {url: "http://oceanviewer.ru/resources/ru_hydrometcentre_42/wms", restUrl: "http://oceanviewer.ru/resources/rest"};													
 													conf.title = node.parentNode.attributes.jsonNode.nodename;
-													
+													 
 													if (!app.layerSources[node.attributes.layer.jsonNode.resourceid]) {
 														
 														if (!Ext.getCmp('rubricatorTree').loadMask)
