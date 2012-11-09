@@ -118,15 +118,58 @@ HelpInfo = [
 	          text:"Инструменты",
 	          url:"docs/4.3.html",
 	          id:"page-4.3",
-	          leaf: true
+	          children:[
+              {
+                text:"Поиск",
+                url:"docs/4.3.1.html",
+                id:"page-4.3.1",
+                leaf: true
+              },
+			  {
+	            text:"Настройка",
+	            url:"docs/4.3.2.html",
+	            id:"page-4.3.2",
+	            leaf: true
+	          },
+              {
+	            text:"Выборка",
+	            url:"docs/4.3.3.html",
+	            id:"page-4.3.3",
+	            leaf: true
+	          },
+              {
+	            text:"Редактирование",
+	            url:"docs/4.3.4.html",
+	            id:"page-4.3.4",
+	            leaf: true
+	          },
+              {
+	            text:"Измерения",
+	            url:"docs/4.3.5.html",
+	            id:"page-4.3.5",
+	            leaf: true
+	          },
+              {
+	            text:"Печать",
+	            url:"docs/4.3.6.html",
+	            id:"page-4.3.6",
+	            leaf: true
+	          },			  
+			  {
+	            text:"Графики",
+	            url:"docs/4.3.7.html",
+	            id:"page-4.3.7",
+	            leaf: true
+	          }]
+			  
         },
 	    {
 	          text:"Рубрикатор",
 	          url:"docs/4.4.html",
 	          id:"page-4.4",
-	          leaf: true			  
-	    }
-	    ]
+			  leaf: true
+		}
+	    ]    
    },
   {
           text:"Рабочее окно карты",
