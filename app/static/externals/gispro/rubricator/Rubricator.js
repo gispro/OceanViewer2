@@ -178,6 +178,19 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 				
 				var preparedStore = getStore (jsonNode.children[i]);
 				
+				var isAlreadyInUse = function(t) {
+					var k = false;
+					app.mapPanel.layers.each(function(record, index) {
+						if (record.get("title") == t) {																		
+							k = true;
+							if (record.get('rubricatorNode')) {
+								record.set('title', record.get("title") +" (" +Ext.getCmp('rubricatorTree').items.items[0].getNodeById(record.get('rubricatorNode')).layer.jsonNode.nodename+")");
+							}
+						}
+					});					
+					return k;
+				}
+				
 				//if ((jsonNode.children[i].islayer!="1")&&(jsonNode.children[i].children.length>0)&&(containsLayers(jsonNode.children[i]))) {
 				if ((jsonNode.children[i].islayer!="1")&&(jsonNode.children[i].children.length>0)&&(jsonNode.children[i].children[0].islayer=="1")) {
 				//if (jsonNode.children[i].isservice=="1") {
@@ -279,10 +292,10 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																var records = [];
 																node.attributes.storeId = id;
 																app.layerSources[id].store.each(function(record, index) {
-																	if (record.get("name") == (ws ? ws+":"+name : name)) {
-																		last = index;
-																		record.get('layer').id = node.id;
+																	if (record.get("name") == (ws ? ws+":"+name : name)) {																		
 																		record.data.rubstyles = style;
+																		record.data.rubricatorNode = node.id;
+																		record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
 																		records.push(record);
 																		
 																	}
@@ -291,7 +304,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																	Ext.Msg.alert(gxp.plugins.RubricatorTree.prototype.errorTitle, gxp.plugins.RubricatorTree.prototype.noRecordsFound);
 																	node.ui.checkbox.checked = false;
 																}
-																addLayersPlugin.addLayers(records,app.layerSources[id],false);															
+																node.layerId = addLayersPlugin.addLayers(records,app.layerSources[id],false);															
 																Ext.getCmp('rubricatorTree').loadMask.hide();
 															},
 															fallback: function(source, msg) {
@@ -307,13 +320,16 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 														var addLayersPlugin = app.tools.gxp_addlayers_ctl;
 														// TRUE
 														var name = node.attributes.layer.jsonNode.layername;
-														 var ws = node.attributes.layer.jsonNode.workspace;
+														var ws = node.attributes.layer.jsonNode.workspace;
+														var style = node.attributes.layer.jsonNode.stylename;
 														//var name = "ru_hydrometcentre_42_1";
 														var records = [];
-														node.attributes.storeId = id;
+														node.attributes.storeId = id;														
 														app.layerSources[id].store.each(function(record, index) {
 															if (record.get("name") == (ws? ws+":"+name:name)) {
-																last = index;
+																record.data.rubstyles = style;
+																record.data.rubricatorNode = node.id;
+																record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
 																records.push(record);
 															}
 														});
@@ -322,21 +338,21 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 															node.ui.checkbox.checked = false;
 														}
 														else 
-															addLayersPlugin.addLayers(records,app.layerSources[id],false);
+															node.layerId = addLayersPlugin.addLayers(records,app.layerSources[id],false);
 													}
 																																	
 												}
 												else 
 													app.mapPanel.layers.data.each(function(record, index) {
 														// TRUE
-														if (record.get("name") == (node.attributes.layer.jsonNode.workspace ? 
+
+														if ((record.get("layer"))&&(record.get("layer").id == node.layerId)) /*(node.attributes.layer.jsonNode.workspace ? 
 																					node.attributes.layer.jsonNode.workspace+":"+node.attributes.layer.jsonNode.layername
-																					:node.attributes.layer.jsonNode.layername)) {
+																					:node.attributes.layer.jsonNode.layername)) {*/
 														//if (record.get("name") == "ru_hydrometcentre_42_1") {
-															last = index;
 															//app.mapPanel.layers.remove(record);
 															app.mapPanel.map.removeLayer(record.get('layer'), false);
-														}
+														//}
 													});
 										}
 									},
