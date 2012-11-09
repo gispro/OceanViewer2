@@ -78,7 +78,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 	
 	errorTitle: "Error",
 	
-	proxyException: "Can not add this layer. Check resource configuration and proxy settings",
+	proxyException: "Can not add this resource. Check authentification and proxy settings",
 
     denyDefaultTree: false,
 	
