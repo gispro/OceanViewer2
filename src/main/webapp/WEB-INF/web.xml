@@ -40,6 +40,18 @@
                 }
             </param-value>
         </init-param>
+		<init-param>
+            <param-name>RUBRICATOR_JDBC_PARAMS</param-name>
+            <param-value>
+                {
+                    "driver" : "org.postgresql.Driver" , 
+                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                    "table" : "admin.toc",
+                    "user": "esimo",
+                    "password" : "gisproesimo"
+                }
+            </param-value>
+        </init-param>
         <init-param>
             <param-name>symbolTranslateConfigs</param-name>
             <param-value>

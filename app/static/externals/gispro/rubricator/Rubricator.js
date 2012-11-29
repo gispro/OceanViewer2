@@ -268,21 +268,77 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 									listeners: {
 										'checkchange' :  function(node, checked){																		
 												if (checked) {
+													if (!Ext.getCmp('rubricatorTree').loadMask)
+															Ext.getCmp('rubricatorTree').loadMask = new Ext.LoadMask(Ext.getCmp('rubricatorTree').getEl(), {msg:gxp.plugins.RubricatorTree.prototype.resourceLoadMask});
+														Ext.getCmp('rubricatorTree').loadMask.show();
+													
 													// TRUE													
 													 var conf = {url: (node.attributes.layer.jsonNode.serverpath+"/"+node.attributes.layer.jsonNode.servicepath).replace(/\/\//g,"/").replace("http:/","http://"), 
 																 restUrl: (node.attributes.layer.jsonNode.serverpath+"/rest").replace(/\/\//g,"/").replace("http:/","http://")};
 													//var conf = {url: "http://oceanviewer.ru/resources/ru_hydrometcentre_42/wms", restUrl: "http://oceanviewer.ru/resources/rest"};													
-													conf.title = node.parentNode.attributes.jsonNode.nodename;
+													conf.title = node.attributes.layer.jsonNode.nodename;
 													 
-													if (!app.layerSources[node.attributes.layer.jsonNode.resourceid]) {
+													if (node.attributes.layer.jsonNode.servicetype=='rss') {
+														var rid = "rid"+(new Date()).getTime();
 														
-														if (!Ext.getCmp('rubricatorTree').loadMask)
-															Ext.getCmp('rubricatorTree').loadMask = new Ext.LoadMask(Ext.getCmp('rubricatorTree').getEl(), {msg:gxp.plugins.RubricatorTree.prototype.resourceLoadMask});
-														Ext.getCmp('rubricatorTree').loadMask.show();
+														var source = app.layerSources['rss'];
+														if (!source)
+															source = new gxp.plugins.RssSource();
+														var layerStore = app.mapPanel.layers;
+														
+														var records = [];
+														node.attributes.storeId = id;
+														app.layerSources['rss'].getLayersStore().each(function(record, index) {
+															if (record.get("url") == node.attributes.layer.jsonNode.serverpath+"/"+node.attributes.layer.jsonNode.servicepath) {																		
+																record.data.rubricatorNode = node.id;
+																record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
+																record.data.rid = rid;
+																records.push(record);																
+															}
+														});
+														
+														if (records.length==0) {
+															var rubConfig = node.attributes.layer.jsonNode;
+															var config = {
+																url: rubConfig.serverpath + "/" + rubConfig.servicepath,
+																title: rubConfig.nodename,
+																name: rubConfig.layername,
+																icon: rubConfig.stylename,
+																rubricatorNode: node.id
+															};
+															
+															
+															
+															layer = new OpenLayers.Layer.GeoRSS (config.name, config.url, {'projection': new OpenLayers.Projection("EPSG:4326"), 'icon': new OpenLayers.Icon(config.icon)});
+															layer.rid = rid;
+															
+															record = source.createLayerRecord(config); 
+															record.data.rid = rid;
+															
+															records.push(record);
+															var rssStore = source.getLayersStore();
+															rssStore.add([record]);
+														//	layerStore.add([record]);
+														}
+														
+														for (var i=0, ii = records.length; i<ii; ++i) 
+														{															
+															layerStore.add([record]);
+															node.layerId = record.get('rid');
+														}
+													
+														Ext.getCmp('rubricatorTree').loadMask.hide();
+													}
+													
+													else
+													
+													if (!app.layerSources[node.attributes.layer.jsonNode.resourceid]) {
+														var rid = "rid"+(new Date()).getTime();
+													
 														app.addLayerSource({                
 															id : node.attributes.layer.jsonNode.resourceid || "source"+(new Date()).getTime() ,
 															config: conf, // assumes default of gx_wmssource
-															callback: function(id) {															
+															callback: function(id) {											 				
 																var addLayersPlugin = app.tools.gxp_addlayers_ctl;
 																// TRUE
 																 var name = node.attributes.layer.jsonNode.layername;
@@ -296,6 +352,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																		record.data.rubstyles = style;
 																		record.data.rubricatorNode = node.id;
 																		record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
+																		record.data.rid = rid;
 																		records.push(record);
 																		
 																	}
@@ -304,7 +361,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																	Ext.Msg.alert(gxp.plugins.RubricatorTree.prototype.errorTitle, gxp.plugins.RubricatorTree.prototype.noRecordsFound);
 																	node.ui.checkbox.checked = false;
 																}
-																node.layerId = addLayersPlugin.addLayers(records,app.layerSources[id],false);															
+																addLayersPlugin.addLayers(records,app.layerSources[id],false);															
+																node.layerId = rid;
 																Ext.getCmp('rubricatorTree').loadMask.hide();
 															},
 															fallback: function(source, msg) {
@@ -329,6 +387,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 															if (record.get("name") == (ws? ws+":"+name:name)) {
 																record.data.rubstyles = style;
 																record.data.rubricatorNode = node.id;
+																record.data.rid = rid;
 																record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
 																records.push(record);
 															}
@@ -338,21 +397,22 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 															node.ui.checkbox.checked = false;
 														}
 														else 
-															node.layerId = addLayersPlugin.addLayers(records,app.layerSources[id],false);
+															addLayersPlugin.addLayers(records,app.layerSources[id],false);
+															node.layerId = rid;
 													}
 																																	
 												}
 												else 
 													app.mapPanel.layers.data.each(function(record, index) {
-														// TRUE
-
-														if ((record.get("layer"))&&(record.get("layer").id == node.layerId)) /*(node.attributes.layer.jsonNode.workspace ? 
-																					node.attributes.layer.jsonNode.workspace+":"+node.attributes.layer.jsonNode.layername
-																					:node.attributes.layer.jsonNode.layername)) {*/
-														//if (record.get("name") == "ru_hydrometcentre_42_1") {
-															//app.mapPanel.layers.remove(record);
-															app.mapPanel.map.removeLayer(record.get('layer'), false);
-														//}
+														if (record.get("rid")== node.layerId) {
+															/*app.mapPanel.layers.remove(record.get('layer'));
+															app.mapPanel.map.removeLayer(record.get('layer'), false);											
+															if (app.mapPanel.map.layers[index+1].CLASS_NAME === 'OpenLayers.Layer.Vector.RootContainer')
+																app.mapPanel.map.removeLayer(app.mapPanel.map.layers[index+1]);*/
+															app.fireEvent("layerselectionchange", record);
+															if (app.tools.gxp_removelayer_ctl.selectedLayer)
+																app.tools.gxp_removelayer_ctl.tryRemoveCurrent();
+														}
 													});
 										}
 									},
@@ -363,7 +423,6 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 								} else {
 									node.appendChild(child);
 								}
-								//app.mapPanel.layers.remove(layerRecord);
 							}
 						}),
 					});
@@ -386,7 +445,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 					//}
 				}
 				
-				if (jsonNode.children[i].servicetype!='animation') node.appendChild(n);
+				//if (jsonNode.children[i].servicetype!='animation') 
+				node.appendChild(n);
 			}	
 		}
 		
