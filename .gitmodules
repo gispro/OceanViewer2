@@ -15,4 +15,4 @@
 	url = https://github.com/gispro/openlayers.git
 [submodule "app/static/externals/PrintPreview"]
 	path = app/static/externals/PrintPreview
-	url = git://github.com/GeoNode/PrintPreview.git
+	url = git://github.com/gispro/PrintPreview.git
