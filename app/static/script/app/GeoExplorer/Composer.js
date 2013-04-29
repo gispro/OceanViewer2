@@ -385,7 +385,28 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                         ,actionTarget: {target: "paneltbar", index: 9}
                     }
                 );
+				tools.unshift(
+                    {
+						xtype: 'tbspacer',
+						width: 5
+						,actionTarget: {target: "paneltbar", index: 8}
+					}
+					
+                );
+	
+	
+	
+	var wait =  new Ext.BoxComponent({
+				id : 'waitIndicator',
+				autoEl: {
+					tag: 'img', 
+					src: 'theme/app/img/silk/loading.gif',					
+				},
+				scope: this,
+				actionTarget: {target: "paneltbar", index: 7}
+			});
 
+    tools.unshift(wait);	
 
 
 
@@ -399,6 +420,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
     tools.unshift("->");
     tools.unshift(aboutButton);
+	
+	
 
 		tools.unshift('->');
 

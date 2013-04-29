@@ -404,14 +404,51 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 												}
 												else 
 													app.mapPanel.layers.data.each(function(record, index) {
-														if (record.get("rid")== node.layerId) {
-															/*app.mapPanel.layers.remove(record.get('layer'));
-															app.mapPanel.map.removeLayer(record.get('layer'), false);											
-															if (app.mapPanel.map.layers[index+1].CLASS_NAME === 'OpenLayers.Layer.Vector.RootContainer')
-																app.mapPanel.map.removeLayer(app.mapPanel.map.layers[index+1]);*/
+														if (record.get("rid")== node.layerId) {															
+															//remove found
 															app.fireEvent("layerselectionchange", record);
-															if (app.tools.gxp_removelayer_ctl.selectedLayer)
+															if (app.tools.gxp_removelayer_ctl.selectedLayer) {
 																app.tools.gxp_removelayer_ctl.tryRemoveCurrent();
+															}
+															if(record)
+															{
+																var title = record.data['title'];
+
+																app.mapPanel.layers.remove(record);
+
+																for (var i = 0; i < rssVar.rssVectors.length; i++)
+																{
+																	if (rssVar.rssVectors[i].name === title)
+																	{
+																		rssVar.rssVectors.splice(i,1);
+																		break;
+																	}
+																}
+																for (var i = (app.mapPanel.layers.data.items.length - 1); i >= 0 ; i--)
+																{
+																	if (app.mapPanel.layers.data.items[i].data['title'] === title)
+																	{
+																		app.mapPanel.layers.data.items[i].visibility = false;
+																		app.mapPanel.layers.remove(app.mapPanel.layers.data.items[i]);
+																		break;
+																	}
+																}
+																
+																var deleted = false;
+																for (var i = (app.mapPanel.map.layers.length - 1); i >= 0; i--)
+																{
+																	if (app.mapPanel.map.layers[i].name === title)
+																	{
+																		app.mapPanel.map.removeLayer(app.mapPanel.map.layers[i], false);
+																		deleted = true;
+																	}
+																	if (!deleted && app.mapPanel.map.layers[i].CLASS_NAME === 'OpenLayers.Layer.Vector.RootContainer')
+																	{
+																		app.mapPanel.map.removeLayer(app.mapPanel.map.layers[i], false);
+																		deleted = false;
+																	}
+																}
+															}
 														}
 													});
 										}
