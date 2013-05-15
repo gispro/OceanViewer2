@@ -1,7 +1,7 @@
 var chooseOcean;
 
 var	aquaStore = new Ext.data.JsonStore({ 
-    url       : 'aqua.json',
+    url       : OVROOT + 'aqua.json',
     root      : 'features',
     fields    : ['name', 'lon', 'lat', 'zoom'],
     listeners :

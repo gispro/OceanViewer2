@@ -1,18 +1,23 @@
 window.CONFIG = {
 
-  blankImageUrl: "theme/app/img/blank.gif",
-  openLayersImgPath: "externals/openlayers/img/",
-  translateUrl: 'translate',
-  metadataUrl: 'metadata',
+  blankImageUrl: OVROOT + "theme/app/img/blank.gif",
+  openLayersImgPath: OVROOT + "externals/openlayers/img/",
+  translateUrl: OVROOT + 'translate',
+  metadataUrl: OVROOT + 'metadata',
   imageReloadAttempts: 2,
 
   composer: {
+    portalConfig: typeof(OVPORTLETDIV) === 'undefined'?undefined:{
+        renderTo: OVPORTLETDIV,
+        height: 600
+    },
     jossoReload: true,
     authWay: false,
     username: 'edit',
     password: 'pedit',
     authUrl: "http://oceanviewer.ru/josso/signon/",
-    proxy: "http://oceanviewer.ru/OceanViewer2/cgi-bin/nph-proxy.cgi/00/?url=",
+    //proxy: OVROOT + "cgi-bin/nph-proxy.cgi/00/?url=",
+    proxy: OVROOT + "proxy/?url=",
     printService: "http://oceanviewer.ru/print/pdf/",
     about: {
       title: "Карта OceanViewer",
@@ -20,7 +25,7 @@ window.CONFIG = {
       contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
     },
     defaultSourceType: "gxp_wmscsource",
-    downloadFilePageUrl: 'cgi-bin/get_features_24.py',
+    downloadFilePageUrl: OVROOT + 'cgi-bin/get_features_24.py',
 
     jossoLoginUrl: 'http://oceanviewer.ru/josso/signon/login.do',
     jossoOutUrl: 'http://oceanviewer.ru/josso/signon/logout.do',

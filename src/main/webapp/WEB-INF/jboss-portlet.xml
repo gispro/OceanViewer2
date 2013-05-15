@@ -26,95 +26,180 @@
    "http://www.jboss.org/portal/dtd/jboss-portlet_2_6.dtd">
 
 <portlet-app>
-   <app-id>OceanViewerPortlet</app-id>
+   <app-id>OceanViewerPortlet3</app-id>
    <portlet>
-      <portlet-name>OceanViewerPortlet</portlet-name>
+      <portlet-name>OceanViewerPortlet3</portlet-name>
       <header-content>
-<!--        <link rel="shortcut icon" href="/theme/app/img/favicon.ico"/>
-        <link rel="stylesheet" type="text/css" href="/externals/ext/resources/css/ext-all.css"/>
-        <link rel="stylesheet" type="text/css" href="/externals/ext/resources/css/xtheme-blue.css"/>
+          
+   <link rel="shortcut icon" href="/theme/app/img/favicon.ico"/>
 
-        <script type="text/javascript" src="/externals/ext/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript"><![CDATA[
-        // For IE9, make ExtJS think we're Chrome, not IE6.
-        // http://www.sencha.com/forum/showthread.php?115849-OPEN-1434-ExtJS-TreePanel-and-IE9
-        if (Ext.isIE6 && !Ext.isIE9 && /msie 9/i.test(navigator.userAgent)) {
-            Ext.isIE6 = Ext.isIE = false;
-            Ext.isChrome = Ext.isIE9 = true;
-        }
-        ]]></script>
-        <script type="text/javascript" src="/externals/ext/ext-all.js"></script>
-        
+    <!-- Ext resources -->
+    <link rel="stylesheet" type="text/css" href="/externals/ext/resources/css/ext-all.css"/>
+    <link rel="stylesheet" type="text/css" href="/externals/ext/resources/css/xtheme-blue.css"/>
+    <script type="text/javascript" src="/externals/ext/adapter/ext/ext-base.js"></script>
+    <!--<script type="text/javascript" src="/externals/ext/ext-all.js"></script>-->
+    <script type="text/javascript" src="/externals/ext/ext-all-debug.js"></script>
+
+    <!--<script type="text/javascript" src="/externals/ext/ext-all-debug.js"></script>-->
+    <!--<script type="text/javascript" src="/externals/ext/ext-all-debug-w-comments.js"></script>-->
+    <script type="text/javascript" src="/externals/ext/ux/CheckColumn.js"></script>
+    <script type="text/javascript" src="/externals/ext/ux/ButtonColumn.js"></script>
+
+    <script type="text/javascript" src="/externals/ext4/builds/ext-all-sandbox.js"></script>
+    <link rel="stylesheet" type="text/css" href="/externals/ext4/resources/css/ext-sandbox.css"/>
+
+    <script type="text/javascript"><![CDATA[
+    // For IE9, make ExtJS think we're Chrome, not IE6.
+    // http://www.sencha.com/forum/showthread.php?115849-OPEN-1434-ExtJS-TreePanel-and-IE9
+    if (Ext.isIE6 && !Ext.isIE9 && /msie 9/i.test(navigator.userAgent)) {
+      Ext.isIE6 = Ext.isIE = false;
+      Ext.isChrome = Ext.isIE9 = true;
+    }
+    ]]></script>
+    
+    <!-- OpenLayers resources -->
     <link rel="stylesheet" type="text/css" href="/externals/openlayers/theme/default/style.css"/>
     <script type="text/javascript" src="/script/OpenLayers.js"></script>
 
+    <!-- GeoExt resources -->
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/layerlegend.css"/>
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/gxtheme-gray.css"/>
     <script type="text/javascript" src="/script/GeoExt.js"></script> 
 
+    <!-- gxp resources -->
     <link rel="stylesheet" type="text/css" href="/externals/gxp/src/theme/all.css"/>
     <script type="text/javascript" src="/script/gxp.js"></script> 
 
-    <script type="text/javascript" src="/externals/proj4js/lib/proj4js-compressed.js"></script>
-    <script type="text/javascript"><![CDATA[
-            Proj4js.defs["EPSG:102012"] = 
-                "+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-            Proj4js.defs["EPSG:3576"] = 
-                "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-            Proj4js.defs["EPSG:4326"] = 
-                "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
-            Proj4js.defs["EPSG:91101"] =
-                "+title=long/lat:WGS84 +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees"
-            Proj4js.defs["EPSG:3413"] = 
-                "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
-            Proj4js.defs["EPSG:3995"] = 
-                "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
-            Proj4js.defs["EPSG:3976"] = 
-                "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
-    
-    ]]></script>
-            
+    <!-- gispro resources -->
+    <script type="text/javascript" src="/externals/gispro/utils/public/javascripts/utils.js"></script>
+    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerParser.js"></script>
+    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerWindow.js"></script>
+    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/Pricker.js"></script>
+    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerTool.js"></script>
+    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/locale/ru.js"></script>
+    <link rel="stylesheet" type="text/css" href="/externals/gispro/pricker/stylesheets/pricker.css"/>
+    <script type="text/javascript" src="/externals/gispro/editor/javascripts/feature_editor_panel.js"></script>
+    <script type="text/javascript" src="/externals/gispro/editor/javascripts/feature_editor_simple_messagebox.js"></script>
+    <link rel="stylesheet" type="text/css" href="/externals/gispro/editor/stylesheets/editor.css"/>
+    <script type="text/javascript" src="/externals/gispro/view_manager/public/javascripts/view_menu.js"></script>
+    <script type="text/javascript" src="/externals/gispro/view_manager/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="/externals/gispro/username/public/javascripts/username.js"></script>
+    <script type="text/javascript" src="/externals/gispro/username/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overview_map/overview_map.js"></script>
+    <script type="text/javascript" src="/externals/gispro/grid_wms_get_feature_info/grid_wms_get_feature_info.js"></script>
+    <script type="text/javascript" src="/externals/gispro/upload/public/javascripts/upload.js"></script>
+    <script type="text/javascript" src="/externals/gispro/upload/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="/externals/gispro/arcgis_source/public/javascripts/ArcGISServiceReader.js"></script>
+    <script type="text/javascript" src="/externals/gispro/arcgis_source/public/javascripts/ArcGISServiceStore.js"></script>
+    <script type="text/javascript" src="/externals/gispro/arcgis_source/public/javascripts/ArcGISSource.js"></script>
+	<script type="text/javascript" src="/externals/gispro/rubricator/Rubricator.js"></script>
+    <!--<script type="text/javascript" src="/externals/gispro/login/public/javascripts/login.js"></script>
+    <script type="text/javascript" src="/externals/gispro/login/public/javascripts/locale/ru.js"></script>-->
 
+    <!-- gispro overrides -->
+    <script type="text/javascript" src="/externals/gispro/overrides/GeoExt/lib/GeoExt/widgets/MapPanel.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/GeoExt/lib/GeoExt/data/AttributeReader.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/QueryForm.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/FeatureManager.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/AddLayers.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/AnimationManager.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/AnimationGrid.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/ChartManager.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/ChartEditor.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/ChartSource.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/FeatureGrid.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/LayerSource.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/WMSCSource.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/LayerProperties.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/Styler.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/Measure.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/Print.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/Logger.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/LoggerInit.js"></script>
+	<script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/UploadPlugin.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/GoogleSource.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/WMSSource.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/plugins/OSMSource.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/grid/FeatureGrid.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/WMSLayerPanel.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/WMSStylesDialog.js"></script>
+    <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/form/FilterField.js"></script>
+
+
+    <!-- proj4js resources -->
+    <script type="text/javascript" src="/externals/proj4js/lib/proj4js-compressed.js"></script>
+
+    <script type="text/javascript"><![CDATA[
+      Proj4js.defs["EPSG:102012"] = "+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+      Proj4js.defs["EPSG:3576"] = "+proj=laea +lat_0=90 +lon_0=90 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+      Proj4js.defs["EPSG:4326"] = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+      Proj4js.defs["EPSG:91101"] = "+title=long/lat:WGS84 +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees"
+      Proj4js.defs["EPSG:3413"] = "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+      Proj4js.defs["EPSG:3995"] = "+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
+      Proj4js.defs["EPSG:3976"] = "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
+    ]]></script>
+
+    <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="/theme/app/geoexplorer.css" />
+    <!--[if IE]><link rel="stylesheet" type="text/css" href="/theme/app/ie.css"/><![endif]-->        
     <link rel="stylesheet" type="text/css" href="/theme/ux/colorpicker/color-picker.ux.css" />
     <script type="text/javascript" src="/script/GeoExplorer.js"></script>
     <script type="text/javascript" src="/script/ux.js"></script>
 
+    <!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="/externals/PrintPreview/resources/css/printpreview.css"/>
     <script type="text/javascript" src="/script/PrintPreview.js"></script>
-    
-    <script><![CDATA[
-        Ext.BLANK_IMAGE_URL = "/OceanViewer2/theme/app/img/blank.gif";
-        OpenLayers.ImgPath = "/OceanViewer2/theme/app/img/";
+
+    <!--<script type="text/javascript" src="/script/app/graticuleGxpTool.js"></script>-->
+    <script type="text/javascript" src="/script/choosers.js"></script>
+    <!--<script type="text/javascript" src="/script/app/ServicesSetting.js"></script>-->
+
+    <script type="text/javascript" src="/HelpInfo.js"></script> 
+
+    <script type="text/javascript" src="/config.js"></script>
+
+    <script type="text/javascript"><![CDATA[
+
+        //TODO: make configurable
+        var im = new Image();
+        im.src = 'http://oceanviewer.ru/resources/web/';
+
+        //constants
+
+        Ext.BLANK_IMAGE_URL = CONFIG.blankImageUrl;
+
+        OpenLayers.ImgPath = CONFIG.openLayersImgPath;
+
+        Gispro.Utils.TRANSLATE_URL = CONFIG.translateUrl;
+
+        Gispro.Utils.METADATA_URL = CONFIG.metadataUrl;
+
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = CONFIG.imageReloadAttempts;
+
         // optionally set locale based on query string parameter
         if (GeoExt.Lang) {
             //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
-			GeoExt.Lang.set("ru");
+            GeoExt.Lang.set("ru");
         }
-        //var graticuleControl1 = new OpenLayers.Control.Graticule({
-        //            numPoints: 2, 
-        //            labelled: true
-        //            , displayInLayerSwitcher: false
-        //        });
         
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		  Ext.override(OpenLayers.Layer.GeoRSS, {
-                     parseData: RssPopupParseData
-                  });
+		Ext.override(OpenLayers.Layer.GeoRSS, {
+			parseData: RssPopupParseData
+		});
 
-                  Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
+		Ext.override(OpenLayers.Control.WMSGetFeatureInfo, {
 			getInfoForClick: RssPopupGetInfoForClick
-                  });
+		});
 
-                  Ext.override(GeoExt.tree.LayerNode, {
-                     render: RssPopupLayerNodeRender
-                    });
+		Ext.override(GeoExt.tree.LayerNode, {
+			render: RssPopupLayerNodeRender
+		});
 
-                  Ext.override(gxp.Viewer, {
-                     getState: RssPopupGetState
-                  });
-		
+		Ext.override(gxp.Viewer, {
+			getState: RssPopupGetState
+		});
+
 		Ext.override(GeoExt.tree.LayerLoader, {
 			addLayerNode: RsspopupAddLayerNode
 		});
@@ -123,9 +208,9 @@
 			addActions: RssPopupAddActions
 		});
 
-		Ext.override(gxp.WMSLayerPanel, {
-			createDisplayPanel: RssSourceCreateDisplayPanel
-		});
+		//Ext.override(gxp.WMSLayerPanel, {
+		//	createDisplayPanel: RssSourceCreateDisplayPanel
+		//});
 		
 		Ext.override(GeoExt.LegendPanel, {
 			addLegend : animationAddLegend
@@ -151,230 +236,141 @@
 			onStoreAdd : animationLayerLoaderOnStoreAdd
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        var app = new GeoExplorer.Composer({
-            authStatus:  404, //1,
-            proxy: "proxy/?url=",
-            portalConfig: {
-                    renderTo: "render-div",
-                    height: 600
-            },
-            printService: "/geoserver/pdf/",
-            about: {
-                title: "Карта OceanViewer",
-                "abstract": "Сохраненная карта OceanViewer",
-                contact: "Разработчик приложения <a href='http://www.gispro.ru'>ЗАО 'ГИСпроект'</a>"
-            },
-            defaultSourceType: "gxp_wmscsource",
-            sources: {
-		gispro: {
-                    url: "http://gisbox.ru:8084/geowebcache/service/wms",
-                    title: "Слои картоосновы"
-                },
-                arcgis93: {
-                    ptype: "gxp_arcgis93source"
-				},                
-                rss: {
-                    ptype: "gxp_rsssource"
-				},
-                google: {
-                    ptype: "gxp_googlesource"
-                },
-                ol: {
-                    ptype: "gxp_olsource",
-                    title: "Картоосновы Google"
-                },
-                animation: {
-                    ptype: "gxp_animationsource"
-                }
-            },
-            wfs: "/geoserver/wfs",
-            wms: "/geoserver/wms",
-            
-            map: {
-		projection: "EPSG:900913",
-                units: "m",
-                maxResolution: 156543.0339,
-                maxExtent: [
-                    -20037508.34, -20037508.34,
-                    20037508.34, 20037508.34
-                ],
-                layers: [
-                {
-                    source: "ol",
-                    group: "background",
-                    fixed: true,
-                    type: "OpenLayers.Layer",
-                    args: [
-                        "Без картоосновы", {visibility: false}
-                    ]
-                },
-                /*
-                {
-                    source: "ol",
-                    type: "OpenLayers.Layer.Vector",
-                    args: [
-                        "Полигоны Франции", 
-                        {
-                            projection: "EPSG:4326",
-                            //*
-                            strategies: [new OpenLayers.Strategy.Fixed()],
-                            protocol: new OpenLayers.Protocol.HTTP({
-                                url: "http://openlayers.org/dev/examples/gml/polygon.xml",
-                                format: new OpenLayers.Format.GML()
-                            })
-                            //*/
-                            /*
-                            strategies: [{classtype: "OpenLayers.Strategy.Fixed", args:[]}],
-                            protocol: {
-                                classtype: "OpenLayers.Protocol.HTTP",
-                                args: [{
-                                    url: "http://openlayers.org/dev/examples/gml/polygon.xml",
-                                    format: {
-                                        classtype: "OpenLayers.Format.GML",
-                                        args: []
-                                    }
-                                }]
-                            }
-                            *//*
-                        }
-                    ]
-                },*/
-                /*{
-                    source: "ol",
-                    type: "OpenLayers.Layer.Vector",
-                    visibility: false,
-                    args: [
-                        "АдмПол", 
-                        {
-                            projection: "EPSG:4326",
-                            strategies: [new OpenLayers.Strategy.BBOX()],
-                            protocol:  new OpenLayers.Protocol.WFS({
-                                url:  "http://gisbox.ru:8083/geoserver/wfs",
-                                featureType: "admpol8000"
-                                //,featureNS: "http://www.openplans.org/topp"
-                                ,featureNS: "eko"
-                            })
-                        }
-                    ]
-                },*/
-                {
-                    source: "google",
-                    title: "Google Карта",
-                    name: "ROADMAP",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Рельеф",
-                    name: "TERRAIN",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Спутник",
-                    name: "SATELLITE",
-                    group: "background"
-                },
-                {
-                    source: "google",
-                    title: "Google Гибрид",
-                    name: "HYBRID",
-                    group: "background"
-                },                {
-                    source: "gispro",
-                    title: "ЭКО 3.1 бланк",
-                    name: "eko_blank",
-                    group: "background",
-                    args: [null, {alwaysInRange: true}]
-                    
-                },                
-                {
-                    source: "gispro",
-                    title: "ЭКО 3.1",
-                    name: "eko3_merge",
-                    group: "background",
-                    args: [null, {alwaysInRange: true}]
-                    
-                }],
-                center: [0, 0],
-                zoom: 2
-		}
-           });
 
-        downloadArcgis();
+        var app = new GeoExplorer.Composer(CONFIG.composer)
 
+
+        downloadArcgis()
+        downloadRSS()
+        wmsStore.load()
 
         app.on("ready", function()
-			{
+          {
+            Ext.QuickTips.getQuickTip().maxWidth = 800
+            animationStore.load()
+            aquaStore.load()
 
-           if(app.mapPanel.map.layers[0].mergeNewParams)
-			app.mapPanel.map.layers[0].mergeNewParams();
-			for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
-				app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
-				if(app.mapPanel.map.layers[ii].mergeNewParams){
-                   app.mapPanel.map.layers[ii].mergeNewParams();
-               };
-			}
+            this.mapPanel.on('beforeprojectionchanged', function(projection){
+              if(projection == 'EPSG:900913' || projection == 'EPSG:4326'){
+                //this - mapPanel
+                this.layers.each(function(rec){
+                  if(rec.getLayer().params && rec.getLayer().params.LAYERS == 'eko_merge_v'){
+                    rec.getLayer().params.LAYERS = 'eko_merge'
+                  }})
+              } else if (projection == 'EPSG:102012' || projection == 'EPSG:3576' || projection == 'EPSG:3976') {
+                //this - mapPanel
+                this.layers.each(function(rec){
+                  if(rec.getLayer().params && rec.getLayer().params.LAYERS == 'eko_merge'){
+                    rec.getLayer().params.LAYERS = 'eko_merge_v'
+                  }})
+              }
+            })
 
-            app.mapPanel.on("afterlayeradd", function(){
-               for(var ii = 1; ii < app.mapPanel.map.layers.length; ii++){
-                   app.mapPanel.map.layers[ii].maxExtent = app.mapPanel.map.layers[0].maxExtent;
-                   if(app.mapPanel.map.layers[ii].mergeNewParams){
-                       app.mapPanel.map.layers[ii].mergeNewParams();
-                   };
+            //background
+            //this.mapPanel.map.div.style.background = '#bdf'
+
+            //google hybrid after resize bug fix
+            //TODO move to source
+			// Google layers removed -> bug fix removed
+            /*var gobj
+            for(var i=0, len=app.mapPanel.map.layers.length; i<len; i++){
+              if( app.mapPanel.map.layers[i].type == 'hybrid'){
+                gobj=app.mapPanel.map.layers[i].mapObject
+              }
             }
-        });
-        
-           var metMerc = false;
-           for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
-               //alert(app.mapPanel.map.layers[ii]);
-               if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
-                   if(!(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection)){
-                       metMerc = true;
-                   }
-               }
-           }
-           if(!metMerc){
-                       app.conicalMenuItem.enable();//disabled = false;
-                       app.stereoMenuItem.enable();//disabled = false;
-                       app.geographMenuItem.enable();//disabled = false;
-                           app.southernMenuItem.enable();//disabled = false;
-           }else{
-                       app.conicalMenuItem.disable();//d = true;
-                       app.stereoMenuItem.disable();//d = true;
-                       app.geographMenuItem.disable();//d = true;
-                           app.southernMenuItem.disable();
-           }
+            app.mapPanel.on( 'afterlayout', function(){
+              google.maps.event.trigger(gobj, 'resize')
+            } )*/
 
 
-            app.mapPanel.on("afterlayervisibilitychange", function(){
-                var metMerc = false;
-               for(var ii = 0; ii < app.mapPanel.map.layers.length; ii++){
-                   //alert(app.mapPanel.map.layers[ii]);
-                   if(app.mapPanel.map.layers[ii].sphericalMercator && app.mapPanel.map.layers[ii].visibility == true){
-                       if(app.mapPanel.map.projection !== app.projectionStoreForMenu['Меркатора'].projection){
-                        app.changeProjection(app.projectionStoreForMenu['Меркатора'], app, function(){window.location.reload(true);});
-                       }else{
-                           metMerc = true;
-                           break;
-                       }
-                   }
-               }
-               if(!metMerc){
-                           app.conicalMenuItem.enable();//disabled = false;
-                           app.stereoMenuItem.enable();//disabled = false;
-                           app.geographMenuItem.enable();//disabled = false;
-                           app.southernMenuItem.enable();//disabled = false;
-               }else{
-                           app.conicalMenuItem.disable();//d = true;
-                           app.stereoMenuItem.disable();//d = true;
-                           app.geographMenuItem.disable();//d = true;
-                           app.southernMenuItem.disable();
-               }
-        });
-        });
-        
-    ]]></script>-->
+            if(CONFIG.onloadResources){
+              for(var k in CONFIG.onloadResources.sources){
+
+                this.addLayerSource({
+                    id: k,
+                    config: CONFIG.onloadResources.sources[k].config,
+
+                    callback: function(sourceId){
+
+                      for(var i=0,len=CONFIG.onloadResources.sources[sourceId].layers.length; i<len; i++){
+
+                        app.mapPanel.layers.add([ 
+                          app.layerSources[ sourceId ].createLayerRecord({
+                            name: CONFIG.onloadResources.sources[sourceId].layers[i],
+                            source: CONFIG.onloadResources.sources[sourceId].id,
+                            group: CONFIG.onloadResources.sources[sourceId].group,
+                            cached: false,
+                            visibility: false
+                          })
+                        ])
+
+                      }
+
+                    }
+                });
+
+              }
+            }
+
+            //TODO make plugin!!
+            var win = new Ext.Window({
+              title: 'Помощь',
+              layout:'fit',
+              width:700,
+              height:400,
+              closeAction:'hide',
+              maximizable: true,
+              items: [
+                  {
+                    layout:'border',
+                    defaults: {
+                        collapsible: true,
+                        split: true,
+                        //bodyStyle: 'padding:15px'
+                    },
+                    items: [
+                    {
+                      xtype:'treepanel',
+                      listeners: {
+                        click: function(a,b,c){
+                          if(a.attributes.url) Ext.getCmp('helpIframe').body.dom.innerHTML= '<iframe style="border: none;" height="100%" width="100%" src="/' + a.attributes.url + '"></iframe>'
+                        }
+                      },
+                      rootVisible: false,
+                      region:'west',
+                      //margins: '5 0 0 0',
+                      //cmargins: '5 5 0 0',
+                      width: 175,
+                      minSize: 100,
+                      maxSize: 250,
+                      useArrows:true,
+                      autoScroll:true,
+                      animate:true,
+                      containerScroll: true,
+                      border: false,
+                      root: new Ext.tree.AsyncTreeNode({
+                          children: HelpInfo
+                      }),
+                    },
+                    {
+                        collapsible: false,
+                        region:'center',
+                        margins: '5 0 0 0',
+                        id: 'helpIframe'
+                    }
+                  ]
+                }
+              ]
+            });
+            Ext.getCmp('helpButton').handler = function(){win.show()}
+
+          })
+
+
+
+    ]]></script>          
+          
+          
       </header-content>
    </portlet>
 </portlet-app>

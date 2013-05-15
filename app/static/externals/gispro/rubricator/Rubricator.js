@@ -500,7 +500,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 	
 		OpenLayers.Request.issue({
 			method: "GET",
-			url: "maps",
+			url: OVROOT+"maps",
 			async: true,
 			params:{
 				action: "getLayers"
