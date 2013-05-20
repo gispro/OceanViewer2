@@ -264,10 +264,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 paging: false,
                 actionTarget: {target: "paneltbar", index:18}
             }
-            //,{
-            //    ptype: "gxp_logger",                
-            //    actionTarget: {target: "paneltbar", index: 17}
-            //}
+            ,{
+                ptype: "gxp_logger",                
+                actionTarget: {target: "paneltbar", index: 17}
+            }
             //,{
                 //ptype: "gxp_featureeditor",
                 //featureManager: "featuremanager",
