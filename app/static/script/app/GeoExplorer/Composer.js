@@ -17,17 +17,17 @@
 GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
     // Begin i18n
-    saveMapText: "Save Map",
-    exportMapText: "Export Map",
-    toolsTitle: "Choose tools to include in the toolbar:",
-    previewText: "Preview",
-    backText: "Back",
-    nextText: "Next",
-    loginText: "Login",
-    loginErrorText: "Invalid username or password.",
-    userFieldText: "User",
-    passwordFieldText: "Password",
-    helpTip: 'Help',
+	saveMap: locale.composer.saveMap,	
+	exportMapText: locale.composer.exportMapText,
+	toolsTitle: locale.composer.toolsTitle,
+	previewText: locale.composer.previewText,
+	backText: locale.composer.backText,
+	nextText: locale.composer.nextText,
+	loginText: locale.composer.loginText,
+	loginErrorText: locale.composer.loginErrorText,
+	userFieldText: locale.composer.userFieldText,
+	passwordFieldText: locale.composer.passwordFieldText,
+	helpTip: locale.composer.helpTip,
     // End i18n.
 
     constructor: function(config) {
@@ -124,7 +124,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
             ,{
                 ptype: "gxp_layertree",
                 //id: "composer_layertree",
-                groups: {editable: 'Редактируемые'},
+                groups: {editable: locale.composer.editable},
                 outputConfig: {
                     id: "layertree"
                 },
@@ -284,15 +284,15 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 outputConfig: {panIn: false},
                 toggleGroup: this.toggleGroup,
                 actionTarget: {target: "paneltbar", index:19},
-                createFeatureActionTip: "Создать новый объект слоя",
-                editFeatureActionTip: "Редактировать объект слоя",
-                editFeatureActionText: '',
-                createFeatureActionText: '',
+                createFeatureActionTip: locale.composer.createFeatureActionTip,
+                editFeatureActionTip: locale.composer.editFeatureActionTip,
+                editFeatureActionText: locale.composer.createFeatureActionTip,
+                createFeatureActionText: locale.composer.createFeatureActionText,
                 bodyAttribute: 'message',
                 usernameAttribute: 'author',
-                featureManagerToolText: '',
-                featureManagerToolTip: 'Панель редактирования',
-                toolWinText: 'Редактирование',
+                featureManagerToolText: locale.composer.featureManagerToolText,
+                featureManagerToolTip: locale.composer.featureManagerToolTip,
+                toolWinText: locale.composer.toolWinText,
                 autoLoadFeature: true
 
             }
@@ -366,7 +366,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                             this.mapPanel.map.zoomToExtent(bounds, true);
                         }
                         ,afterRender: function(c) {
-                            c.getEl().dom.setAttribute('ext:qtip', 'Поиск геообъекта')
+                            c.getEl().dom.setAttribute('ext:qtip', locale.composer.geocode)
                         }
                         ,scope: this
                     }
@@ -375,11 +375,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 tools.unshift(
                     {
                         xtype: "label",
-                        text: "Поиск:",
+                        text: locale.composer.search+":",
                         style: "padding-right: 4px;"
                         ,listeners: {
                             afterRender: function(c) {
-                                c.getEl().dom.setAttribute('ext:qtip', 'Поиск геообъекта')
+                                c.getEl().dom.setAttribute('ext:qtip', locale.composer.geocode)
                             }
                         }
                         ,actionTarget: {target: "paneltbar", index: 9}
@@ -426,44 +426,44 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		tools.unshift('->');
 
 		tools.unshift({
-			text: 'Слой',
+			text: locale.composer.layer,
 			menu: new Ext.menu.Menu({
 				items: [
 					{
-						text: 'Добавить',
+						text: locale.composer.addLayer,
                                                 handler: function(){
                                                     return app.tools.gxp_addlayers_ctl.showCapabilitiesGrid();
                                                 }
 					},
 					{
-						text: 'Удалить',
+						text: locale.composer.removeLayer,
                                                 handler: function(a,b,c){
                                                     app.tools.gxp_removelayer_ctl.tryRemoveCurrent();
                                                 }
 					},
 					{
-						text: 'Загрузить',
+						text: locale.composer.upload,
                                                 handler: function(){
                                                     app.tools.gxp_uploadplugin_ctl.showImporterWindow();
                                                 }
 					},
 					{
-						text: 'Редактировать стиль',
+						text: locale.composer.editStyle,
                                                 handler: function(){                                                    
 													if (!Ext.getCmp("layerStyleButton").disabled) {
 														Ext.getCmp("layerStyleButton").handler.call(Ext.getCmp("layerStyleButton").scope);
 													}else {
-														Ext.Msg.alert('Оповещение','Невозможно редактировать стиль для выбранного слоя');
+														Ext.Msg.alert(locale.composer.warning,locale.composer.styleReadOnlyError);
 													}
                                                 }
 					},
 					{
-						text: 'Свойства слоя',
+						text: locale.composer.layerProperties,
                                                 handler: function(){
                                                     if (!Ext.getCmp("layerPropertiesButton").disabled){
 														Ext.getCmp("layerPropertiesButton").handler.call(Ext.getCmp("layerPropertiesButton").scope);}
 													else {
-														Ext.Msg.alert('Оповещение','Невозможно просмотреть свойства выбранного слоя');
+														Ext.Msg.alert(locale.composer.warning,locale.composer.propertiesUnavailableError);
 													}
                                                 }
 					}
@@ -473,38 +473,38 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		});
 
 		tools.unshift({
-			text: 'Карта',
+			text: locale.composer.map,
                         //bububu: this,
 			menu: new Ext.menu.Menu({
 				items: [
 					{
-						text: 'Новая',
+						text: locale.composer.newMap,
                                                 handler: function() {
                                                     window.location.hash = "#";
                                                     window.location.reload(true);
                                                 }
 					},
 					{
-						text: 'Сохранить',
+						text: locale.composer.saveMap,
                                                 handler: function() {
                                                     app.save(app.showUrl);
                                                 }
 					},
 					{
-						text: 'Сохранить новую',
+						text: locale.composer.saveNewMap,
                                                 handler: function() {
                                                     app.saveNew(app.showUrl);
                                                 }
 					},
 					{
-						text: 'Сохранить представление',
+						text: locale.composer.saveView,
                                                 handler: function() {
                                                   app.save(app.showEmbedWindow);
                                                 }
 					},
                                         "-",
 					{
-						text: 'Печать',
+						text: locale.composer.print,
                                                 handler: function() {
                                                 }
 					}
