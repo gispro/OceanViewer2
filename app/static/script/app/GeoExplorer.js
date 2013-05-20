@@ -723,15 +723,20 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      * Saves the map config and displays the URL in a window.
      */ 
     save: function(callback, scope, configStr) {
+        if (!configStr) {
+            var st = this.getState();
+            delete st.portalConfig;
+            configStr = Ext.util.JSON.encode(st);
+        }
         if (!configStr) 
             configStr = Ext.util.JSON.encode(this.getState());
         var method, url;
         if (this.id) {
             method = "PUT";
-            url = "maps/" + this.id;
+            url = OVROOT+"maps/" + this.id;
         } else {
             method = "POST";
-            url = "maps";
+            url = OVROOT+"maps";
         }
         OpenLayers.Request.issue({
             method: method,
@@ -748,14 +753,16 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     },
         
     saveNew: function(callback, scope) {
-        var configStr = Ext.util.JSON.encode(this.getState());
+        var st = this.getState();
+        delete st.portalConfig;
+        var configStr = Ext.util.JSON.encode(st);
         var method, url;
         //if (this.id) {
         //    method = "PUT";
         //    url = "maps/" + this.id;
         //} else {
             method = "POST";
-            url = "maps";
+            url = OVROOT+"maps";
         //}
         OpenLayers.Request.issue({
             method: method,

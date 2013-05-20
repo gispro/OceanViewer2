@@ -86,7 +86,8 @@ GeoExt.OverviewMap = Ext.extend(Ext.Window, {
         
         var ol = new OpenLayers.Layer.WMS(
             "Blanck", 
-            "http://oceanviewer.ru/cache/service/wms",
+            //"http://oceanviewer.ru/cache/service/wms",
+            "http://oceanviewer.ru/eko/gwc/service/wms",
             {
                 layers: 'eko_merge'
             }

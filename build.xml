@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="beta" default="dist" basedir=".">
+<project name="OceanViewer" default="dist" basedir=".">
 
     <description>
         OceanViewer Build File
@@ -55,6 +55,7 @@
                  destdir="${build}/portlet">
                      <classpath>
                          <pathelement  location="lib/portlet-api-2.0.jar"/>
+                         <pathelement  location="lib/servlet-api.jar"/>
                      </classpath>
           </javac>
         <copy todir="${build}/${ant.project.name}/WEB-INF/classes">
@@ -133,6 +134,12 @@
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/grid_wms_get_feature_info">
             <fileset dir="app/static/externals/gispro/grid_wms_get_feature_info"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/arcgis_source">
+            <fileset dir="app/static/externals/gispro/arcgis_source"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/rubricator">
+            <fileset dir="app/static/externals/gispro/rubricator"/>
         </copy>
         <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/externals/gispro/overrides">
             <fileset dir="app/static/externals/gispro/overrides"/>
