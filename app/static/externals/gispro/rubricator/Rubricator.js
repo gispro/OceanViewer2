@@ -123,6 +123,41 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
     },
 
     
+	treeToArray: function(){
+		var arr = [];		
+		this.getRoot().cascade(function(n){arr.push(n);});
+		return arr;
+	},
+	
+	filterArray : function(arr,str,field){
+		return arr.filter(function(el){return el[field].indexOf(str)+1})
+	},
+	
+	getRoot : function(){
+		return Ext.getCmp(this.outputTarget).items.items[0].root;
+	},
+	
+	expandByNodeId: function(id){
+		this.collapseAll();
+		var ids = id.split('.');
+		var r = this.getRoot();
+		var cur = "";
+		var n;
+		ids.every(function(el,idx){
+			if (idx == ids.length-1) return;
+			cur+=el+"."; 
+			console.log(cur); 
+			n = r.findChildBy(function(a){return a.attributes.jsonNode ? a.attributes.jsonNode.nodeid==cur : false},null,true);
+			n.expand();
+			return true;
+		});		
+		if (n && n.select) n.select();
+	},
+	
+	collapseAll: function() {
+		this.getRoot().cascade(function(n){n.collapseChildNodes();})
+	},
+	
     /** private: method[addOutput]
      *  :arg config: ``Object``
      */
@@ -497,7 +532,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 	
 	
 		var layers;
-	
+		var me = this;
 		OpenLayers.Request.issue({
 			method: "GET",
 			url: OVROOT+"maps",
@@ -508,7 +543,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 			callback: function(request) 
 			{					
 				//try {
-					layers = Ext.getCmp('rubricatorTree').layers = JSON.parse(request.responseText);					
+					layers = JSON.parse(request.responseText);										
 					if (!layers) return;
 					addChildren(treeRoot, layers);
 				/*}
