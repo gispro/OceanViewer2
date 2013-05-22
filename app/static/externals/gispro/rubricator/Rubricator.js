@@ -508,7 +508,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 			callback: function(request) 
 			{					
 				//try {
-					layers = JSON.parse(request.responseText);
+					layers = Ext.getCmp('rubricatorTree').layers = JSON.parse(request.responseText);					
 					if (!layers) return;
 					addChildren(treeRoot, layers);
 				/*}
