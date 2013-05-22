@@ -40,7 +40,33 @@ locales.ru = {
 		saveMap: 'Сохранить',
 		saveNewMap: 'Сохранить новую',
 		saveView: 'Сохранить представление',
-		print: 'Печать'
-		
+		print: 'Печать'		
+	},
+	viewMenu: {
+		panelText: 'Вид',
+		panelTooltip: 'Вид',
+		graticulText: 'Координатная сетка',
+		graticulTooltip: 'Координатная сетка',
+		projectionsGroupText: 'Проекции',
+		overviewMapText: 'Обзорная карта',
+		overviewMapTooltip: 'Обзорная карта',
+		languageText: 'Язык',
+		languageTooltip: 'Язык',
+		rssText: 'RSS',
+		rssTooltip: 'RSS',
+		wrapText: 'Неразрывная карта',
+		wrapTooltip: 'Неразрывная карта',
+		projectionsText: {
+			'EPSG:900913': 'Меркатора',
+			'EPSG:4326': 'Географическая',
+			'EPSG:102012': 'Коническая',
+			'EPSG:3576': 'Полярная север',
+			'EPSG:3976': 'Полярная юг'
+		},
+		meterUnits: "м",
+		degreesUnits: "градусы",
+	},
+	geoexplorer : {	// GeoExplorer.js
+	
 	}
 }

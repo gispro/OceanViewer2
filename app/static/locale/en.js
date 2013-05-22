@@ -41,5 +41,30 @@ locales.en = {
 		saveNewMap: 'Save new',
 		saveView: 'Save view',
 		print: 'Print'
+	},
+	viewMenu: {
+		panelText: 'View',
+		panelTooltip: 'View',
+		graticulText: 'Graticul',
+		graticulTooltip: 'Graticul',
+		projectionsGroupText: 'Projections',
+		overviewMapText: 'Overview map',
+		overviewMapTooltip: 'Overview map',
+		languageText: 'Language',
+		languageTooltip: 'Language',
+		rssText: 'Rss',
+		rssTooltip: 'Rss',
+		wrapText: 'Wrap',
+		wrapTooltip: 'Wrap',
+		projectionsText: {
+			'EPSG:900913': 'Mercator',
+			'EPSG:4326': 'Geographic',
+			'EPSG:102012': 'Conus',
+			'EPSG:3576': 'Polar North',
+			'EPSG:3976': 'Polar South'
+		},
+	},
+	geoexplorer : {	// GeoExplorer.js
+	
 	}
 }
