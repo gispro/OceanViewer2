@@ -126,6 +126,8 @@
     <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/WMSStylesDialog.js"></script>
     <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/form/FilterField.js"></script>
 
+	<script type="text/javascript" src="/locale/ru.js"></script>
+	<script type="text/javascript" src="/locale/en.js"></script>
 
     <!-- proj4js resources -->
     <script type="text/javascript" src="/externals/proj4js/lib/proj4js-compressed.js"></script>
@@ -140,6 +142,15 @@
       Proj4js.defs["EPSG:3976"] = "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
     ]]></script>
 
+    <script  type="text/javascript">
+		// optionally set locale based on query string parameter
+        if (GeoExt.Lang) {            
+			var lng = Ext.urlDecode(location.search.substring(1)).lang || "ru";			
+			locale = window.locales[lng];
+			GeoExt.Lang.set(lng);
+        }
+	</script>
+	
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="/theme/app/geoexplorer.css" />
     <!--[if IE]><link rel="stylesheet" type="text/css" href="/theme/app/ie.css"/><![endif]-->        
@@ -177,12 +188,6 @@
 
         OpenLayers.IMAGE_RELOAD_ATTEMPTS = CONFIG.imageReloadAttempts;
 
-        // optionally set locale based on query string parameter
-        if (GeoExt.Lang) {
-            //GeoExt.Lang.set(OpenLayers.Util.getParameters()["locale"] || GeoExt.Lang.locale);
-            GeoExt.Lang.set("ru");
-        }
-        
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		Ext.override(OpenLayers.Layer.GeoRSS, {
 			parseData: RssPopupParseData
@@ -314,7 +319,7 @@
 
             //TODO make plugin!!
             var win = new Ext.Window({
-              title: 'Помощь',
+              title: locale.helpWindow.title,
               layout:'fit',
               width:700,
               height:400,
