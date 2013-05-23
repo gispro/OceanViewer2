@@ -31,14 +31,13 @@
       <portlet-name>OceanViewerPortlet3</portlet-name>
       <header-content>
           
-   <link rel="shortcut icon" href="/theme/app/img/favicon.ico"/>
+    <link rel="shortcut icon" href="/theme/app/img/favicon.ico"/>
 
     <!-- Ext resources -->
     <link rel="stylesheet" type="text/css" href="/externals/ext/resources/css/ext-all.css"/>
     <link rel="stylesheet" type="text/css" href="/externals/ext/resources/css/xtheme-blue.css"/>
     <script type="text/javascript" src="/externals/ext/adapter/ext/ext-base.js"></script>
-    <!--<script type="text/javascript" src="/externals/ext/ext-all.js"></script>-->
-    <script type="text/javascript" src="/externals/ext/ext-all-debug.js"></script>
+    <script type="text/javascript" src="/externals/ext/ext-all.js"></script>
 
     <!--<script type="text/javascript" src="/externals/ext/ext-all-debug.js"></script>-->
     <!--<script type="text/javascript" src="/externals/ext/ext-all-debug-w-comments.js"></script>-->
@@ -57,7 +56,10 @@
     }
     ]]></script>
     
-    <!-- OpenLayers resources -->
+
+	
+    
+	<!-- OpenLayers resources -->
     <link rel="stylesheet" type="text/css" href="/externals/openlayers/theme/default/style.css"/>
     <script type="text/javascript" src="/script/OpenLayers.js"></script>
 
@@ -65,7 +67,19 @@
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/layerlegend.css"/>
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/gxtheme-gray.css"/>
-    <script type="text/javascript" src="/script/GeoExt.js"></script> 
+    <script  type="text/javascript" src="/script/GeoExt.js"></script> 
+	
+	<script type="text/javascript" src="/locale/ru.js"></script>
+	<script type="text/javascript" src="/locale/en.js"></script>
+
+	<script  type="text/javascript">
+		// optionally set locale based on query string parameter
+        if (GeoExt.Lang) {            
+			var lng = Ext.urlDecode(location.search.substring(1)).lang || "ru";			
+			locale = window.locales[lng];
+			GeoExt.Lang.set(lng);
+        }
+	</script>
 
     <!-- gxp resources -->
     <link rel="stylesheet" type="text/css" href="/externals/gxp/src/theme/all.css"/>
@@ -76,26 +90,22 @@
     <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerParser.js"></script>
     <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerWindow.js"></script>
     <script type="text/javascript" src="/externals/gispro/pricker/javascripts/Pricker.js"></script>
-    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerTool.js"></script>
-    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="/externals/gispro/pricker/javascripts/PrickerTool.js"></script>    
     <link rel="stylesheet" type="text/css" href="/externals/gispro/pricker/stylesheets/pricker.css"/>
     <script type="text/javascript" src="/externals/gispro/editor/javascripts/feature_editor_panel.js"></script>
     <script type="text/javascript" src="/externals/gispro/editor/javascripts/feature_editor_simple_messagebox.js"></script>
     <link rel="stylesheet" type="text/css" href="/externals/gispro/editor/stylesheets/editor.css"/>
-    <script type="text/javascript" src="/externals/gispro/view_manager/public/javascripts/view_menu.js"></script>
-    <script type="text/javascript" src="/externals/gispro/view_manager/public/javascripts/locale/ru.js"></script>
-    <script type="text/javascript" src="/externals/gispro/username/public/javascripts/username.js"></script>
-    <script type="text/javascript" src="/externals/gispro/username/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="/externals/gispro/view_manager/public/javascripts/view_menu.js"></script>    
+    <script type="text/javascript" src="/externals/gispro/username/public/javascripts/username.js"></script>    
     <script type="text/javascript" src="/externals/gispro/overview_map/overview_map.js"></script>
     <script type="text/javascript" src="/externals/gispro/grid_wms_get_feature_info/grid_wms_get_feature_info.js"></script>
-    <script type="text/javascript" src="/externals/gispro/upload/public/javascripts/upload.js"></script>
-    <script type="text/javascript" src="/externals/gispro/upload/public/javascripts/locale/ru.js"></script>
+    <script type="text/javascript" src="/externals/gispro/upload/public/javascripts/upload.js"></script>    
     <script type="text/javascript" src="/externals/gispro/arcgis_source/public/javascripts/ArcGISServiceReader.js"></script>
     <script type="text/javascript" src="/externals/gispro/arcgis_source/public/javascripts/ArcGISServiceStore.js"></script>
     <script type="text/javascript" src="/externals/gispro/arcgis_source/public/javascripts/ArcGISSource.js"></script>
 	<script type="text/javascript" src="/externals/gispro/rubricator/Rubricator.js"></script>
     <!--<script type="text/javascript" src="/externals/gispro/login/public/javascripts/login.js"></script>
-    <script type="text/javascript" src="/externals/gispro/login/public/javascripts/locale/ru.js"></script>-->
+    <script type="text/javascript" src="/externals/gispro/login/public/javascripts/locale/ru1.js"></script>-->
 
     <!-- gispro overrides -->
     <script type="text/javascript" src="/externals/gispro/overrides/GeoExt/lib/GeoExt/widgets/MapPanel.js"></script>
@@ -125,9 +135,9 @@
     <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/WMSLayerPanel.js"></script>
     <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/WMSStylesDialog.js"></script>
     <script type="text/javascript" src="/externals/gispro/overrides/gxp/src/script/widgets/form/FilterField.js"></script>
+	
+	
 
-	<script type="text/javascript" src="/locale/ru.js"></script>
-	<script type="text/javascript" src="/locale/en.js"></script>
 
     <!-- proj4js resources -->
     <script type="text/javascript" src="/externals/proj4js/lib/proj4js-compressed.js"></script>
@@ -142,21 +152,15 @@
       Proj4js.defs["EPSG:3976"] = "+proj=stere +lat_0=-90 +lat_ts=-70 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";            
     ]]></script>
 
-    <script  type="text/javascript">
-		// optionally set locale based on query string parameter
-        if (GeoExt.Lang) {            
-			var lng = Ext.urlDecode(location.search.substring(1)).lang || "ru";			
-			locale = window.locales[lng];
-			GeoExt.Lang.set(lng);
-        }
-	</script>
+    
 	
-    <!-- GeoExplorer resources -->
+	<!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="/theme/app/geoexplorer.css" />
     <!--[if IE]><link rel="stylesheet" type="text/css" href="/theme/app/ie.css"/><![endif]-->        
     <link rel="stylesheet" type="text/css" href="/theme/ux/colorpicker/color-picker.ux.css" />
-    <script type="text/javascript" src="/script/GeoExplorer.js"></script>
+    <script  type="text/javascript" src="/script/GeoExplorer.js"></script>	
     <script type="text/javascript" src="/script/ux.js"></script>
+	
 
     <!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="/externals/PrintPreview/resources/css/printpreview.css"/>
@@ -175,7 +179,7 @@
         //TODO: make configurable
         var im = new Image();
         im.src = 'http://oceanviewer.ru/resources/web/';
-
+	
         //constants
 
         Ext.BLANK_IMAGE_URL = CONFIG.blankImageUrl;
@@ -187,7 +191,7 @@
         Gispro.Utils.METADATA_URL = CONFIG.metadataUrl;
 
         OpenLayers.IMAGE_RELOAD_ATTEMPTS = CONFIG.imageReloadAttempts;
-
+        
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		Ext.override(OpenLayers.Layer.GeoRSS, {
 			parseData: RssPopupParseData
@@ -242,8 +246,11 @@
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+		
+
         var app = new GeoExplorer.Composer(CONFIG.composer)
 
+		
 
         downloadArcgis()
         downloadRSS()
