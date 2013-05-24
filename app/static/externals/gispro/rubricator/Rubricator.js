@@ -311,7 +311,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 													 var conf = {url: (node.attributes.layer.jsonNode.serverpath+"/"+node.attributes.layer.jsonNode.servicepath).replace(/\/\//g,"/").replace("http:/","http://"), 
 																 restUrl: (node.attributes.layer.jsonNode.serverpath+"/rest").replace(/\/\//g,"/").replace("http:/","http://")};
 													//var conf = {url: "http://oceanviewer.ru/resources/ru_hydrometcentre_42/wms", restUrl: "http://oceanviewer.ru/resources/rest"};													
-													conf.title = node.attributes.layer.jsonNode.nodename;
+													conf.title = node.attributes.layer.jsonNode.nodename;													
 													 
 													if (node.attributes.layer.jsonNode.servicetype=='rss') {
 														var rid = "rid"+(new Date()).getTime();
@@ -394,6 +394,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																});
 																if (records.length==0) {
 																	Ext.Msg.alert(gxp.plugins.RubricatorTree.prototype.errorTitle, gxp.plugins.RubricatorTree.prototype.noRecordsFound);
+																	gxp.plugins.Logger.log("Ошибка \""+gxp.plugins.RubricatorTree.prototype.noRecordsFound+"\" при попытке подключения источника " + conf.url , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
 																	node.ui.checkbox.checked = false;
 																}
 																addLayersPlugin.addLayers(records,app.layerSources[id],false);															
@@ -402,6 +403,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 															},
 															fallback: function(source, msg) {
 																Ext.Msg.alert(gxp.plugins.RubricatorTree.prototype.errorTitle, gxp.plugins.RubricatorTree.prototype.proxyException);
+																gxp.plugins.Logger.log("Произошла ошибка прокси сервера при попытке подключения источника " + conf.url +", либо пользователь не аутентифицирован на сервере", gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
 																node.ui.checkbox.checked = false;
 																Ext.getCmp('rubricatorTree').loadMask.hide();
 															},
@@ -429,6 +431,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 														});
 														if (records.length==0) {
 															Ext.Msg.alert(gxp.plugins.RubricatorTree.prototype.errorTitle, gxp.plugins.RubricatorTree.prototype.noRecordsFound);
+															gxp.plugins.Logger.log("Ошибка \""+gxp.plugins.RubricatorTree.prototype.noRecordsFound+"\" при попытке подключения источника " + conf.url , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
 															node.ui.checkbox.checked = false;
 														}
 														else 
