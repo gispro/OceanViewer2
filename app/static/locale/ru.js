@@ -68,5 +68,44 @@ locales.ru = {
 	},
 	geoexplorer : {	// GeoExplorer.js
 	
+	},
+	printPreview : {
+        paperSizeText: "Размер листа:",
+        resolutionText: "Разрешение:",
+		formatText: "Формат:",
+        printText: "Печать",
+        emptyTitleText: "Заголовок:",
+        includeLegendText: "Печать легенды",
+        emptyCommentText: "Комментарии:",
+        creatingPdfText: "Создание карты..."
+	},
+	pricker : {
+		lineType : 'Линейный',
+		columnType : 'Столбчатый',
+		areaType : 'Площадной',
+
+		nameTitleAlias : 'Слои',
+
+		title : 'Построить график',
+		baseTitle : 'Построить график',
+		fieldComboName1 : 'Ось Х',
+		fieldComboName2 : 'Ось Y',
+		defaultAxisTitle1 : 'X',
+		defaultAxisTitle2 : 'Y',
+		typeComboName : 'Тип графика',
+		addText : 'Добавить',
+		deleteText : 'Удалить',
+		saveText : 'Сохранить',
+		addLayerWinTitle : 'Добавление слоя',
+		canselText : 'Отмена',
+		okText : 'Ok',
+		layerName : 'Слои',
+		defaultErrorHeader : 'Уведомление',
+		errorText : 'Не найден график по умолчанию. Пожалуйста, создайте его с помощью менеджера графиков',
+		getDataErrorText : 'Не удалось получить данные для выбранной точки',
+
+		tooltip : 'Графики',
+		menuText : 'Графики'
+
 	}
 }

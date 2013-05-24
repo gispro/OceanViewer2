@@ -66,5 +66,44 @@ locales.en = {
 	},
 	geoexplorer : {	// GeoExplorer.js
 	
+	},
+	printPreview : {
+        paperSizeText: "Paper size:",	  
+		resolutionText: "Resolution:",
+		formatText: "Format:",
+		printText: "Print",
+		emptyTitleText: "Enter map title here.",
+		includeLegendText: "Include legend?",
+		emptyCommentText: "Enter comments here.",
+		creatingPdfText: "Creating PDF...",
+	},
+	prickerWindow : {
+		    title: 'Area Chart'
+			,baseTitle: 'Area Chart'
+			,getDataErrorText: "Can't load data for selected point"
+			,defaultErrorHeader: 'Message'
+			,fieldComboName1: 'Choose X field'
+			,fieldComboName2: 'Choose Y field'
+			,defaultAxisTitle1: 'X'
+			,defaultAxisTitle2: 'Y'
+			,typeComboName: 'Choose type'
+			,addText: 'Add'
+			,deleteText: 'Delete'
+			,saveText: 'Save'
+			,addLayerWinTitle: 'Add layer'
+			,canselText: 'Cancel'
+			,okText: 'Ok'
+			,layerName: 'Name',
+			
+			lineType : 'Line',
+			columnType : 'Column',
+			areaType : 'Area',
+
+			nameTitleAlias : 'Layers',
+
+			
+			tooltip : 'Pricker',
+			menuText : 'Pricker'
+			
 	}
 }
