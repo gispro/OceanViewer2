@@ -506,6 +506,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					{
 						text: locale.composer.print,
                                                 handler: function() {
+													Ext.getCmp("printMapButton").handler.call(Ext.getCmp("printMapButton").scope);
                                                 }
 					}
 				]
