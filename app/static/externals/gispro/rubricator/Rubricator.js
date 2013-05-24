@@ -312,7 +312,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																 restUrl: (node.attributes.layer.jsonNode.serverpath+"/rest").replace(/\/\//g,"/").replace("http:/","http://")};
 													//var conf = {url: "http://oceanviewer.ru/resources/ru_hydrometcentre_42/wms", restUrl: "http://oceanviewer.ru/resources/rest"};													
 													conf.title = node.attributes.layer.jsonNode.nodename;													
-													 
+													conf.version = '1.3.0'	
+													
 													if (node.attributes.layer.jsonNode.servicetype=='rss') {
 														var rid = "rid"+(new Date()).getTime();
 														
