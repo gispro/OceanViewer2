@@ -77,7 +77,7 @@ locales.en = {
 		emptyCommentText: "Enter comments here.",
 		creatingPdfText: "Creating PDF...",
 	},
-	prickerWindow : {
+	pricker : {
 		    title: 'Area Chart'
 			,baseTitle: 'Area Chart'
 			,getDataErrorText: "Can't load data for selected point"
