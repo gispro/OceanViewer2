@@ -472,27 +472,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					//xtype: "treepanel",
 					id: "rubricatorTree",
 					title: "Рубрикатор",
-					tbar : {
-						items: [
-							{
-								text:'Фильтр: ',								
-							},{
-								xtype: 'textfield'
-							},{
-								xtype: 'button',
-								text:'Быстрый',
-								onClick: function() {Ext.getCmp('rubricatorTree').layers;}
-							},{
-								xtype: 'button',
-								text:'ID ресурса',
-								onClick: function() {}
-							},{
-								xtype: 'button',
-								text: 'Сервер',
-								onClick: function() {}
-							}
-						]
-					},
 					autoScroll: true,
 					border: false
 				}
