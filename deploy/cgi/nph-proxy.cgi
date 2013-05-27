@@ -4864,10 +4864,7 @@ sub http_get {
 		# Pass through response if chunked.
 		} elsif ($headers=~ /^Transfer-Encoding:[ \t]*chunked\b/mi) {
 		    # Get chunks.
-            while ($lefttoget= <S> ) {
-$lefttoget =~ s/[^\w]//g;
-//print STDERR "here it is: --".$lefttoget."--";
-$lefttoget = hex($lefttoget);
+		    while ($lefttoget= hex(<S>) ) {
 			my $thisread ;
 			while ($lefttoget && ($thisread= read(S, $buf, $lefttoget))) {
 			    print $buf ;
@@ -7449,10 +7446,7 @@ sub get_chunked_body {
     # Note that hex() will automatically ignore a semicolon and beyond.
     no strict 'refs' ;     # needed to use $S as filehandle
     $body= '' ;            # to distinguish it from undef
-    while ($chunk_size= <$S> ) {
-$chunk_size=~ s/[^\w]//g;
-//print STDERR "the cunk size: -".$chunk_size."=";
-$chunk_size=hex($chunk_size);
+    while ($chunk_size= hex(<$S>) ) {
 	$body.= $chunk= &read_socket($S, $chunk_size) ;
 	return undef unless length($chunk) == $chunk_size ;  # implies defined()
 	$_= <$S> ;         # clear CRLF after chunk
