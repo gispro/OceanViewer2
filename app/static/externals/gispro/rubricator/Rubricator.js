@@ -490,7 +490,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 														}
 													});
 										}
-									},
+									}
 								});
 								var sibling = node.item(index);
 								if(sibling) {
@@ -499,7 +499,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 									node.appendChild(child);
 								}
 							}
-						}),
+						})
 					});
 				} else {	
 					//if (jsonNode.children[i].servicetype!='animation'){

@@ -16,8 +16,9 @@ window.CONFIG = {
     username: 'edit',
     password: 'pedit',
     authUrl: "http://oceanviewer.ru/josso/signon/",
+    proxy: OVROOT.length==0?"proxy/?url=":OVROOT + "cgi-bin/nph-proxy.cgi/00/?url=",
     //proxy: OVROOT + "cgi-bin/nph-proxy.cgi/00/?url=",
-    proxy: OVROOT + "proxy/?url=",
+    //proxy: OVROOT + "proxy/?url=",
     printService: "http://oceanviewer.ru/print/pdf/",
     about: {
       title: "Карта OceanViewer",
@@ -47,7 +48,7 @@ window.CONFIG = {
       "ru_hydrometcentre_42:ru_hydrometcentre_42_11"
     ],
 
-    prickerAliaseUrl: 'translate',
+    prickerAliaseUrl: OVROOT+'translate',
     prickerGetInfoUrl: 'http://oceanviewer.ru/resources/wms',
     prickerSaveChartUrl: '/save',
 

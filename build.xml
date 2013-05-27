@@ -178,8 +178,11 @@
         <copy todir="${build}/${ant.project.name}" file="src/main/webapp/login-josso.html"/>
 
         <!-- copy docs -->
-        <copy todir="${build}/${ant.project.name}/WEB-INF/app/static/docs/images">
+        <copy todir="${build}/${ant.project.name}/docs/images">
             <fileset dir="app/static/docs/images"/>
+        </copy>
+        <copy todir="${build}/${ant.project.name}/docs">
+            <fileset dir="app/static/docs"/>
         </copy>
 
     </target>
