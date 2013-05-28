@@ -473,6 +473,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					id: "rubricatorTree",
 					title: "Рубрикатор",
 					autoScroll: true,
+                			layout: 'fit',
 					border: false
 				}
 			

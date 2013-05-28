@@ -607,7 +607,6 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 			cls: 'customTree',
             root: treeRoot,
             rootVisible: true,
-			layout: 'fit',
             border: false,
             enableDD: true,
             selModel: new Ext.tree.DefaultSelectionModel({               
