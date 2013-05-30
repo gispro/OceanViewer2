@@ -15,7 +15,7 @@ window.CONFIG = {
     authWay: false,
     username: 'edit',
     password: 'pedit',
-    authUrl: "http://oceanviewer.ru/josso/signon/",
+    authUrl: "http://portal.esimo.net:8080/josso/signon/",
     proxy: OVROOT.length==0?"proxy/?url=":OVROOT + "cgi-bin/nph-proxy.cgi/00/?url=",
     //proxy: OVROOT + "cgi-bin/nph-proxy.cgi/00/?url=",
     //proxy: OVROOT + "proxy/?url=",
@@ -28,32 +28,32 @@ window.CONFIG = {
     defaultSourceType: "gxp_wmscsource",
     downloadFilePageUrl: OVROOT + 'cgi-bin/get_features_24.py',
 
-    jossoLoginUrl: 'http://oceanviewer.ru/josso/signon/login.do',
-    jossoOutUrl: 'http://oceanviewer.ru/josso/signon/logout.do',
+    jossoLoginUrl: 'http://portal.esimo.net:8080/josso/signon/login.do',
+    jossoOutUrl: 'http://portal.esimo.net:8080/josso/signon/logout.do',
 
-    uploadUrl: 'http://oceanviewer.ru/resources/rest',
+    uploadUrl: 'http://gis.esimo.net:8080/resources/rest',
 
     //pricker
     prickerLayers: [
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_1",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_2",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_3",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_4",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_5",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_6",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_7",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_8",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_9",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_10",
-      "ru_hydrometcentre_42:ru_hydrometcentre_42_11"
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_1",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_2",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_3",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_4",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_5",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_6",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_7",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_8",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_9",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_10",
+      "RU_Hydrometcentre_42:ru_hydrometcentre_42_11"
     ],
 
     prickerAliaseUrl: OVROOT+'translate',
-    prickerGetInfoUrl: 'http://oceanviewer.ru/resources/wms',
+    prickerGetInfoUrl: 'http://gis.esimo.net:8080/resources/wms',
     prickerSaveChartUrl: '/save',
 
     //ovLayer
-    ovLayer: ["http://oceanviewer.ru/cache/service/wms", "eko_merge"],
+    ovLayer: ["http://gis.esimo.net:8080/cache/service/wms", "eko_merge"],
 
     sources: {
       arcgis93: { ptype: "gxp_arcgis93source" },
@@ -64,12 +64,12 @@ window.CONFIG = {
       baselayer: { ptype: "gxp_olsource" },
       animation: { ptype: "gxp_animationsource" },
       gispro: {
-        url: "http://oceanviewer.ru/cache/service/wms",
+        url: "http://gis.esimo.net:8080/cache/service/wms",
         title: "Слои картоосновы"
       },
       editable: {
-        url: "http://oceanviewer.ru/resources/userlayers/wms",
-        restUrl: "http://oceanviewer.ru/resources/rest",
+        url: "http://gis.esimo.net:8080/resources/userlayers/wms",
+        restUrl: "http://gis.esimo.net:8080/resources/rest",
         title: "Редактируемые"
       }
     },

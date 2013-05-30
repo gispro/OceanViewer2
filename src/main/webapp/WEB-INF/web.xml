@@ -33,10 +33,10 @@
             <param-value>
                 {
                     "driver" : "org.postgresql.Driver" , 
-                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                    "url" : "jdbc:postgresql://10.0.5.12:5432/bid" ,
                     "table" : "admin.savedmaps",
-                    "user": "esimo",
-                    "password" : "gisproesimo"
+                    "user": "postgres",
+                    "password" : "postgres"
                 }
             </param-value>
         </init-param>
@@ -45,10 +45,10 @@
             <param-value>
                 {
                     "driver" : "org.postgresql.Driver" , 
-                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                    "url" : "jdbc:postgresql://10.0.5.12:5432/bid" ,
                     "table" : "admin.toc",
-                    "user": "esimo",
-                    "password" : "gisproesimo"
+                    "user": "postgres",
+                    "password" : "postgres"
                 }
             </param-value>
         </init-param>
@@ -58,21 +58,21 @@
                 {
                     "layer": {
                         "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "url" : "jdbc:postgresql://10.0.5.12:5432/bid" ,
                         "table" : "resource_md",
                         "codeField" : "resourceid",
                         "translateField" : "objecttitle",
-                        "user": "esimo",
-                        "password" : "gisproesimo"
+                        "user": "postgres",
+                        "password" : "postgres"
                     },
                     "field": {
                         "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "url" : "jdbc:postgresql://10.0.5.12:5432/bid" ,
                         "table" : "element_md",
                         "codeField" : "objectsystemid",
                         "translateField" : "objecttitle",
-                        "user": "esimo",
-                        "password" : "gisproesimo"
+                        "user": "postgres",
+                        "password" : "postgres"
                     }
                 }
             </param-value>
@@ -83,19 +83,19 @@
                 {
                     "layer": {
                         "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "url" : "jdbc:postgresql://10.0.5.12:5432/bid" ,
                         "table" : "resource_md",
                         "codeField" : "resourceid",
                         "metaDataFields" : {
                             "minimumvalue" : "Минимальное значение",
                             "maximumvalue" : "Максимальное значение"
                         },
-                        "user": "esimo",
-                        "password" : "gisproesimo"
+                        "user": "postgres",
+                        "password" : "postgres"
                     },
                     "field": {
                         "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "url" : "jdbc:postgresql://10.0.5.12:5432/bid" ,
                         "table" : "element_md",
                         "codeField" : "objectsystemid",
                         "metaDataFields" : {
@@ -119,8 +119,8 @@
                             "elementprintdec" : "Длина элемента",
                             "elementprintfield" : "Кол-во знаков после запятой"
                         },
-                        "user": "esimo",
-                        "password" : "gisproesimo"
+                        "user": "postgres",
+                        "password" : "postgres"
                     }
                 }
             </param-value>

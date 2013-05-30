@@ -4,14 +4,14 @@
 </head>
 <body>
     <p align="center">Для входа требуется авторизация в JOSSO. </p>
-    <p align="center"><a href= "http://oceanviewer.ru/josso/signon/login.do">http://oceanviewer.ru/josso/signon/login.do</a></p>
+    <p align="center"><a href= "http://portal.esimo.net:8080/josso/signon/login.do">http://portal.esimo.net:8080/josso/signon/login.do</a></p>
     <p align="center">Если переадресация не произошла автоматически, перейдите вручную по ссылке выше.</p>
     <script type="text/javascript">
         setTimeout('Redirect()',1500);
         function Redirect()
         {
             var url = encodeURIComponent(location.href);
-            location.href = 'http://oceanviewer.ru/josso/signon/login.do?josso_back_to=' + url;
+            location.href = 'http://portal.esimo.net:8080/josso/signon/login.do?josso_back_to=' + url;
         }
     </script>
 </body>
