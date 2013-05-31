@@ -1,63 +1,63 @@
 {
     "services":[{
         "serverName":"Глобальные метеоусловия (42)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_42/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_42/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Глобальное ветровое волнение (46)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_46/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_46/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Глобальное атмосферное давление (60)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_60/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_60/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Глобальное атмосферное давление от 12 час (61)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_61/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_61/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз скорости ветра и течений Баренцева моря (62)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_62/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_62/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз скорости ветра и течений Баренцева моря от 12 час (63)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_63/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_63/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз метеоусловий Черного моря (64)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_64/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_64/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз метеоусловий Каспийского моря (65)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_65/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_65/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз метеоусловий Азовского моря (66)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_66/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_66/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз ветрового волнения в Азовском море (68)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_68/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_68/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз ветрового волнения в Черном море (69)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_69/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_69/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Прогноз ветрового волнения в Каспийском море (70)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_70/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_70/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Класс пожарной опасности по территории Росии от 04 час ВСВ (114)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_114/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_114/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Класс пожарной опасности по территории Росии от 06 час ВСВ (115)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_115/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_115/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Класс пожарной опасности по территории Росии от 12 час ВСВ (116)",
-        "url":"http://gis.esimo.net:8080/resources/ru_hydrometcentre_116/wms",
+        "url":"http://gis.esimo.net:8080/resources/RU_Hydrometcentre_116/wms",
         "restUrl":"http://gis.esimo.net:8080/resources/rest"
     },{
         "serverName":"Местоположение судов",

@@ -60,8 +60,9 @@
 	
     
 	<!-- OpenLayers resources -->
+        <!-- OL IS IN THE PORTAL!!!-->
     <link rel="stylesheet" type="text/css" href="/externals/openlayers/theme/default/style.css"/>
-    <script type="text/javascript" src="/script/OpenLayers.js"></script>
+    <!--<script type="text/javascript" src="/script/OpenLayers.js"></script>-->
 
     <!-- GeoExt resources -->
     <link rel="stylesheet" type="text/css" href="/externals/GeoExt/resources/css/popup.css"/>
