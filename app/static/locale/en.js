@@ -105,5 +105,8 @@ locales.en = {
 			tooltip : 'Pricker',
 			menuText : 'Pricker'
 			
+	},
+	upload : {
+		uploadText : 'Download'
 	}
 }

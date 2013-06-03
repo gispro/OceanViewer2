@@ -107,5 +107,8 @@ locales.ru = {
 		tooltip : 'Графики',
 		menuText : 'Графики'
 
+	},
+	upload : {
+		uploadText : 'Скачать'
 	}
 }
