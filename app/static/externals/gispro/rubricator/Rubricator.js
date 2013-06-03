@@ -490,7 +490,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 														}
 													});
 										}
-									}
+									},
 								});
 								var sibling = node.item(index);
 								if(sibling) {
@@ -499,7 +499,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 									node.appendChild(child);
 								}
 							}
-						})
+						}),
 					});
 				} else {	
 					//if (jsonNode.children[i].servicetype!='animation'){
@@ -554,6 +554,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 						fields: [
 						   {name: 'nodename', mapping: 'nodename'},
 						   {name: 'nodeid', mapping: 'nodeid'},
+						   {name: 'resourceid', mapping: 'resourceid'},
 						   {name: 'serverpath', mapping: 'serverpath'}
 						],
 						data: app.tools.gxp_rubricatortree_ctl.treeToArray()							
@@ -569,7 +570,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 		var filterStore = new Ext.data.ArrayStore ({
 			fields: [
 				{name: 'nodename', mapping: 'nodename'},
-				{name: 'nodeid', mapping: 'nodeid'},
+				{name: 'resourceid', mapping: 'resourceid'},
 				{name: 'serverpath', mapping: 'serverpath'}
 			],
 			data: [/*{nodename:'nodename',nodeid:'1',serverpath:'http' },
@@ -584,14 +585,17 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
             xtype: "treepanel",
 			id:'rubricator',
 			tbar : {
+				layout: 'column',
 				items: [
 					{
 						xtype: 'combo',
+						columnWidth: .90,
 						id: 'rubricatorFilterCombo',
-						width: 300,
 						valueField: 'nodeid',
 						displayField: 'nodename',
+						enableKeyEvents : true,
 						store : filterStore,
+						doQuery: function (c,b){c=Ext.isEmpty(c)?"":c;var a={query:c,forceAll:b,combo:this,cancel:false};if(this.fireEvent("beforequery",a)===false||a.cancel){return false}c=a.query;b=a.forceAll;if(b===true||(c.length>=this.minChars)){if(this.lastQuery!==c){this.lastQuery=c;if(this.mode=="local"){this.selectedIndex=-1;if(b){this.store.clearFilter()}else{this.store.filter(this.displayField,c,true,false)}this.onLoad()}else{this.store.baseParams[this.queryParam]=c;this.store.load({params:this.getParams(c)});this.expand()}}else{this.selectedIndex=-1;this.onLoad()}}},
 						typeAhead: false,
 						emptyText: 'Фильтр...',
 						triggerAction: "all",						
@@ -599,38 +603,34 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 						listeners :{
 							select: function(ui,el) {
 								app.tools.gxp_rubricatortree_ctl.expandByNodeId(el.json.nodeid);
-							}
-						}
-					}
-				]
-			},					
-			cls: 'customTree',
-            root: treeRoot,
-            rootVisible: true,
-            border: false,
-            enableDD: true,
-            selModel: new Ext.tree.DefaultSelectionModel({               
-            }),
-            listeners: {
-				afterrender: function() {					
-					new Ext.Toolbar({
-						renderTo: Ext.getCmp('rubricator').tbar,
-						items: [
-							{
-								xtype: 'radiogroup',
-								columns: 3,
-								width: 300,
-								vertical: false,
+							}						
+						}						
+					},
+					{
+						xtype: 'tbspacer',
+						columnWidth: .05,
+					},
+					{
+						text: 'Параметр',
+						menu: {
+							id : 'rubricatorFilterParamMenu',
+							items: [{
+								xtype: 'radiogroup',									
+								itemCls: 'x-check-group-alt',
+								columns: 1,
+								style: 'margin-left:6px',
+								vertical: true,
 								listeners : {
 									change: function(radiogroup, radio) {										
 										var combo = Ext.getCmp('rubricatorFilterCombo');
 										combo.clearValue();
 										combo.displayField = radio.inputValue;
+										Ext.getCmp('rubricatorFilterParamMenu').hide();
 										if (!combo.view) return;
 										combo.view.tpl = new Ext.XTemplate('<tpl for="."><div class="x-combo-list-item">{'+radio.inputValue+'}</div></tpl>');
-										combo.view.refresh();							
+										combo.view.refresh();											
 									}
-								},								
+								},
 								items: [
 									{
 										boxLabel: 'Наименование',
@@ -645,16 +645,25 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 										inputValue: 'serverpath'
 									},
 									{
-										boxLabel: 'Номер узла',
+										boxLabel: 'Идентификатор ресурса',
 										name: 'rb',
-										inputValue: 'nodeid'
+										inputValue: 'resourceid'
 									}
 								]
-							}
-						]
-					});
-					Ext.getCmp('rubricator').syncSize();
-				},
+							}]
+						}
+					}
+				]
+			},					
+			cls: 'customTree',
+            root: treeRoot,
+            rootVisible: true,
+			layout: 'fit',
+            border: false,
+            enableDD: true,
+            selModel: new Ext.tree.DefaultSelectionModel({               
+            }),
+            listeners: {				
                 contextmenu: function(node, e) {
                     //f(node && node.layer) {
                         if (node.isRoot) return;
