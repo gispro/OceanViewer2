@@ -286,7 +286,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                 actionTarget: {target: "paneltbar", index:19},
                 createFeatureActionTip: locale.composer.createFeatureActionTip,
                 editFeatureActionTip: locale.composer.editFeatureActionTip,
-                editFeatureActionText: locale.composer.createFeatureActionTip,
+                editFeatureActionText: locale.composer.editFeatureActionTip,
                 createFeatureActionText: locale.composer.createFeatureActionText,
                 bodyAttribute: 'message',
                 usernameAttribute: 'author',
@@ -400,7 +400,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 				id : 'waitIndicator',
 				autoEl: {
 					tag: 'img', 
-					src: OVROOT+'theme/app/img/silk/loading.gif'					
+					src: OVROOT+'theme/app/img/silk/loading.gif',					
 				},
 				scope: this,
 				actionTarget: {target: "paneltbar", index: 7}
