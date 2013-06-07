@@ -436,8 +436,9 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 														}
 														else 
 															addLayersPlugin.addLayers(records,app.layerSources[id],false);
-															node.layerId = rid;
-													}
+														node.layerId = rid;                                                                                                                
+        													Ext.getCmp('rubricatorTree').loadMask.hide();
+}
 																																	
 												}
 												else 
