@@ -123,9 +123,17 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
     },
 
     
-	treeToArray: function(){
+	treeToArray: function(layers){
 		var arr = [];		
-		this.getRoot().cascade(function(n){if(n.attributes.jsonNode)arr.push(n.attributes.jsonNode);});
+		cascade = function(r,f) {f.call(this,r);r.children.every(function(e){cascade(e,f);return true;})};
+		cascade(layers,function(e){arr.push(e)});
+		/*this.getRoot().cascade(function(n){
+			if(n.attributes.jsonNode) {
+				arr.push(n.attributes.jsonNode);
+				
+			}
+		});*/
+		
 		return arr;
 	},
 	
@@ -137,17 +145,25 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 		return Ext.getCmp(this.outputTarget).items.items[0].root;
 	},
 	
-	expandByNodeId: function(id){
+	expandByNodeId: function(nodeid){
 		this.collapseAll();
-		var ids = id.split('.');
+		var ids = nodeid.split('.');
 		var r = this.getRoot();
 		var cur = "";
-		var n;
+		var n, lastParent;
 		ids.every(function(el,idx){
 			if (idx == ids.length-1) return;
 			cur+=el+"."; 
 			n = r.findChildBy(function(a){return a.attributes.jsonNode ? a.attributes.jsonNode.nodeid==cur : false},null,true);
-			n.expand();
+			if (n) {
+				lastParent = n;
+				n.select();
+				n.expand();		
+				n.renderChildren();
+			} else {
+				var node = lastParent.childNodes.filter(function(e) {return e.layer.jsonNode.nodeid==nodeid})[0];
+				node.select();
+			}			
 			return true;
 		});		
 		if (n && n.select) n.select();
@@ -238,7 +254,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 							async: false,
 							params: {
 								SERVICE: "WMS",
-								VERSION: "1.1.1",
+								VERSION: "1.3.0",
 								REQUEST: "GetCapabilities"
 							},
 							success: function(request) {
@@ -497,8 +513,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 								if(sibling) {
 									node.insertBefore(child, sibling);
 								} else {
-									node.appendChild(child);
-								}
+									node.appendChild(child);									
+								}								
 							}
 						}),
 					});
@@ -558,7 +574,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 						   {name: 'resourceid', mapping: 'resourceid'},
 						   {name: 'serverpath', mapping: 'serverpath'}
 						],
-						data: app.tools.gxp_rubricatortree_ctl.treeToArray()							
+						data: app.tools.gxp_rubricatortree_ctl.treeToArray(layers)							
 					}).getRange());
 				}
 				catch(e) {
