@@ -345,7 +345,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 
 				OpenLayers.Request.issue({
 					method: "GET",
-					url: "save",
+					url: OVROOT + "save",
 					async: true,
 					params:{
 					    service : "wms"                 ,
@@ -383,7 +383,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					else {
 						OpenLayers.Request.issue({
 							method  : "GET",
-							url     : "save",
+							url     : OVROOT + "save",
 							async   : true,
 							params  : {
 								service        : "wms"                          ,
@@ -426,7 +426,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				else {
 					OpenLayers.Request.issue({
 						method: "GET",
-						url: "save",
+						url: OVROOT + "save",
 						async: true,
 						params:{
 							service    : "wms"                          ,
@@ -729,7 +729,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				else {
 					OpenLayers.Request.issue({
 						method: "GET",
-						url: "save",
+						url: OVROOT + "save",
 						async: true,
 						params:{
 							service    : "arcgis"                          ,
@@ -778,7 +778,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				{
 					OpenLayers.Request.issue({
 						method  : "GET",
-						url     : "save",
+						url     : OVROOT + "save",
 						async   : true,
 						params  : {
 							service        : "arcgis",
@@ -813,7 +813,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 
 				OpenLayers.Request.issue({
 					method: "GET",
-					url: "save",
+					url: OVROOT + "save",
 					async: true,
 					params:{
 					    service : "arcgis",
@@ -979,7 +979,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 
 				OpenLayers.Request.issue({
 					method: "GET",
-					url: "save",
+					url: OVROOT + "save",
 					async: true,
 					params:{
 					    service : "rss"                                 ,
@@ -1020,7 +1020,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					else {
 						OpenLayers.Request.issue({
 							method: "GET",
-							url: "save",
+							url: OVROOT + "save",
 							async: true,
 							params:{
 								service   : "rss"                          ,
@@ -1069,7 +1069,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					
 					OpenLayers.Request.issue({
 						method: "GET",
-						url: "save",
+						url: OVROOT + "save",
 						async: true,
 						params:{
 							service   : "rss"                          ,
@@ -1243,7 +1243,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		
 		OpenLayers.Request.issue({
 			method : "GET",
-			url    : "account",
+			url    : OVROOT + "account",
 			async  : true,
 			params : {
 			    service : "user"

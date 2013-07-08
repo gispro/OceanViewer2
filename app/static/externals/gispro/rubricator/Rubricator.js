@@ -344,6 +344,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																record.data.rubricatorNode = node.id;
 																record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
 																record.data.rid = rid;
+																//record.data.id = 'rubricatorLayer'+jsonNode.nodeid,
+																record.data.id = node.id;
 																records.push(record);																
 															}
 														});
@@ -355,7 +357,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																title: rubConfig.nodename,
 																name: rubConfig.layername,
 																icon: rubConfig.stylename,
-																rubricatorNode: node.id
+																rubricatorNode: node.id,
+																id: 'rubricatorLayer'+node.attributes.layer.jsonNode.nodeid,
 															};
 															
 															
@@ -365,6 +368,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 															
 															record = source.createLayerRecord(config); 
 															record.data.rid = rid;
+															record.data.id = 'rubricatorLayer'+node.attributes.layer.jsonNode.nodeid;
 															
 															records.push(record);
 															var rssStore = source.getLayersStore();
@@ -459,7 +463,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 												}
 												else 
 													app.mapPanel.layers.data.each(function(record, index) {
-														if (record.get("rid")== node.layerId) {															
+														if (record.get("rubricatorNode") && record.get("rubricatorNode")== node.attributes.id) {															
 															//remove found
 															app.fireEvent("layerselectionchange", record);
 															if (app.tools.gxp_removelayer_ctl.selectedLayer) {
@@ -546,6 +550,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
             text: this.title,
             expanded: true,
             isTarget: true,
+			layout: 'fit',
 			id: 'rubricatorLayerRoot',
             allowDrop: false
         });
@@ -563,6 +568,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 			callback: function(request) 
 			{					
 				try {
+					gxp.plugins.Logger.log("Даные рубрикатора успешно получены", gxp.plugins.Logger.prototype.LOG_LEVEL_INFO);
 					layers = JSON.parse(request.responseText);										
 					if (!layers) return;
 					addChildren(treeRoot, layers);
@@ -575,12 +581,16 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 						   {name: 'serverpath', mapping: 'serverpath'}
 						],
 						data: app.tools.gxp_rubricatortree_ctl.treeToArray(layers)							
-					}).getRange());
+					}).getRange());					
+					gxp.plugins.Logger.log("Даные рубрикатора успешно обработаны", gxp.plugins.Logger.prototype.LOG_LEVEL_INFO);
 				}
 				catch(e) {
-					gxp.plugins.Logger.log("Ошибка при получении данных рубрикатора: " + e.toString() , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
+					gxp.plugins.Logger.log("Ошибка при обработке данных рубрикатора: " + e.toString() , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
 				}
-			}	 				
+			},
+			failure: function(request){
+				gxp.plugins.Logger.log("Ошибка при получении данных рубрикатора: " + e.toString() , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
+			}
 		});
 	 
 
@@ -675,7 +685,8 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 			cls: 'customTree',
             root: treeRoot,
             rootVisible: true,
-			layout: 'fit',
+			flex: 1,
+			autoScroll:true,			
             border: false,
             enableDD: true,
             selModel: new Ext.tree.DefaultSelectionModel({               

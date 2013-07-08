@@ -6,6 +6,7 @@ var urls = [
     [(/^\/(login)/         ), require("./root/login"    ).app],
     [(/^\/(proxy)/         ), require("./root/proxy"    ).app],
     [(/^\/(maps(\/\d+)?)/  ), require("./root/maps"     ).app],
+	[(/^\/(services(\/\d+)?)/  ), require("./root/services"     ).app],
     [(/^\/(translate)/     ), require("./root/translate").app],
     [(/^\/(metadata)/      ), require("./root/metadata" ).app],
     [(/^\/(save)/          ), require("./root/save"     ).app],	

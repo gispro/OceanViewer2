@@ -50,7 +50,7 @@ window.CONFIG = {
 
     prickerAliaseUrl: OVROOT+'translate',
     prickerGetInfoUrl: 'http://oceanviewer.ru/resources/wms',
-    prickerSaveChartUrl: '/save',
+    prickerSaveChartUrl: OVROOT + 'save',
 
     //ovLayer
     ovLayer: ["http://oceanviewer.ru/cache/service/wms", "eko_merge"],
