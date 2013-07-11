@@ -26,9 +26,9 @@
    "http://www.jboss.org/portal/dtd/jboss-portlet_2_6.dtd">
 
 <portlet-app>
-   <app-id>OceanViewerPortlet3</app-id>
+   <app-id>OceanViewerPortlet</app-id>
    <portlet>
-      <portlet-name>OceanViewerPortlet3</portlet-name>
+      <portlet-name>OceanViewerPortlet</portlet-name>
       <header-content>
           
     <link rel="shortcut icon" href="/theme/app/img/favicon.ico"/>

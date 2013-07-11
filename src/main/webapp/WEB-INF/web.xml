@@ -4,7 +4,7 @@
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
    version="2.5"> 
-  <display-name>OceanViewer2 App</display-name>
+  <display-name>OceanViewer</display-name>
     <servlet>
         <servlet-name>ringo</servlet-name>
         <servlet-class>org.ringojs.jsgi.JsgiServlet</servlet-class>
@@ -32,8 +32,8 @@
             <param-name>GEOEXPLORER_JDBC_PARAMS</param-name>
             <param-value>
                 {
-                    "driver" : "org.postgresql.Driver" , 
-                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                    "driver" : "org.postgresql.Driver",
+                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo",
                     "table" : "admin.savedmaps",
                     "user": "esimo",
                     "password" : "gisproesimo"
@@ -44,8 +44,8 @@
             <param-name>RUBRICATOR_JDBC_PARAMS</param-name>
             <param-value>
                 {
-                    "driver" : "org.postgresql.Driver" , 
-                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                    "driver" : "org.postgresql.Driver",
+                    "url" : "jdbc:postgresql://192.168.0.30:5432/esimo",
                     "table" : "admin.toc",
                     "user": "esimo",
                     "password" : "gisproesimo"
@@ -57,8 +57,8 @@
             <param-value>
                 {
                     "layer": {
-                        "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "driver" : "org.postgresql.Driver",
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo",
                         "table" : "resource_md",
                         "codeField" : "resourceid",
                         "translateField" : "objecttitle",
@@ -66,8 +66,8 @@
                         "password" : "gisproesimo"
                     },
                     "field": {
-                        "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "driver" : "org.postgresql.Driver",
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo",
                         "table" : "element_md",
                         "codeField" : "objectsystemid",
                         "translateField" : "objecttitle",
@@ -82,21 +82,23 @@
             <param-value>
                 {
                     "layer": {
-                        "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "driver" : "org.postgresql.Driver", 
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo",
                         "table" : "resource_md",
+                        "user": "esimo",
+                        "password" : "gisproesimo",
                         "codeField" : "resourceid",
                         "metaDataFields" : {
                             "minimumvalue" : "Минимальное значение",
                             "maximumvalue" : "Максимальное значение"
-                        },
-                        "user": "esimo",
-                        "password" : "gisproesimo"
+                        }
                     },
                     "field": {
-                        "driver" : "org.postgresql.Driver" , 
-                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo" ,
+                        "driver" : "org.postgresql.Driver",
+                        "url" : "jdbc:postgresql://192.168.0.30:5432/esimo",
                         "table" : "element_md",
+                        "user": "esimo",
+                        "password" : "gisproesimo",
                         "codeField" : "objectsystemid",
                         "metaDataFields" : {
                             "objecttitle" : "Заголовок элемента",
@@ -118,19 +120,12 @@
                             "elementformat" : "Формат элемента в синтаксисе OPeNDAP",
                             "elementprintdec" : "Длина элемента",
                             "elementprintfield" : "Кол-во знаков после запятой"
-                        },
-                        "user": "esimo",
-                        "password" : "gisproesimo"
+                        }
                     }
                 }
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-		
-        <!--<security-role-ref>
-          <role-name>ADMINISTRATOR</role-name>
-          <role-link>RIHMI-WDC.RCITU:GIS:ADMIN</role-link>
-        </security-role-ref>-->
     </servlet>
 
     <servlet>
@@ -162,24 +157,16 @@
 	
     <!-- JOSSO Roles definition -->
     <!--<security-constraint>
-        <display-name>Limit JOSSO access to the OceanViewer2</display-name>
         <web-resource-collection>
-            <web-resource-name>protected-resources</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>RIHMI-WDC.RCITU:GIS:ADMIN</role-name>
-            <role-name>ADMINISTRATOR</role-name>
         </auth-constraint>
     </security-constraint>
 
     <security-role>
-        <description>admin role</description>
         <role-name>RIHMI-WDC.RCITU:GIS:ADMIN</role-name>
-    </security-role>
-    <security-role>
-        <description>admin role</description>
-        <role-name>ADMINISTRATOR</role-name>
     </security-role>-->
 
     <servlet-mapping>
@@ -189,7 +176,6 @@
 
     <!--<login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>JOSSO Secure Zone</realm-name>
         <form-login-config>
             <form-login-page>/login-josso.html</form-login-page>
             <form-error-page>/login-josso.html</form-error-page>
