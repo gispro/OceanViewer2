@@ -403,7 +403,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 																var records = [];
 																node.attributes.storeId = id;
 																app.layerSources[id].store.each(function(record, index) {
-																	if (record.get("name") == (ws ? ws+":"+name : name)) {																		
+																	if ((record.get("name") == ws+":"+name) ||  (record.get("name") == name)) {																		
 																		record.data.rubstyles = style;
 																		record.data.rubricatorNode = node.id;
 																		record.data.title = record.get('title') + (isAlreadyInUse(record.get('title')) ? " ("+node.attributes.layer.jsonNode.nodename+")" : "");
@@ -560,10 +560,13 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 		var me = this;
 		OpenLayers.Request.issue({
 			method: "GET",
-			url: OVROOT+"maps",
+//			url: OVROOT+"maps",
+			url: OVROOT + "services",
 			async: true,
 			params:{
-				action: "getLayers"
+				service: "rubricator",
+				action: "getTree",
+				//action: "getLayers"
 			},
 			callback: function(request) 
 			{					
@@ -589,7 +592,7 @@ gxp.plugins.RubricatorTree = Ext.extend(gxp.plugins.Tool, {
 				}
 			},
 			failure: function(request){
-				gxp.plugins.Logger.log("Ошибка при получении данных рубрикатора: " + e.toString() , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
+				gxp.plugins.Logger.log("Ошибка при получении данных рубрикатора: " + JSON.parse(request.responseText).error , gxp.plugins.Logger.prototype.LOG_LEVEL_NETWORK_LOCAL_ERRORS);
 			}
 		});
 	 

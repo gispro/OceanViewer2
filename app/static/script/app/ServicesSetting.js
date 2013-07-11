@@ -57,17 +57,20 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 						servicesSetting.wmsPanel.saveSelected();
 					else
 						servicesSetting.wmsPanel.addRecord();
+					wmsStore.reload();
 				} else if (servicesSetting.tabs.activeTab.id === 'arcgisPanel') {
 					if (servicesSetting.newObject === false)
 						servicesSetting.arcgisPanel.saveSelected();
 					else
 						servicesSetting.arcgisPanel.addRecord();
 					//console.log ('Save ARCGIS object : newObject = ' + servicesSetting.newObject);
+					arcgisStore.reload();  Ext.getCmp('arcgisGrid').getView().refresh();
 				} else if (servicesSetting.tabs.activeTab.id === 'rssPanel'){
 					if (servicesSetting.newObject === false)
 						servicesSetting.rssPanel.saveSelected();
 					else
 						servicesSetting.rssPanel.addRecord();
+					rssStore.reload();
 				}
 			}  
 		},
@@ -209,9 +212,9 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 		//~~ ArcGIS Store ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		var arcgisDS = new Ext.data.JsonStore({
 			root      : 'servers',
-			fields : ['title', 'url', 'format', 'owner', 'access']
+			fields : ['id', 'title', 'url', 'format', 'owner', 'access']
 		});
-		arcgisDS.loadData(arcgisStore.reader.jsonData.arcgis);
+		arcgisDS.loadData(arcgisStore.reader.jsonData);
 		
 		this.lockControl = function(selector, disabled)
 		{
@@ -288,7 +291,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					   (app.layerSources[rec].ptype === 'gxp_wmscsource') &&
 					   (app.layerSources[rec].title === Ext.getCmp("serverNameField").getValue()) &&
 					   (app.layerSources[rec].url   === Ext.getCmp("serverURLField").getValue()) &&
-					   (app.layerSources[rec].restUrl   === Ext.getCmp("serverRestURLField").getValue()))
+					   (app.layerSources[rec].rest_url   === Ext.getCmp("serverRestURLField").getValue()))
 					{
 //									console.log ('title = ' + app.layerSources[rec].title + ', url = ' + app.layerSources[rec].url +
 //									                                         ', ptype = ' + app.layerSources[rec].ptype);
@@ -320,13 +323,15 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			},
 			rowSelect : function (record)
 			{
-				Ext.getCmp("serverNameField").setValue(record.data.serverName);
+				Ext.getCmp("serverNameField").setValue(record.data.server_name);
 				Ext.getCmp("serverURLField").setValue(record.data.url);
-				Ext.getCmp("serverRestURLField").setValue(record.data.restUrl);
+				Ext.getCmp("serverRestURLField").setValue(record.data.rest_url);
+				Ext.getCmp("saveButton").enable();
+				Ext.getCmp("deleteButton").enable();
 				//Ext.getCmp("wmsPanel").items.items[1].items.items[2].setValue(record.data.owner     );
 				//Ext.getCmp("wmsPanel").items.items[1].items.items[3].setValue(record.data.access    );
 				
-				var disabled = true;
+				//var disabled = true;
 				if (record.data.owner === servicesSetting.user) 
 					disabled = false;
 				servicesSetting.lockControl ("wmsAccessSelector", disabled);
@@ -345,14 +350,18 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 
 				OpenLayers.Request.issue({
 					method: "GET",
-					url: OVROOT + "save",
+					//url: OVROOT + "save",
+					url: OVROOT + "services",
 					async: true,
 					params:{
-					    service : "wms"                 ,
+					    /*service : "wms"                 ,
 						action  : "remove"              ,
-						name    : record.data.serverName,
+						name    : record.data.server_name,
 						url     : record.data.url       ,
-						owner   : record.data.owner
+						owner   : record.data.owner*/
+						service : "wms"                 ,
+						action  : "remove"              ,
+						id	    : record.data.id
 					},
 					callback: function(request) 
 					{
@@ -366,7 +375,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			saveSelected : function()
 			{
 				var idx = this.getSelectedRow(Ext.getCmp("wmsGrid").store, 
-					                          Ext.getCmp("wmsGrid").getSelectionModel().getSelected().data);
+				Ext.getCmp("wmsGrid").getSelectionModel().getSelected().data);
 				var panel  = Ext.getCmp("wmsPanel").items.items[1];
 				var record = Ext.getCmp("wmsGrid" ).store.data.items[idx];
 
@@ -381,28 +390,32 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					if (doubled)
 						servicesSetting.doubledRecord(servicesSetting.doubledWMS);
 					else {
+						var jsondata = {
+							id     		   : record.data.id,
+							server_name    : Ext.getCmp("serverNameField").getValue(),
+							url            : Ext.getCmp("serverURLField").getValue(),
+							rest_url       : Ext.getCmp("serverRestURLField").getValue(),
+							owner          : record.data.owner,							
+							url		       : Ext.getCmp("serverURLField").getValue()
+						}						
 						OpenLayers.Request.issue({
 							method  : "GET",
-							url     : OVROOT + "save",
+							//url     : OVROOT + "save",
+							url     : OVROOT + "services",
 							async   : true,
 							params  : {
-								service        : "wms"                          ,
-								action         : "update"                       ,
-								serverName     : record.data.serverName         ,
-								url            : record.data.url                ,
-								restUrl        : Ext.getCmp("serverRestURLField").getValue(),
-								owner          : record.data.owner              ,
-								serverName_new : Ext.getCmp("serverNameField").getValue(),
-								url_new        : Ext.getCmp("serverURLField").getValue()
+								service        : "wms",
+								action         : "update",
+								data: JSON.stringify (jsondata)
 							},
 							callback: function(request) 
 							{
 								if (request.status === 200)
 								{								
-									record.data.serverName = Ext.getCmp("serverNameField").getValue();
+									record.data.server_name = Ext.getCmp("serverNameField").getValue();
 									record.data.url        = Ext.getCmp("serverURLField").getValue();
-									record.data.restUrl        = Ext.getCmp("serverRestURLField").getValue();
-									Ext.getCmp("wmsGrid").getView().refresh();
+									record.data.rest_url        = Ext.getCmp("serverRestURLField").getValue();
+									wmsStore.reload();
 								} else {
 									var result = Ext.util.JSON.decode(request.responseText);
 									if (result.note === "doubled")
@@ -410,6 +423,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									else
 										servicesSetting.errorTransaction();
 								}
+								
 							}					
 						});
 					}
@@ -424,7 +438,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				else if (wmsStore.isRecordPresent (Ext.getCmp("serverURLField").getValue()))
 					servicesSetting.doubledRecord(servicesSetting.doubledWMS);
 				else {
-					OpenLayers.Request.issue({
+					/*OpenLayers.Request.issue({
 						method: "GET",
 						url: OVROOT + "save",
 						async: true,
@@ -435,26 +449,44 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 							url        : Ext.getCmp("serverURLField").getValue(),
 							restUrl    : Ext.getCmp("serverRestURLField").getValue(),
 							owner      : servicesSetting.user
+						},*/
+						var jsondata = {
+							url            	: Ext.getCmp("serverURLField").getValue(),
+							rest_url        : Ext.getCmp("serverRestURLField").getValue(),
+							owner        	: servicesSetting.user,
+							server_name		: Ext.getCmp("serverNameField").getValue(),
+							url        		: Ext.getCmp("serverURLField").getValue()
+						}
+						OpenLayers.Request.issue({
+						method: "GET",
+						url: OVROOT + "services",
+						async: true,
+						params:{
+							service    : "wms",
+							action     : "insert",
+							data: JSON.stringify (jsondata)
 						},
 						callback: function(request) 
 						{
 							if (request.status === 200)
 							{								
 								var structure = Ext.data.Record.create([
-									{name: "serverName", type: "string" },
+									{name: "id"			, type: "int" },
+									{name: "server_name", type: "string" },
 									{name: "url"       , type: "string" },
+									{name: "rest_url"  , type: "string" },
 									{name: "owner"     , type: "string" },
 									{name: "access"    , type: "string" }
 								]); 
 								var record = new structure({
-									serverName : Ext.getCmp("serverNameField").getValue(),
+									server_name : Ext.getCmp("serverNameField").getValue(),
 									url        : Ext.getCmp("serverURLField").getValue(),
-									restUrl    : Ext.getCmp("serverRestURLField").getValue(),
+									rest_url   : Ext.getCmp("serverRestURLField").getValue(),
 									owner      : servicesSetting.user 
 								}); 
 								wmsStore.add(record);
-								Ext.getCmp("wmsGrid").getSelectionModel().selectRow(Ext.getCmp("wmsGrid").store.data.length - 1);
-								Ext.getCmp("wmsGrid").getView().refresh();
+								wmsStore.reload();
+								Ext.getCmp("wmsGrid").getSelectionModel().selectRow(Ext.getCmp("wmsGrid").store.data.length - 1);								
 								servicesSetting.newObject = false;
 							} else {
 								var result = Ext.util.JSON.decode(request.responseText);
@@ -504,11 +536,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									ds     : wmsStore,
 									columns: [
 										{
-											id       : 'serverName',
+											id       : 'server_name',
 											header   : 'Наименование', 
 											width    : 238, 
 											sortable : true,
-											dataIndex: 'serverName',
+											dataIndex: 'server_name',
 											renderer : function(value,metaData,record,colIndex,store,view) {
 												metaData.attr  = 'ext:qtip="' + value + '"';
 												return value;
@@ -545,7 +577,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 								items: [{
 										xtype      : 'textfield',
 										fieldLabel : 'Наименование',
-										name       : 'serverName',
+										name       : 'server_name',
 										id		   : 'serverNameField',	
 										anchor     : "100%",
 										labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
@@ -559,7 +591,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									},{
 										xtype      : 'textfield',
 										fieldLabel : 'REST URL',
-										name       : 'restUrl',
+										name       : 'rest_url',
 										id		   : 'serverRestURLField',
 										anchor     : "100%",
 										labelStyle : 'font-size:12px;font-weight: normal; color:#909090'
@@ -729,13 +761,16 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				else {
 					OpenLayers.Request.issue({
 						method: "GET",
-						url: OVROOT + "save",
+						//url: OVROOT + "save",
+						url: OVROOT + "services",
 						async: true,
 						params:{
 							service    : "arcgis"                          ,
-							action     : "add"                          ,
-							url        : Ext.getCmp("arcgisPanelURL").getValue(),
-							title        : Ext.getCmp("arcgisPanelTitle").getValue()
+							action     : "insert"                          ,
+							data: JSON.stringify({
+								url     	: Ext.getCmp("arcgisPanelURL").getValue(),
+								title       : Ext.getCmp("arcgisPanelTitle").getValue()
+							})
 						},
 						callback: function(request) 
 						{
@@ -751,7 +786,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 								}); 
 								arcgisDS.add(record);
 								Ext.getCmp("arcgisGrid").getSelectionModel().selectRow(Ext.getCmp("arcgisGrid").store.data.length - 1);
-								Ext.getCmp("arcgisGrid").getView().refresh();
+								arcgisStore.reload();  Ext.getCmp('arcgisGrid').getView().refresh();
 								servicesSetting.newObject = false;
 							} else {
 								var result = Ext.util.JSON.decode(request.responseText);
@@ -769,6 +804,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				var idx = this.getSelectedRow(Ext.getCmp("arcgisGrid").store, 
 					                          Ext.getCmp("arcgisGrid").getSelectionModel().getSelected().data);
 				var panel  = Ext.getCmp("arcgisPanel").items.items[1];
+				arcgisDS.loadData(arcgisStore.reader.jsonData)
 				var record = Ext.getCmp("arcgisGrid" ).store.data.items[idx];
 
 				if ((Ext.getCmp("serverNameField").getValue().length === 0) || (Ext.getCmp("serverURLField").getValue().length === 0))
@@ -778,14 +814,17 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				{
 					OpenLayers.Request.issue({
 						method  : "GET",
-						url     : OVROOT + "save",
+						//url     : OVROOT + "save",
+						url     : OVROOT + "services",
 						async   : true,
 						params  : {
 							service        : "arcgis",
 							action         : "update" ,
-							title     	   : Ext.getCmp("arcgisPanelTitle").getValue(),
-							url            : record.data.url,
-							url_new        : Ext.getCmp("arcgisPanelURL").getValue()
+							data		   : JSON.stringify({
+								id			   : record.data.id,
+								title     	   : Ext.getCmp("arcgisPanelTitle").getValue(),
+								url		       : Ext.getCmp("arcgisPanelURL").getValue()
+							})
 						},
 						callback: function(request) 
 						{
@@ -793,7 +832,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 							{								
 								record.data.title = Ext.getCmp("arcgisPanelTitle").getValue();
 								record.data.url        = Ext.getCmp("arcgisPanelURL").getValue();
-								Ext.getCmp("arcgisGrid").getView().refresh();
+								arcgisStore.reload();  Ext.getCmp('arcgisGrid').getView().refresh();
 							} else {
 								var result = Ext.util.JSON.decode(request.responseText);
 								if (result.note === "doubled")
@@ -813,13 +852,13 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 
 				OpenLayers.Request.issue({
 					method: "GET",
-					url: OVROOT + "save",
+					//url: OVROOT + "save",
+					url: OVROOT + "services",
 					async: true,
 					params:{
 					    service : "arcgis",
 						action  : "remove",
-						url     : record.data.url,
-						title   : record.data.title
+						id     : record.data.id
 					},
 					callback: function(request) 
 					{
@@ -935,7 +974,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 				Ext.getCmp("rssPanel").items.items[1].items.items[1].setValue('');
 				Ext.getCmp("rssPanel").items.items[1].items.items[2].setValue('');
 				//Ext.getCmp("rssPanel").items.items[1].items.items[4].setValue('public');
-				Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(servicesSetting.user);
+				//Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(servicesSetting.user);
 				//Ext.getCmp("rssAccessSelector").setDisabled (false);
 
 				if ((Ext.getCmp("rssGrid").store.getCount() > 0) && Ext.getCmp("rssGrid").getSelectionModel().getSelected())
@@ -946,7 +985,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 			},
 			rowSelect : function (record)
 			{
-				Ext.getCmp("rssPanel").items.items[1].items.items[0].setValue(record.data.title );
+				Ext.getCmp("rssPanel").items.items[1].items.items[0].setValue(record.data.name );
 				Ext.getCmp("rssPanel").items.items[1].items.items[1].setValue(record.data.url   );
 				Ext.getCmp("rssPanel").items.items[1].items.items[2].setValue(record.data.icon  );
 				//Ext.getCmp("rssPanel").items.items[1].items.items[3].setValue(record.data.owner );
@@ -979,16 +1018,18 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 
 				OpenLayers.Request.issue({
 					method: "GET",
-					url: OVROOT + "save",
+					//url: OVROOT + "save",
+					url: OVROOT + "services",
 					async: true,
 					params:{
-					    service : "rss"                                 ,
-						action  : "remove"                              ,
-						name    : this.extractFileName (record.data.url),
+					    service : "rss",
+						action  : "remove",
+						id		: record.data.id
+						/*name    : this.extractFileName (record.data.url),
 						title   : record.data.title                     ,
 						icon    : record.data.icon                      ,
 						url     : record.data.url                       //,
-						//owner   : record.data.owner
+						//owner   : record.data.owner*/
 					},
 					callback: function(request) 
 					{
@@ -1018,21 +1059,24 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					if (doubled)
 						servicesSetting.doubledRecord(servicesSetting.doubledRSS);
 					else {
+						var jsondata = {							
+							id: record.data.id,
+							//owner     : record.data.owner              ,
+							name : Ext.getCmp("rssPanelTitle").getValue(),
+							url   : Ext.getCmp("rssPanelURL").getValue(),
+							icon      : panel.items.items[2].getValue(),
+							//access    : panel.items.items[4].getValue()
+						}
+						
 						OpenLayers.Request.issue({
 							method: "GET",
-							url: OVROOT + "save",
+							//url: OVROOT + "save",
+							url: OVROOT + "services",
 							async: true,
 							params:{
 								service   : "rss"                          ,
 								action    : "update"                       ,
-								name      : fname                          ,
-								title     : record.data.title              ,
-								url       : record.data.url                ,
-								//owner     : record.data.owner              ,
-								title_new : Ext.getCmp("rssPanelTitle").getValue(),
-								url_new   : Ext.getCmp("rssPanelURL").getValue(),
-								icon      : panel.items.items[2].getValue(),
-								//access    : panel.items.items[4].getValue()
+								data: JSON.stringify(jsondata)
 							},
 							callback: function(request) 
 							{
@@ -1043,7 +1087,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 									record.data.url    = Ext.getCmp("rssPanelURL").getValue();
 									record.data.icon   = panel.items.items[2].getValue();
 									//record.data.access = panel.items.items[4].getValue();
-									Ext.getCmp("rssGrid").getView().refresh();
+									rssStore.reload();
 								} else {
 									var result = Ext.util.JSON.decode(request.responseText);
 									if (result.note === "doubled")
@@ -1066,20 +1110,23 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					servicesSetting.doubledRecord(servicesSetting.doubledRSS);
 				else {
 					var fname = this.extractFileName (Ext.getCmp("rssPanelURL").getValue());
-					
+					var jsondata = {
+						//name      : fname                          ,
+						name     : Ext.getCmp("rssPanelTitle").getValue(),
+						url       : Ext.getCmp("rssPanelURL").getValue(),
+						icon      : panel.items.items[2].getValue()//,
+						//access    : panel.items.items[4].getValue(),
+						//owner     : servicesSetting.user
+					}
 					OpenLayers.Request.issue({
 						method: "GET",
-						url: OVROOT + "save",
+						//url: OVROOT + "save",
+						url: OVROOT + "services",
 						async: true,
 						params:{
 							service   : "rss"                          ,
-							action    : "add"                          ,
-							name      : fname                          ,
-							title     : Ext.getCmp("rssPanelTitle").getValue(),
-							url       : Ext.getCmp("rssPanelURL").getValue(),
-							icon      : panel.items.items[2].getValue()//,
-							//access    : panel.items.items[4].getValue(),
-							//owner     : servicesSetting.user
+							action    : "insert"                          ,
+							data : JSON.stringify(jsondata)
 						},
 						callback: function(request) 
 						{
@@ -1105,7 +1152,7 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 								}); 
 								rssStore.add(record);
 								Ext.getCmp("rssGrid").getSelectionModel().selectRow(Ext.getCmp("rssGrid").store.data.length - 1);
-								Ext.getCmp("rssGrid").getView().refresh();
+								rssStore.reload();
 								servicesSetting.newObject = false;
 							} else {
 								var result = Ext.util.JSON.decode(request.responseText);
@@ -1136,11 +1183,11 @@ gxp.ServicesSetting = Ext.extend(Ext.Window, {
 					ds     : rssStore,
 					columns: [
 						{
-							id       : 'title',
+							id       : 'name',
 							header   : 'Наименование', 
 							width    : 256, 
 							sortable : true,
-							dataIndex: 'title'
+							dataIndex: 'name'
 						}
 					],
 					sm: new Ext.grid.RowSelectionModel({

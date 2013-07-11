@@ -12,12 +12,12 @@ var getDbConn = exports.getDbConn = function(request) {
     
     var jdbcParams;
     if (request) {
-        jdbcParams = request.env.servlet.getServletConfig().getInitParameter("GEOEXPLORER_JDBC_PARAMS");
+        jdbcParams = request.env.servlet.getServletConfig().getInitParameter("OCEANVIEWER_JDBC_PARAMS");
     }
     if (!jdbcParams) {
         jdbcParams = String(
-            System.getProperty("GEOEXPLORER_JDBC_PARAMS") || 
-            System.getenv("GEOEXPLORER_JDBC_PARAMS") || 
+            System.getProperty("OCEANVIEWER_JDBC_PARAMS") || 
+            System.getenv("OCEANVIEWER_JDBC_PARAMS") || 
             '{ "driver" : "org.sqlite.JDBC" , "url" : "jdbc:sqlite:geoexplorer.db" }'
         );
     }
@@ -55,10 +55,10 @@ var getDbConn = exports.getDbConn = function(request) {
 
 var getRubricatorDbConn = exports.getRubricatorDbConn = function(request) {
     
-    var jdbcParams = cr.c.ringo.RUBRICATOR_JDBC_PARAMS;
+    var jdbcParams = cr.c.ringo.OCEANVIEWER_JDBC_PARAMS;
    
     if (!jdbcParams) {
-        system.print("Can't access RUBRICATOR_JDBC_PARAMS");
+        system.print("Can't access OCEANVIEWER_JDBC_PARAMS");
 		return 500;		
     }/*
 	else {
