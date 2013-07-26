@@ -1,19 +1,9 @@
 var fs = require("fs");
 var objects = require("ringo/utils/objects");
+var engine = require ("ringo/engine");
 
-//var content = fs.read('src/main/webapp/WEB-INF/web.xml'); //SED
-var pth = java.lang.System.getProperty("app.realPathToOV");
-var content;
-if(pth){
-    content = fs.read(pth+'WEB-INF/web.xml'); //SED
-}else{
-    var url = new java.net.URL("jar:file:/Public/progs/jboss-portal-2.7.2/server/default/deploy/beta2.war!/WEB-INF/web.xml");
-    var res = url.openStream();
-    var scn = new java.util.Scanner(res).useDelimiter("\\A");
-    content = scn.hasNext()?scn.next():"";
-    res.close();
-}
-//system.print(ringoHome);
+var content = fs.read('src/main/webapp/WEB-INF/web.xml'); //SED
+system.print(engine.getRingoHome());
 var servelets = {};
 var serveletsArr = content.split('<servlet>');
 
@@ -41,3 +31,8 @@ for(var i=1; i<serveletsArr.length; i++){
 }
 
 exports.c = servelets;
+
+
+
+        
+ 

@@ -4,7 +4,10 @@ var fs = require("fs");
 exports.app = function(request)
 {
 	var appDir = "webapps/OceanViewer2/WEB-INF/";
-
+	/*var appDir = "/home/tomcat/opt/tomcat-cluster/tomcat-1/webapps/OceanViewer2/WEB-INF/"; // для дебага
+	var appDir = " /opt/OceanViewer/webapps/OceanViewer2/WEB-INF";  // для стэндэлона
+	var appDir = "/opt/jboss-portal-esimo/server/default/deploy/OceanViewerTest.war!/WEB-INF/"; // для потрлета
+	*/
 //	system.print ("app.debug = " + java.lang.System.getProperty("app.debug"));
 	
 	if (!(java.lang.System.getProperty("app.debug")) && (java.lang.System.getProperty("os.name").indexOf("Windows") == -1))

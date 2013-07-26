@@ -35,13 +35,15 @@ var getDbConn = exports.getDbConn = function(request) {
 var createResponse = function(o) {
     var data = o.data;
 	var status = o.status;
+	var encoding = o.encoding;	
 	if (typeof data !== "string") {
         data = JSON.stringify(data);
     }
     return {
         status: status || 200,
         headers: {
-            "Content-Type": "application/json"
+            //"Content-Type": "application/json" + (encoding ? "; charset="+encoding : "")
+			"Content-Type": "application/json;"
         },
         body: [data]
     };
@@ -62,7 +64,8 @@ var services = {
 			var obj = {};
 			for (var i=0; i<o.fields.length; i++){
 				obj[o.fields[i]] = o.types[i]=="int"? rs.getInt(o.fields[i]) : 
-									o.types[i]=="array"? rs.getString(o.fields[i]).split(",") : 
+								    o.types[i]=="double"? rs.getDouble(o.fields[i]) : 
+									 o.types[i]=="array"? rs.getString(o.fields[i]).split(",") : 
 									  o.types[i]=="json"? JSON.parse(rs.getString(o.fields[i])) : 	
 										rs.getString(o.fields[i]);
 				//obj[o.fields[i]] = rs.getString(o.fields[i]);
@@ -74,7 +77,7 @@ var services = {
 			var rs,ps,conn;
 			try {
 				conn = getDbConn();
-				var sql = "select "+o.fields.join(",")+" from "+ o.table;
+				var sql = "select "+o.fields.join(",")+" from "+ o.table + " order by " + o.id ;
 				ps = conn.prepareStatement(sql);        
 				rs = ps.executeQuery();
 				var result = {};
@@ -264,7 +267,7 @@ var services = {
 				var sql = "update "+ o.table + " SET is_default=false";
 				ps = conn.prepareStatement(sql);        
 				rs = ps.executeUpdate();		
-				sql = "update "+ o.table + " SET is_default='true' where "+ o.id + "="+env.params[o.id];
+				sql = "update "+ o.table + " SET is_default=true where "+ o.id + "="+env.params[o.id];
 				ps = conn.prepareStatement(sql);        
 				rs = ps.executeUpdate();		
 				return {data:{result: "OK"},code:code}
@@ -312,7 +315,7 @@ var services = {
 		getList: function() {					
 			return services.abstractService.getList(services.arcgis);
 		},
-		getSingle: function(id){
+		getSingle: function(env){
 			return services.abstractService.getSingle(env,services.arcgis);
 		},
 		insert: function(env){
@@ -326,15 +329,15 @@ var services = {
 		}
 	},
 	rss:{	
-		fields: ["id", "url",/* "timer", */"icon", "name", "access"], /*, "user_created", "user_modified", "date_created", "date_modified"],*/
-		types: ["int", "string", /*"int",*/ "string", "string", "string", "string", "string", "string", "string"],
+		fields: ["id", "url",/* "timer", */ "title", "icon", "name", "access"], /*, "user_created", "user_modified", "date_created", "date_modified"],*/
+		types: ["int", "string", /*"int",*/ "string", "string", "string", "string", "string", "string", "string", "string"],
 		table: "admin.ov_rss_catalog",
 		root: 'services',
 		id: 'id',
 		getList: function() {					
 			return services.abstractService.getList(services.rss);
 		},
-		getSingle: function(id){
+		getSingle: function(env){
 			return services.abstractService.getSingle(env,services.rss);
 		},
 		insert: function(env){
@@ -345,6 +348,28 @@ var services = {
 		},
 		remove: function(env){
 			return services.abstractService.remove(env,services.rss);
+		}
+	},
+	aqua:{	
+		fields: ["id", 'name', 'lon', 'lat', 'zoom'], /*, "user_created", "user_modified", "date_created", "date_modified"],*/
+		types: ["int", "string", "double", "double", "int", "string", "string", "string", "string"],
+		table: "admin.ov_aqua_catalog",
+		root: 'features',
+		id: 'id',
+		getList: function() {					
+			return services.abstractService.getList(services.aqua);
+		},
+		getSingle: function(env){
+			return services.abstractService.getSingle(env,services.aqua);
+		},
+		insert: function(env){
+			return services.abstractService.insert(env,services.aqua);
+		},
+		update: function(env){
+			return services.abstractService.update(env,services.aqua);
+		},
+		remove: function(env){
+			return services.abstractService.remove(env,services.aqua);
 		}
 	},
 	rubricator:{

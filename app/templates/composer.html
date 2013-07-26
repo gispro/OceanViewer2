@@ -57,6 +57,7 @@
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/QueryForm.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/FeatureManager.js"></script>
     <script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/AddLayers.js"></script>
+	<script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/NewLayerWindow.js"></script>
 	<script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/AnimationManager.js"></script>
 	<script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/AnimationGrid.js"></script>
 	<script type="text/javascript" src="externals/gispro/overrides/gxp/src/script/plugins/ChartManager.js"></script>
@@ -122,7 +123,8 @@
 
         //TODO: make configurable
         var im = new Image();
-        im.src = 'http://oceanviewer.ru/resources/web/';
+        //im.src = 'http://oceanviewer.ru/resources/web/';
+		im.src = "http://" + document.URL.split("/")[2] + "/resources/web";
 	
         //constants
 

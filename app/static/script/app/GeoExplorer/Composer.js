@@ -51,7 +51,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 
         }
 
-        config.jossoInfoUrl = config.authUrl + 'info.do'
+        config.jossoInfoUrl = config.authUrl + '/info.do'
 
         if(config.authWay !== false){
 
